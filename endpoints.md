@@ -1,4 +1,4 @@
-
+```
 
 /api_internal/patient/<ID>/phone
 
@@ -16,3 +16,5 @@
 /api_internal/patient/<ID>/email
 
 max@mustermann.de
+
+```
