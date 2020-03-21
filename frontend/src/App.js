@@ -2,7 +2,6 @@ import React from 'react'
 import './App.css'
 import { Navbar, Nav, NavDropdown, FormControl, Form as BForm, Button, Col, Container, Row } from 'react-bootstrap'
 import Calendar from 'react-calendar'
-import Slider from 'react-slick'
 import { Form, TextInput } from './components/form'
 import { BookingFlow } from './components/BookingFlow'
 
