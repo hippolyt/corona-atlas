@@ -42,6 +42,75 @@ SLOTS ANZEIGEN TAGESÜBERSICHT
   ...
 ]
 
+# Cases
+
+CASES ANZEIGEN
+GET /api_internal/cases?details=summary&closed=false&sort=due&limit=10?search=...
+[
+  {
+    "id": 103,
+    "name": "John Doe",
+    "email": "john@doe.com"
+    "due": "",
+  }
+]
+
+CASE ANLEGEN
+POST /api_internal/cases
+REQUEST
+{
+  "slot_id": 15,
+  "patient": {
+    "name": "John Doe",
+    "email": "john@doe.com",
+    "address": {
+      "zip_code": "",
+      "city": "",
+      "street": "",
+      "no": ""
+    },
+    "phone": "",
+    "mobile": "",
+    "consent": ...tsb,
+    "high_risk": false 
+  },
+  "doctor_id": 12,
+  "testcenter_id": 1,
+  "referal_type": "fax"
+}
+RESPONSE
+{
+  "id": 103,
+  "due": "",
+  "patient": {
+    "id": 103,
+    "name": "John Doe",
+    "email": "john@doe.com",
+    "address": {
+      "zip_code": "",
+      "city": "",
+      "sheet": "",
+      "no": ""
+    },
+    "phone": "",
+    "mobile": "",
+    "consent": ...tsb,
+    "high_risk": false,
+  },
+  "contacted": false,
+  "referal_type": "fax",
+  "doctor": {...},
+  "testcenter_id": 1,
+  "comment": ""
+}
+
+
+
+STATISTICS
+GET /api_internal/stats
+{
+  ...tbd (based on needs)
+}
 
 
 
