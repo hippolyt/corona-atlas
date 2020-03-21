@@ -6,7 +6,7 @@ result
 
 
 
-Buchungsübersicht
+# Buchungsübersicht
 
 SLOTS ANZEIGEN MONATSÜBERSICHT
 /api_internal/sample_collection/<ID>/slots/<MONTH NUMBER>
@@ -46,7 +46,7 @@ SLOTS ANZEIGEN TAGESÜBERSICHT
 
 
 
-Patient Kontaktdaten für verschiedene Wege:
+# Patient Kontaktdaten für verschiedene Wege:
 
 ROBOCALL
 /api_internal/patient/<ID>/phone
