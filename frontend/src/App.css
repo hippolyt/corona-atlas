@@ -1,0 +1,47 @@
+.short-day-pick {
+    height: 120px;
+    border-right: solid 1px;
+    border-top: solid 1px;
+    border-bottom: solid 1px;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+    scroll-behavior: auto;
+    margin: 5px 0;
+    background-color: lightgray;
+}
+
+.short-day-pick-v {
+    height: 40px;
+    background-color: lightgray;
+    width: 120px;
+    border: solid 1px;
+    margin-bottom: 5px;
+}
+
+
+.short-day-pick-selected {
+    background-color: lightblue;
+}
+
+.short-picker-container {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    margin: auto;
+}
+/* 
+.short-picker-container > div {
+    border: solid 1px;
+  
+    display: block;
+} */
+
+.calendar-container {
+    display: flex;
+    align-items: center;
+}
+
+.time-pick {
+    list-style: none;
+}
