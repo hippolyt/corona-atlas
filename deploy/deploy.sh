@@ -1,7 +1,7 @@
 #!/bin/bash
 
 update_docker=1
-refresh_ssl_certificate=0
+refresh_ssl_certificate=0 # TO BE DONE PROPERLY
 
 if [ $update_docker = "1" ]; then
     # install docker
