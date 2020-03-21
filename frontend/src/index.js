@@ -9,10 +9,14 @@ import 'react-calendar/dist/Calendar.css';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import { StoreProvider } from './state/store'
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <StoreProvider initialValue={{ booking: { slotId: null, slotDate: null, patient: null, stage: "DAY_SELECTION" } }}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </StoreProvider >,
   document.getElementById('root')
 );
 

@@ -1,14 +1,28 @@
+.short-day-container {
+    width: 750px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 .short-day-pick {
-    height: 120px;
-    border-right: solid 1px;
+    height: 260px;
+    width: 150px;
+    /* border-right: solid 1px;
     border-top: solid 1px;
-    border-bottom: solid 1px;
-    display: inline-block;
+    border-bottom: solid 1px; */
     text-align: center;
     vertical-align: middle;
     scroll-behavior: auto;
-    margin: 5px 0;
+    margin: 0;
     background-color: lightgray;
+}
+
+.short-day-pick-container {
+    display: inline-block;
+    vertical-align: bottom;
 }
 
 .short-day-pick-v {
@@ -21,7 +35,18 @@
 
 
 .short-day-pick-selected {
-    background-color: lightblue;
+    background-color: rgb(0,136,238);
+    margin: 0;
+    height: 56px;
+    border-radius: 10px 10px 0 0;
+    border: solid 5px rgb(0,136,238);
+}
+
+.short-day-pick-selected h1 {
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+    padding-top: 10px;
 }
 
 .short-picker-container {
