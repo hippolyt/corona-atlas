@@ -20,9 +20,10 @@ class Patient(Base):
     address_id = Column(Integer, ForeignKey('address.id'))
     address = relationship("Address")
     phone = Column('phone', String(30))
+    mobile = Column('mobile', String(30))
     consent = Column('consent', Boolean)
-    risky = Column('Risk patient', Boolean)
-
+    tested = Column('is_tested', Boolean)
+    high_risk = Column('high_risk', Boolean)
 
 
 class Address(Base):
@@ -30,6 +31,7 @@ class Address(Base):
     id = Column(Integer, Sequence('address_id_seq'), primary_key=True)
     zip_code = Column('zip', String(10))
     city = Column('city', String(50))
+    street = Column('street', String(60))
     no = Column('no', String(10))
 
 
@@ -38,7 +40,8 @@ class Doctor(Base):
     id = Column(Integer, Sequence('doctor_id_seq'), primary_key=True)
     name = Column('name', String(60))
     email = Column('email', String(30))
-    referral_type = Column('referralType', String(30))
+    has_access = Column('has_access', Boolean)
+    
 
 
 class Testcenter(Base):
@@ -53,8 +56,8 @@ class Testcenter(Base):
 class Slot(Base):
     __tablename__ = 'slot'
     id = Column(Integer, Sequence('slot_id_seq'), primary_key=True)
-    start_time = Column('start', DateTime)
-    end_time = Column('end', DateTime)
+    start = Column('start', DateTime)
+    end = Column('end', DateTime)
     capacity = Column('capacity', Integer)
     testcenter_id = Column(Integer, ForeignKey('testcenter.id'))
     testcenter = relationship("Testcenter")
@@ -64,9 +67,9 @@ class SlotConfig(Base):
     __tablename__ = 'slotConfig'
     id = Column(Integer, Sequence('slot_id_seq'), primary_key=True)
     days_per_week = Column('days_per_week', Integer)
-    startTime = Column('start_time', DateTime)
-    endTime = Column('end_time', DateTime)
-    slotSize = Column('slotsize', Interval)
+    start_time = Column('start_time', DateTime)
+    end_time = Column('end_time', DateTime)
+    slot_size = Column('slotsize', Interval)
 
 class Case(Base):
     __tablename__ = 'case'
@@ -77,6 +80,18 @@ class Case(Base):
     doctor = relationship("Doctor")
     testcenter_id = Column(Integer, ForeignKey('testcenter.id'))
     testcenter = relationship("Testcenter")
+    slot_id = Column(Integer, ForeignKey('slot.id'))
+    slot = relationship("Slot")
     contacted = Column('contacted', Boolean)
+    referral_type = Column('referralType', String(30))
+    comment = Column('comment', String(500))
+
+class CommsHistory(Base):
+    __tablename__ = 'commshistory'
+    id = Column(Integer, Sequence('comms_id_seq'), primary_key=True)
+    timestamp = Column('timestamp', DateTime)
+    comm_type = Column('type', String(30))
+    case_id = Column(Integer, ForeignKey('case.id'))
+    case = relationship("Case")
 
 meta.create_all(bind=engine)
