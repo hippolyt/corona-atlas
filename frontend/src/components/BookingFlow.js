@@ -3,8 +3,9 @@ import './BookingFlow.css'
 import { Form as BForm, Button, Col, Container, Row } from 'react-bootstrap'
 import Calendar from 'react-calendar'
 import { Form, TextInput, SelectInput } from './form'
-import { useStage, useSlotDate, useBookingState, useSlotId, usePreviousStage, usePatient } from '../flows/book'
+import { useStage, useSlotDate, useBookingState, useSlotId, usePreviousStage, usePatient, useBookAppointment, useIsLoading } from '../flows/book'
 import { Option } from 'informed'
+import { useSlot, useTestCenterAddress } from '../flows/data'
 
 function BackButton() {
     const { canGoBack, back } = useStage()
@@ -29,6 +30,12 @@ function NextButton(props) {
             Weiter
         </Button>
     )
+}
+
+function ResetButton() {
+    const [_state, _setState, reset] = useBookingState()
+
+    return <Button onClick={() => reset()} className="mr-2" variant="secondary">Abbrechen</Button>
 }
 
 function PatientInformationForm() {
@@ -147,6 +154,7 @@ function PatientInformationForm() {
                     </BForm.Group>
                 </Row>
                 <div className="text-right">
+                    <BackButton />
                     <Button type="submit" >Weiter</Button>
                     {/* <NextButton enabled={true} /> */}
                 </div>
@@ -159,7 +167,7 @@ function SlotSelector(props) {
     const { slots } = props
 
     const dayIdx = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
-
+    let aSlotIsSelected = false
     const content = slots.map((d, i) => {
 
         const demand = d.booked / d.capacity
@@ -171,6 +179,10 @@ function SlotSelector(props) {
             bgColor = "rgb(255,242,170)"
         } else {
             bgColor = "rgb(255,170,170)"
+        }
+
+        if (d.selected) {
+            aSlotIsSelected = true
         }
 
         const contentStyle = {
@@ -222,8 +234,13 @@ function SlotSelector(props) {
         )
     })
 
+
+    const containerStyle = {
+        paddingTop: aSlotIsSelected ? "0" : "56px",
+    }
+
     return (
-        <div className="short-day-container">
+        <div style={containerStyle} className="short-day-container">
             {content}
         </div>
     )
@@ -254,6 +271,26 @@ function formatDateAsHourFace(date) {
     res = res + min
 
     return res + " h"
+}
+
+function formatDateAsReadableDisplay(date) {
+    const dayIdx = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+    const monthIdx = [
+        "Januar",
+        "Februar",
+        "März",
+        "April",
+        "Mai",
+        "Juni",
+        "July",
+        "August",
+        "September",
+        "Oktober",
+        "November",
+        "Dezember",
+    ]
+
+    return `${dayIdx[date.getDay()]} ${date.getDate()}. ${monthIdx[date.getMonth()]}`
 }
 
 function TimeSlot(props) {
@@ -386,8 +423,7 @@ function TimeSelectionDialog() {
 
     return (
         <>
-            <h1>Zeitslot</h1>
-            <p>{slotDate.toString()}</p>
+            <h1 className="mb-4">Zeitslot <u>{formatDateAsReadableDisplay(slotDate)}</u></h1>
             <ul className="time-pick">
                 {timeSlots.map((d, i) => (
                     <TimeSlot key={d.slotId} selected={d.selected} onSelect={() => setSlotId(d.slotId)} time={d.time} capacity={d.capacity} booked={d.booked} />
@@ -402,8 +438,6 @@ function TimeSelectionDialog() {
 }
 
 function DaySelectionDialog(props) {
-    const { next } = useStage()
-
     const [slotDate, setSlotDate] = useSlotDate()
 
     const shortSelection = [
@@ -459,9 +493,9 @@ function DaySelectionDialog(props) {
             <h6>Wählen Sie einen Tag aus</h6>
             <SlotSelector slots={shortSelection} />
 
-            <span onClick={() => { setShowCal(!showCal) }}>{showCal ? <>&#9660;</> : <>&#9654;</>}</span>weitere optionen
+            {/* <span onClick={() => { setShowCal(!showCal) }}>{showCal ? <>&#9660;</> : <>&#9654;</>}</span>weitere optionen
 
-            {cal}
+            {cal} */}
 
             <div className="text-right">
                 <BackButton />
@@ -472,95 +506,163 @@ function DaySelectionDialog(props) {
 }
 
 function BookingSummary() {
+    const [patient] = usePatient()
+    const [slotId] = useSlotId()
+    const [slot] = useSlot(slotId)
+
+    const [book] = useBookAppointment()
+
+    const dayIdx = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+    const monthIdx = [
+        "Januar",
+        "Februar",
+        "März",
+        "April",
+        "Mai",
+        "Juni",
+        "July",
+        "August",
+        "September",
+        "Oktober",
+        "November",
+        "Dezember",
+    ]
+
+    const t = slot.time
+    const date = `${dayIdx[t.getDay()]} ${t.getDate()}. ${monthIdx[t.getMonth()]}`
+    const clockTime = formatDateAsHourFace(t)
+
     return (
         <>
             <h1>Zusammenfassung</h1>
             <div className="mb-2 mt-4">
-                <strong className="h4">Termin</strong> <a href=""><small>ändern</small></a>
+                <strong className="h4">Termin</strong> {/*<a href=""><small>ändern</small></a> */}
             </div>
             <dl className="row">
-                <dt className="col-sm-3">Name</dt>
-                <dd className="col-sm-9">Doe</dd>
+                <dt className="col-sm-3">Datum</dt>
+                <dd className="col-sm-9">{date}</dd>
 
-                <dt className="col-sm-3">Vorname</dt>
-                <dd className="col-sm-9">John</dd>
-
-                <dt className="col-sm-3">Email</dt>
-                <dd className="col-sm-9">john@doe.com</dd>
-
-                <dt className="col-sm-3">Handy</dt>
-                <dd className="col-sm-9">01736454</dd>
-
-                <dt className="col-sm-3">Festnetz</dt>
-                <dd className="col-sm-9">09117463926</dd>
+                <dt className="col-sm-3">Uhrzeit</dt>
+                <dd className="col-sm-9">{clockTime}</dd>
             </dl>
 
             <div className="mb-2 mt-4">
-                <strong className="h4">Patientendaten</strong> <a href=""><small>ändern</small></a>
+                <strong className="h4">Patientendaten</strong>
             </div>
             <dl className="row">
                 <dt className="col-sm-3">Name</dt>
-                <dd className="col-sm-9">Doe</dd>
+                <dd className="col-sm-9">{patient.name}</dd>
 
                 <dt className="col-sm-3">Vorname</dt>
-                <dd className="col-sm-9">John</dd>
+                <dd className="col-sm-9">{patient.givenName}</dd>
 
                 <dt className="col-sm-3">Email</dt>
-                <dd className="col-sm-9">john@doe.com</dd>
+                <dd className="col-sm-9">{patient.email}</dd>
 
                 <dt className="col-sm-3">Handy</dt>
-                <dd className="col-sm-9">01736454</dd>
+                <dd className="col-sm-9">{patient.mobileNumber}</dd>
 
                 <dt className="col-sm-3">Festnetz</dt>
-                <dd className="col-sm-9">09117463926</dd>
+                <dd className="col-sm-9">{patient.phoneNumber}</dd>
             </dl>
 
-
             <div className="text-right">
-                <Button className="mr-2" variant="secondary">Abbrechen</Button>
-                <Button variant="danger">Buchen</Button>
+                <ResetButton />
+                <Button onClick={() => book()} variant="danger">Buchen</Button>
             </div>
         </>
     )
 }
 
-function CompletionDialog() {
+function BookingConfirmationDialog() {
+    const [_state, _setState, reset] = useBookingState()
+    const [patient] = usePatient()
+    const [slotId] = useSlotId()
+    const [slot] = useSlot(slotId)
+
+    const addr = useTestCenterAddress()
+
+    return (
+        <center>
+
+            <h1 className="mb-4">Buchung erfolgreich abgeschlossen</h1>
+
+            <p className="font-weight-bold h4">{patient.givenName} {patient.name} </p>
+            <p> wird am</p>
+            <p className="font-weight-bold h4">{formatDateAsReadableDisplay(slot.time)}</p>
+            <p>um</p>
+            <p className="font-weight-bold h4">{formatDateAsHourFace(slot.time)}</p>
+            <p>im Test-Center</p>
+            <p className="font-weight-bold h4">{addr}</p>
+            <p>auf SarsCovid-19 getested</p>
+
+            <div className="mb-5 mt-5">
+                <Button onClick={() => reset()} className="mr-2" variant="primary">Nächsten Patienten Buchen</Button>
+            </div>
+        </center>
+    )
+}
+
+function BookingFailureDialog() {
+    const [_state, _setState, reset] = useBookingState()
+
     return (
         <>
-            <h1>Done!</h1>
-            <div className="text-right">
-                <Button variant="primary">OK</Button>
-            </div>
+            <center>
+
+                <h1>Das hat nicht funktioniert</h1>
+                <p>Die IT wurde verständigt</p>
+                <p className="mt-5 mb-4">Versuchen Sie es bitte erneut:</p>
+
+                <div className="mb-5">
+                    <Button onClick={() => reset()} className="mr-2" variant="primary">Ich gebe nicht auf</Button>
+                </div>
+            </center>
         </>
     )
 }
 
+export function LoadingScreen() {
+    return (
+        <center className="spinner-container">
+            <div className="spinner"></div>
+            <p className="mt-4">Wir arbeiten...</p>
+        </center>
+    )
+}
 
 export function BookingFlow() {
     const { stage } = useStage()
+    const [isLoading] = useIsLoading()
+
 
     let view
-    switch (stage) {
-        case "DAY_SELECTION":
-            view = <DaySelectionDialog />
-            break
-        case "SLOT_SELECTION":
-            view = <TimeSelectionDialog />
-            break
-        case "PATIENT_DATA":
-            view = <PatientInformationForm />
-            break
-        case "SUMMARY":
-            view = <BookingSummary />
-            break
-        case "COMPLETED":
-            view = <CompletionDialog />
-            break
+    if (isLoading) {
+        view = <LoadingScreen />
+    } else {
+        switch (stage) {
+            case "DAY_SELECTION":
+                view = <DaySelectionDialog />
+                break
+            case "SLOT_SELECTION":
+                view = <TimeSelectionDialog />
+                break
+            case "PATIENT_DATA":
+                view = <PatientInformationForm />
+                break
+            case "SUMMARY":
+                view = <BookingSummary />
+                break
+            case "COMPLETED":
+                view = <BookingConfirmationDialog />
+                break
+        }
     }
 
     return (
         <div className="border p-2 rounded">
             {view}
+            {/* <BookingConfirmationDialog /> */}
         </div>
     )
 }
