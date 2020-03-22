@@ -110,10 +110,21 @@ function PatientInformationForm() {
         next()
     }
 
+    const p = {
+        name: "Maier",
+        givenName: "Lukas",
+        email: "lukas@maier.de",
+        birthDay: "1",
+        birthMonth: "8",
+        birthYear: "1962",
+        mobileNumber: "+49 123 45687",
+        phoneNumber: "+49 936 09465",
+    }
+
     return (
         <>
             <h1>Patientendaten </h1>
-            <Form onSubmit={onSubmit}>
+            <Form initialValues={p} onSubmit={onSubmit}>
                 <Row>
                     <BForm.Group as={Col} controlId="name">
                         <BForm.Label>Name</BForm.Label>
@@ -370,68 +381,62 @@ function TimeSelectionDialog() {
         {
             time: new Date("2020-03-22T08:00"),
             slotId: 1,
-            capacity: 10,
-            booked: 7,
+            capacity: 5,
+            booked: 5,
         },
         {
             time: new Date("2020-03-22T09:00"),
             slotId: 2,
-            capacity: 10,
-            booked: 8,
+            capacity: 5,
+            booked: 3,
         },
         {
             time: new Date("2020-03-22T10:00"),
             slotId: 3,
-            capacity: 10,
-            booked: 2,
+            capacity: 5,
+            booked: 3,
         },
         {
             time: new Date("2020-03-22T11:00"),
             slotId: 4,
-            capacity: 10,
-            booked: 2,
+            capacity: 5,
+            booked: 3,
         },
         {
             time: new Date("2020-03-22T12:00"),
             slotId: 5,
-            capacity: 10,
-            booked: 2,
+            capacity: 5,
+            booked: 3,
         },
         {
             time: new Date("2020-03-22T13:00"),
             slotId: 6,
-            capacity: 10,
+            capacity: 5,
             booked: 2,
         },
         {
             time: new Date("2020-03-22T14:00"),
             slotId: 7,
-            capacity: 10,
-            booked: 2,
+            capacity: 5,
+            booked: 1,
         },
         {
             time: new Date("2020-03-22T15:00"),
             slotId: 8,
-            capacity: 10,
-            booked: 2,
+            capacity: 5,
+            booked: 0,
         },
         {
             time: new Date("2020-03-22T16:00"),
             slotId: 9,
-            capacity: 10,
-            booked: 2,
+            capacity: 5,
+            booked: 0,
         },
         {
             time: new Date("2020-03-22T17:00"),
             slotId: 10,
-            capacity: 10,
-            booked: 2,
-        },
-        {
-            time: new Date("2020-03-22T18:00"),
-            slotId: 11,
-            capacity: 10,
-            booked: 2,
+            capacity: 5,
+            booked: 0,
         },
     ].map(s => ({
         ...s,
@@ -546,32 +551,32 @@ function DaySelectionDialog(props) {
 
     const shortSelection = [
         {
-            name: "Heute",
-            value: new Date('2020-03-21'),
-            capacity: 50,
-            booked: 45
-        },
-        {
             name: "So",
             value: new Date('2020-03-22'),
             capacity: 50,
-            booked: 40
+            booked: 45
         },
         {
             name: "Mo",
             value: new Date('2020-03-23'),
             capacity: 50,
-            booked: 5
+            booked: 40
         },
         {
             name: "Di",
             value: new Date('2020-03-24'),
             capacity: 50,
-            booked: 0
+            booked: 20
         },
         {
             name: "Mi",
             value: new Date('2020-03-25'),
+            capacity: 50,
+            booked: 0
+        },
+        {
+            name: "Mi",
+            value: new Date('2020-03-26'),
             capacity: 50,
             booked: 0
         },

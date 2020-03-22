@@ -1,11 +1,27 @@
-import React, {useState} from "react";
-import {Button, Col, Form as BForm, Row} from "react-bootstrap";
-import {Form, TextInput} from "./form";
-import {useDoctorList} from "../flows/admin";
+import React, { useState } from "react";
+import { Button, Col, Form as BForm, Row } from "react-bootstrap";
+import { Form, TextInput } from "./form";
+import { useDoctorList } from "../flows/admin";
 import Table from "react-bootstrap/Table";
-import {FaBan} from "react-icons/all";
+import { FaBan } from "react-icons/all";
 import Modal from "react-bootstrap/Modal";
 import Container from "react-bootstrap/Container";
+
+export function DoctorManager() {
+    return (
+        <Container>
+            <div className="border p-4 rounded">
+                <h1>Arzt hinzufügen</h1>
+                <p>Neuen Arzt hinzufügen oder Zugriff von bereits hinzugefügten Ärzten entziehen.</p>
+                <AddDoctor />
+                <FilterDoctor />
+                <DoctorList />
+            </div>
+        </Container>
+
+    )
+}
+
 
 function AddDoctor() {
 
@@ -29,18 +45,13 @@ function AddDoctor() {
         <Form onSubmit={onSubmit}>
             <Row>
                 <BForm.Group as={Col} controlId="email">
-                    <BForm.Label>Email</BForm.Label>
-                    <TextInput field="email"/>
+                    <TextInput field="email" placeholder="Email der Praxis oder des Arztes" />
                 </BForm.Group>
                 <BForm.Group as={Col} controlId="office">
-                    <BForm.Label>Praxis</BForm.Label>
-                    <TextInput field="office"/>
+                    <TextInput field="office" placeholder="Name der Praxis oder des Arztes" />
                 </BForm.Group>
-                <BForm.Group>
-                    <BForm.Label></BForm.Label>
-                    <div>
-                        <Button type="submit">Zugriff erteilen</Button>
-                    </div>
+                <BForm.Group as={Col}>
+                    <Button type="submit" className="btn-block">Zugriff erteilen</Button>
                 </BForm.Group>
 
             </Row>
@@ -66,14 +77,10 @@ function FilterDoctor() {
         <Form onSubmit={onSubmit}>
             <Row>
                 <BForm.Group as={Col} controlId="search_term">
-                    <BForm.Label>Suche</BForm.Label>
-                    <TextInput field="search_term"/>
+                    <TextInput field="search_term" placeholder="Nach Email oder Name suchen" />
                 </BForm.Group>
-                <BForm.Group>
-                    <BForm.Label></BForm.Label>
-                    <div>
-                        <Button type="submit">Suchen</Button>
-                    </div>
+                <BForm.Group as={Col}>
+                    <Button type="submit" className="btn-block">Suchen</Button>
                 </BForm.Group>
             </Row>
         </Form>
@@ -85,38 +92,47 @@ function DoctorList() {
     const [, filteredDoctorList, , , removeDoctor] = useDoctorList();
 
     const renderTableData = () => {
+        console.log(filteredDoctorList)
         return filteredDoctorList.map((doctor) => {
-            const {email, office} = doctor;
+            const { email, office } = doctor;
             return (
                 <tr key={email}>
                     <td>{email}</td>
                     <td>{office}</td>
-                    <td><DeleteAction doctor={doctor} removeDoctor={removeDoctor}/></td>
+                    <td><DeleteAction doctor={doctor} removeDoctor={removeDoctor} /></td>
                 </tr>
             )
         })
     };
 
-    return (
-        <Table striped bordered hover size="sm">
-            <thead>
-            <tr>
-                <th>Email</th>
-                <th>Praxis</th>
-                <th>Aktionen</th>
-            </tr>
-            </thead>
-            <tbody>
-            {renderTableData()}
-            </tbody>
-        </Table>
-    )
+    if (filteredDoctorList && filteredDoctorList.length) {
+        return (
+            <Table striped bordered hover size="sm">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Praxis</th>
+                        <th>Aktionen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {renderTableData()}
+                </tbody>
+            </Table>
+        )
+    } else {
+        return (
+            <h1 className="display-5 mt-5 mb-3">Noch keine Ärzte eingetragen.</h1>
+        )
+
+    }
+
 }
 
 function DeleteAction(props) {
     const [show, setShow] = useState(false);
 
-    const {doctor, removeDoctor} = props;
+    const { doctor, removeDoctor } = props;
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -129,7 +145,7 @@ function DeleteAction(props) {
     return (
         <>
             <Button variant="danger" onClick={handleShow}>
-                <FaBan/>
+                <FaBan />
             </Button>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -147,21 +163,5 @@ function DeleteAction(props) {
                 </Modal.Footer>
             </Modal>
         </>
-    )
-}
-
-
-export function DoctorManager() {
-    return (
-        <Container>
-            <div className="border p-2 rounded">
-                <h1>Arzt hinzufügen</h1>
-                <p>Neuen Arzt hinzufügen oder Zugriff von bereits hinzugefügten Ärzten entziehen.</p>
-                <AddDoctor/>
-                <FilterDoctor/>
-                <DoctorList/>
-            </div>
-        </Container>
-
     )
 }

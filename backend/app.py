@@ -5,6 +5,7 @@ from queries.slots import get_slots_by_time
 from queries.doctor import toggle_doctor_by_id, get_doctors, add_doctor
 from queries.daystats import get_slot_stats
 from queries.case import add_case, get_cases, get_comm_history, add_comm_history, get_case_and_patient, get_case_by_id, update_case_by_id, delete_case_by_id
+from queries.user import get_user_by_email
 from db.setupDb import Patient, Address
 from notification.mail import send_mail
 import os
@@ -22,12 +23,16 @@ Session = sessionmaker()
 Session.configure(bind=engine)
 querySession = Session()
 
+@app.route("/api-internal/me", methods=['GET'])
+def manage_user():
+    loggedIn = session["loggedIn"] if "loggedIn" in session else False
 
-@app.route("/")
-def welcome():
-    val = session["hello"] if "hello" in session else ""
-    session["hello"] = "world"
-    return jsonify(msg=val)
+    if loggedIn is True:
+        user_email = session["email"]
+        display_name, role = get_user_by_email(querySession, email=user_email)
+        return {"loggedIn": True, "displayName": display_name, "role": role}
+    else:
+        return {"loggedIn": False}
 
 @app.route("/api-internal/cases/<id>/notify", methods=['GET', 'POST'])
 def notify_case(id):
