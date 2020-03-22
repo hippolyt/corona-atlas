@@ -3,7 +3,32 @@ import './BookingFlow.css'
 import { Form as BForm, Button, Col, Container, Row } from 'react-bootstrap'
 import Calendar from 'react-calendar'
 import { Form, TextInput } from './form'
-import { useStage, useSlotDate } from '../flows/book'
+import { useStage, useSlotDate, useBookingState, useSlotId, usePreviousStage } from '../flows/book'
+
+function BackButton() {
+    const { canGoBack, back } = useStage()
+
+    if (!canGoBack) {
+        return <></>
+    }
+
+    return (
+        <Button onClick={() => back()} className="mr-2" variant="warning">
+            Zurück
+        </Button>
+    )
+}
+
+function NextButton(props) {
+    const { enabled } = props
+    const { next } = useStage()
+
+    return (
+        <Button disabled={!enabled} variant="primary" onClick={() => next()}>
+            Weiter
+        </Button>
+    )
+}
 
 function PatientInformationForm() {
     const years = new Array(100)
@@ -36,7 +61,7 @@ function PatientInformationForm() {
     return (
         <>
             <h1>Patientendaten </h1>
-            <Form>
+            <BForm>
                 <Row>
                     <BForm.Group as={Col} controlId="name">
                         <BForm.Label>Name</BForm.Label>
@@ -87,11 +112,9 @@ function PatientInformationForm() {
                     </BForm.Group>
                 </Row>
                 <div className="text-right">
-                    <Button variant="primary" type="submit">
-                        Weiter
-            </Button>
+                    <NextButton enabled={true} />
                 </div>
-            </Form >
+            </BForm >
         </>
     )
 }
@@ -100,8 +123,6 @@ function SlotSelector(props) {
     const { slots } = props
 
     const dayIdx = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
-
-
 
     const content = slots.map((d, i) => {
 
@@ -180,61 +201,161 @@ function DatePicker() {
     )
 }
 
+function formatDateAsHourFace(date) {
+    let res = ""
+
+    const hours = date.getHours()
+    const min = date.getMinutes()
+
+    if (hours < 10) {
+        res = res + "0"
+    }
+    res = res + hours + ":"
+
+    if (min < 10) {
+        res = res + "0"
+    }
+    res = res + min
+
+    return res + " h"
+}
+
+function TimeSlot(props) {
+    const { time, capacity, booked, selected, onSelect } = props
+
+    const label = formatDateAsHourFace(time)
+
+    const contentStyle = {
+        borderStyle: "solid",
+        ...(selected ? {
+            borderColor: "rgb(0,136,238)",
+            borderWidth: "5px",
+            marginLeft: "0",
+            padding: "0"
+        } : {
+                borderColor: "black",
+                borderColor: "black",
+                borderWidth: "1px",
+                marginLeft: "60px",
+                padding: "4px 0 0 4px"
+            }),
+    }
+
+    const selectorStyle = {
+        display: selected ? "inline-block" : "none"
+    }
+
+    return (
+        <div className="tslot-container">
+            <div style={selectorStyle} className="tslot-selector">
+                <h1>&#10003;</h1>
+            </div>
+            <div style={contentStyle} onClick={() => onSelect()} className="tslot-content">
+                <h1>{label}</h1>
+                <p className="tslot-stats">{booked}/{capacity}</p>
+                <p className="tslot-label">Termine<br />vergeben</p>
+            </div>
+        </div>
+    )
+}
+
 function TimeSelectionDialog() {
+    const [slotId, setSlotId] = useSlotId()
+
+    const [slotDate] = useSlotDate()
+
     const timeSlots = [
         {
-            name: "08 - 09"
+            time: new Date("2020-03-22T08:00"),
+            slotId: 1,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "09 - 10"
+            time: new Date("2020-03-22T09:00"),
+            slotId: 2,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "10 - 11"
+            time: new Date("2020-03-22T10:00"),
+            slotId: 3,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "11 - 12"
+            time: new Date("2020-03-22T11:00"),
+            slotId: 4,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "12 - 13"
+            time: new Date("2020-03-22T12:00"),
+            slotId: 5,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "13 - 14"
+            time: new Date("2020-03-22T13:00"),
+            slotId: 6,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "14 - 15"
+            time: new Date("2020-03-22T14:00"),
+            slotId: 7,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "16 - 17"
+            time: new Date("2020-03-22T15:00"),
+            slotId: 8,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "17 - 18"
+            time: new Date("2020-03-22T16:00"),
+            slotId: 9,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "18 - 19"
+            time: new Date("2020-03-22T17:00"),
+            slotId: 10,
+            capacity: 10,
+            booked: 2,
         },
         {
-            name: "19 - 20"
+            time: new Date("2020-03-22T18:00"),
+            slotId: 11,
+            capacity: 10,
+            booked: 2,
         },
-    ]
+    ].map(s => ({
+        ...s,
+        selected: s.slotId === slotId
+    }))
 
     return (
         <>
             <h1>Zeitslot</h1>
+            <p>{slotDate.toString()}</p>
             <ul className="time-pick">
                 {timeSlots.map((d, i) => (
-                    <li key={d.name} className={"short-day-pick-v " + (d.selected ? "short-day-pick-selected" : "")} style={i === 0 ? { "borderLeft": "solid 1px" } : {}}>{d.name}</li>
+                    <TimeSlot key={d.slotId} selected={d.selected} onSelect={() => setSlotId(d.slotId)} time={d.time} capacity={d.capacity} booked={d.booked} />
                 ))}
             </ul>
             <div className="text-right">
-                <Button variant="primary" type="submit">
-                    Weiter
-            </Button>
+                <BackButton />
+                <NextButton enabled={slotId !== null} />
             </div>
         </>
     )
 }
 
-function DaySelectionDialog() {
+function DaySelectionDialog(props) {
+    const { next } = useStage()
+
     const [slotDate, setSlotDate] = useSlotDate()
 
     const shortSelection = [
@@ -295,9 +416,8 @@ function DaySelectionDialog() {
             {cal}
 
             <div className="text-right">
-                <Button variant="primary" type="submit">
-                    Weiter
-            </Button>
+                <BackButton />
+                <NextButton enabled={slotDate !== null} />
             </div>
         </>
     )
@@ -369,8 +489,7 @@ function CompletionDialog() {
 
 
 export function BookingFlow() {
-    const [stage, setStage] = useStage()
-
+    const { stage } = useStage()
 
     let view
     switch (stage) {
@@ -380,7 +499,6 @@ export function BookingFlow() {
         case "SLOT_SELECTION":
             view = <TimeSelectionDialog />
             break
-
         case "PATIENT_DATA":
             view = <PatientInformationForm />
             break

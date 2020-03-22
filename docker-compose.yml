@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+  nginx:
+    build: ./frontend
+    container_name: nginx
+    ports:
+      - "80:80" # only for nginx redirect to 443
+      - "443:443" # webapp over tls
+    networks:
+      - corona-net
+    command: "nginx -g 'daemon off;'"
+    depends_on:
+      - corona-atlas-backend
+    volumes:
+      - type: bind # certificate renewal doesn't require rebuilding the image
+        source: /etc/letsencrypt
+        target: /etc/letsencrypt
+    restart: unless-stopped
+  corona-atlas-backend:
+    build: ./backend
+    container_name: corona-atlas-backend
+    networks:
+      corona-net:
+        aliases:
+          - backend
+    environment:
+      - SESSION_SECRET_KEY=${SESSION_SECRET_KEY} # used to encrypt session cookies
+    volumes:
+      - type: volume
+        source: corona_volume
+        target: /db
+    restart: unless-stopped
+networks:
+  corona-net:
+volumes:
+  corona_volume:
+
