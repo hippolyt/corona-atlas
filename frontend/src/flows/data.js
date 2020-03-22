@@ -34,10 +34,13 @@ export function useSlotPatients(id) {
     ]]
 }
 
-
-
 export function useMe() {
-    const { data } = useQuery('me', fetchMe)
+    const { status, data } = useQuery('me', fetchMe)
+
+    if (status !== 'success')
+        return {
+            loggedIn: false
+        }
 
     return data
 }
