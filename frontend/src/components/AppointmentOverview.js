@@ -187,15 +187,16 @@ function CommunicationHistory(props) {
     var items = []
 
     for (const [index, value] of dummyData.entries()) {
-        items.push(<Card key={index} className="mb-3">
-            <Card.Header as="h5">{value.comm_type + "-Reminder"}</Card.Header>
-            <Card.Body>
-                <Card.Title>Gesendet um: {value.timestamp}</Card.Title>
-                <Card.Text>
-                    Dieser Patient ist benachrichtigt worden per: <b>{value.comm_type}</b>.
+        items.push(
+            <Card key={index} className="mb-3">
+                <Card.Header as="h5">{value.comm_type + "-Reminder"}</Card.Header>
+                <Card.Body>
+                    <Card.Title>Gesendet um: {value.timestamp}</Card.Title>
+                    <Card.Text>
+                        Dieser Patient ist benachrichtigt worden per: <b>{value.comm_type}</b>.
                 </Card.Text>
-            </Card.Body>
-        </Card>)
+                </Card.Body>
+            </Card>)
     }
     return (
         <div className="col mb-3">

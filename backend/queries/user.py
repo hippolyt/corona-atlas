@@ -65,3 +65,11 @@ def hash(pwd, salt):
     pwd_hashed.update(salt.encode())
 
     return pwd_hashed.digest()
+
+def add_user(session, display_name, email, role, doctor_id=None, testcenter_id=None):
+    user = User(display_name=display_name, email=email, role=role, doctor_id=doctor_id, testcenter_id=testcenter_id)
+    session.add(user)
+    session.commit()
+    
+
+
