@@ -100,10 +100,21 @@ function PatientInformationForm() {
         next()
     }
 
+    const p = {
+        name: "Maier",
+        givenName: "Lukas",
+        email: "lukas@maier.de",
+        birthDay: "1",
+        birthMonth: "8",
+        birthYear: "1962",
+        mobileNumber: "+49 123 45687",
+        phoneNumber: "+49 936 09465",
+    }
+
     return (
         <>
             <h1>Patientendaten </h1>
-            <Form onSubmit={onSubmit}>
+            <Form initialValues={p} onSubmit={onSubmit}>
                 <Row>
                     <BForm.Group as={Col} controlId="name">
                         <BForm.Label>Name</BForm.Label>
@@ -442,22 +453,16 @@ function DaySelectionDialog(props) {
 
     const shortSelection = [
         {
-            name: "Heute",
-            value: new Date('2020-03-21'),
-            capacity: 50,
-            booked: 45
-        },
-        {
             name: "So",
             value: new Date('2020-03-22'),
             capacity: 50,
-            booked: 40
+            booked: 45
         },
         {
             name: "Mo",
             value: new Date('2020-03-23'),
             capacity: 50,
-            booked: 5
+            booked: 40
         },
         {
             name: "Di",
@@ -468,6 +473,12 @@ function DaySelectionDialog(props) {
         {
             name: "Mi",
             value: new Date('2020-03-25'),
+            capacity: 50,
+            booked: 0
+        },
+        {
+            name: "Mi",
+            value: new Date('2020-03-26'),
             capacity: 50,
             booked: 0
         },
