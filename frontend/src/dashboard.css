@@ -62,3 +62,10 @@
     opacity: 1;
     transition: 0s
   }
+
+  .btn-xl {
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    width:22%;
+}
