@@ -11,5 +11,5 @@ RUN npm run build
 FROM nginx:1.17.9-alpine
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html
 # Copy server config
-COPY ./config-nginx/corona-atlas.conf /etc/nginx/conf.d/corona-atlas.conf
+COPY ./config-nginx/corona-atlas.conf /nginx.conf.template
 COPY ./config-nginx/nginx.conf /etc/nginx/nginx.conf
