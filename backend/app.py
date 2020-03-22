@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from queries.slots import get_slots_by_time
 from queries.doctor import disable_doctor_by_id, get_doctors, add_doctor
 from queries.daystats import get_slot_stats
+from notification.mail import send_mail
 import os
 
 app = Flask(__name__)
@@ -36,6 +37,21 @@ def get_cases():
     limit = request.args.get('limit', '')
     search = request.args.get('search', '')
     # WIP
+
+@app.route("/api-internal/cases/<id>/notify", methods=['GET', 'POST'])
+def notify_case(id):
+    type = request.args.get('type', '')
+    case_id = id
+
+    if request.method == 'GET':
+        return "not implemented"
+    elif request.method == 'POST':
+        status = send_mail("vollmer.bruno@googlemail.com", "test")
+
+        return_msg = {}
+        return_msg['status'] = status
+
+        return jsonify(msg=return_msg)
 
 
 @app.route("/api-internal/slots", methods=['GET'])
