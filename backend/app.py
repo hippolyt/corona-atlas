@@ -5,7 +5,7 @@ from queries.slots import get_slots_by_time
 from queries.doctor import toggle_doctor_by_id, get_doctors, add_doctor
 from queries.daystats import get_slot_stats
 from queries.case import add_case, get_cases, get_comm_history, add_comm_history, get_case_and_patient, get_case_by_id, update_case_by_id, delete_case_by_id
-from queries.user import get_user_by_email
+from queries.user import get_user_by_email, create_new_credentials, verify_user
 from db.setupDb import Patient, Address
 from notification.mail import send_mail
 import os
@@ -33,6 +33,30 @@ def manage_user():
         return {"loggedIn": True, "displayName": display_name, "role": role}
     else:
         return {"loggedIn": False}
+
+@app.route("/auth/login",methods=['GET','POST'])
+def manage_login():
+    if request.method == 'POST':
+        data = request.get_json()
+        email = data['email']
+        res = create_new_credentials(querySession, email)
+        if res:
+            return '200'
+        else:
+            return '40'
+
+    if request.method == 'GET':
+        token = request.args.get('token')
+        email = request.args.get('email')
+        res = verify_user(querySession, token, email)
+        if res:
+            session['loggedIn'] = True
+            session['email'] = email
+            return '200'
+        else:
+            return '401'
+
+
 
 @app.route("/api-internal/cases/<id>/notify", methods=['GET', 'POST'])
 def notify_case(id):

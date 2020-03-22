@@ -16,7 +16,7 @@ class Patient(Base):
     __tablename__ = 'patient'
     id = Column(Integer, Sequence('patient_id_seq'), primary_key=True)
     name = Column('name', String(60))
-    email = Column('email', String(30))
+    email = Column('email', String(100))
     address_id = Column(Integer, ForeignKey('address.id'))
     address = relationship("Address")
     phone = Column('phone', String(30))
@@ -49,7 +49,7 @@ class Doctor(Base):
     __tablename__ = 'doctor'
     id = Column(Integer, Sequence('doctor_id_seq'), primary_key=True)
     name = Column('name', String(60))
-    email = Column('email', String(30))
+    email = Column('email', String(100))
     has_access = Column('has_access', Boolean)
 
     def to_json(self):
@@ -61,7 +61,7 @@ class Testcenter(Base):
     __tablename__ = 'testcenter'
     id = Column(Integer, Sequence('testcenter_id_seq'), primary_key=True)
     name = Column('name', String(60))
-    email = Column('email', String(30))
+    email = Column('email', String(100))
     address_id = Column(Integer, ForeignKey('address.id'))
     address = relationship("Address")
     phone = Column('phone', String(30))
@@ -129,7 +129,7 @@ class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
     display_name = Column('display_name', String(60))
-    email = Column('email', String(30), unique=True)
+    email = Column('email', String(100), unique=True)
     role = Column('role', String(20))
     doctor_id = Column(Integer, ForeignKey('doctor.id'))
     doctor = relationship("Doctor")
