@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, session, request
+from flask import Flask, jsonify, session, request, abort, redirect
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
 from queries.slots import get_slots_by_time
@@ -23,6 +23,8 @@ Session = sessionmaker()
 Session.configure(bind=engine)
 querySession = Session()
 
+domain = os.environ['DOMAIN']
+
 @app.route("/api-internal/me", methods=['GET'])
 def manage_user():
     loggedIn = session["loggedIn"] if "loggedIn" in session else False
@@ -43,7 +45,7 @@ def manage_login():
         if res:
             return '200'
         else:
-            return '40'
+            abort(403)
 
     if request.method == 'GET':
         token = request.args.get('token')
@@ -52,11 +54,15 @@ def manage_login():
         if res:
             session['loggedIn'] = True
             session['email'] = email
-            return '200'
+            return redirect('' + domain+'/')
         else:
-            return '401'
+            abort(401)
 
-
+@app.route("/auth/logout", methods=['GET'])
+def manage_logout():
+    session.pop('loggedIn')
+    session.pop('email')
+    return redirect(''+domain+'/')
 
 @app.route("/api-internal/cases/<id>/notify", methods=['GET', 'POST'])
 def notify_case(id):

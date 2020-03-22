@@ -21,7 +21,6 @@ def create_new_credentials(session, email):
         session.commit()
         # send mail with link
         domain = os.environ['DOMAIN']
-        domain = 'http://localhost:5000'
         link = ''+domain+'/auth/login?token='+str(pwd)+'&email='+email
         res = send_mail(email, "Hier ist ihr einmaliger Login-Link. \n " + link, subject="Login zu Cotip")
         if not res:
@@ -32,14 +31,20 @@ def create_new_credentials(session, email):
 def verify_user(session, token, email):
     user = session.query(User).filter_by(email=email).first()
     if datetime.datetime.now() > user.logon_pwd_valid_thru:
-        print("Here")
         return False
     token_uuid = uuid.UUID(token)
     
     hashed_token = hash(token_uuid, user.logon_pwd_salt)
     hashed_pwd = user.logon_pwd_hash
 
+    if hashed_pwd == '':
+        return False
+
     if hashed_token.hex() == hashed_pwd[2:]:
+        user.logon_pwd_hash = ''
+        user.logon_pwd_salt = ''
+        user.logon_pwd_valid_thru = None
+        session.commit()
         return True
     else:
         return False
