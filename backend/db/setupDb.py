@@ -125,4 +125,21 @@ class CommsHistory(Base):
     def to_json(self):
         return {"id": self.id, "timestamp": self.timestamp, "comm_type": self.comm_type}
 
+class User(Base):
+    __tablename__ = 'user'
+    id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
+    display_name = Column('display_name', String(60))
+    email = Column('email', String(60), unique=True),
+    doctor_id = Column(Integer, ForeignKey('doctor.id'))
+    doctor = relationship("Doctor")
+    testcenter_id = Column(Integer, ForeignKey('testcenter.id'))
+    testcenter = relationship("Testcenter")
+    logon_pwd_hash = Column('logon_pwd_hash', String(200))
+    logon_pwd_salt = Column('logon_pwd_salt', String(200))
+    logon_pwd_valid_thru = Column('logon_pwd_valid_thru', DateTime)
+
+    def to_json(self):
+        return {"id": self.id, "display_name": self.display_name, "logon_pwd_hash": self.logon_pwd_hash, "logon_pwd_salt": self.logon_pwd_salt, "logon_pwd_valid_thru": self.logon_pwd_valid_thru}
+
+
 meta.create_all(bind=engine)
