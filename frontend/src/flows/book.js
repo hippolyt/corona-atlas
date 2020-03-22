@@ -57,15 +57,78 @@ export function usePatient() {
     return [patient, setPatient]
 }
 
+function changeStage(state, stage) {
+    let { history } = state
+
+    if (state.stage !== stage) {
+        if (!history)
+            history = []
+
+        history.push(state.stage)
+    }
+
+    return {
+        ...state,
+        stage,
+        history
+    }
+}
+
 export function useStage() {
     const [state, setState] = useBookingState()
-    const { stage } = state
+    const { stage, history } = state
 
     const setStage = (stage) =>
-        setState(old => ({
-            ...old,
-            stage
-        }))
+        setState(old => changeStage(old, stage))
 
-    return [stage, setStage]
+    const back = () =>
+        setState(old => {
+            const { history } = old
+            if (!history || history.length < 1) {
+                return old
+            }
+
+            return {
+                ...old,
+                stage: history.pop(),
+                history
+            }
+        })
+
+    const next = () =>
+        setState(old => {
+            const { stage, slotId, patient } = old
+
+            let nextStage = "DAY_SELECTION"
+            switch (stage) {
+                case "DAY_SELECTION":
+                    if (!slotId) {
+                        nextStage = "SLOT_SELECTION"
+                        break
+                    }
+                case "SLOT_SELECTION":
+                    if (!patient) {
+                        nextStage = "PATIENT_DATA"
+                        break
+                    }
+                case "PATIENT_DATA":
+                    nextStage = "SUMMARY"
+                    break
+                case "SUMMARY":
+
+                    break
+                case "COMPLETED":
+
+
+                    break
+            }
+
+            return changeStage(old, nextStage)
+        })
+
+
+
+    const canGoBack = history && history.length > 0 ? true : false
+
+    return { stage, setStage, back, canGoBack, next }
 }

@@ -1,10 +1,7 @@
 import React from 'react'
 import './App.css'
-import { Navbar, Nav, NavDropdown, FormControl, Form as BForm, Button, Col, Container, Row } from 'react-bootstrap'
-import Calendar from 'react-calendar'
-import { Form, TextInput } from './components/form'
+import { Navbar, Nav, Col, Container, Row } from 'react-bootstrap'
 import { BookingFlow } from './components/BookingFlow'
-
 
 function App() {
   return (
