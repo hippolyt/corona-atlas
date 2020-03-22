@@ -70,3 +70,56 @@
 .time-pick {
     list-style: none;
 }
+
+
+
+
+.tslot-container {
+    margin-bottom: 10px;
+    height: 60px;
+    width: 380px;
+}
+
+.tslot-selector {
+    background-color: rgb(0,136,238);
+    height: 100%;
+    width: 60px;
+    vertical-align: bottom;
+    text-align: center;
+    color: white;
+    padding-top: 1%;
+    border-radius: 10px 0 0 10px;
+}
+
+.tslot-content {
+    width: 300px;
+    height: 100%;
+    display: inline-block;
+    vertical-align: bottom;
+    border: solid 1px;
+}
+
+.tslot-content * {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.tslot-content > h1 {
+    margin-left: 15px;
+    margin-top: 10px;
+    font-size: 1.5em;
+}
+
+.tslot-stats {
+    width: 40px;
+    text-align: center;
+    margin-top: 12px;
+    margin-left: 40px;
+}
+
+.tslot-label {
+    text-align: center;
+    line-height: 1;
+    margin-top: 8px;
+    margin-left: 35px;
+}
