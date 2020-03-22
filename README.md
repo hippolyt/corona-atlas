@@ -13,7 +13,7 @@ POSTGRES_DB=corona_atlas
 DB_CREATION_CREDS=postgres://postgres:YOUR_CREDENTIALS@db:5432/corona_atlas
 DB_READ_CREDS=postgres://postgres:YOUR_CREDENTIALS@db:5432/corona_atlas
 DOMAIN=... # Your domain (e.g. www.cotip.de)
-CERTIFICATE_PATH=... # Path to your certificates, e.g. /etc/letsencrypt/live/..
+CERTIFICATE_PATH=... # Path to your certificates, e.g. /etc/letsencrypt/live/www.cotip.de
 ```
 
 To start the container in detached mode, simply run from within the `corona-atlas` directory.
