@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from queries.slots import get_slots_by_time
 from queries.doctor import toggle_doctor_by_id, get_doctors, add_doctor
 from queries.daystats import get_slot_stats
-from queries.case import add_case, get_cases, get_comm_history, add_comm_history, get_case_and_patient
+from queries.case import add_case, get_cases, get_comm_history, add_comm_history, get_case_and_patient, get_case_by_id, update_case_by_id, delete_case_by_id
 from db.setupDb import Patient, Address
 from notification.mail import send_mail
 import os
@@ -104,6 +104,21 @@ def map_doctors():
         res = add_doctor(querySession, name, email, access)
         return jsonify(res)
 
+
+@app.route("/api-internal/cases/<id>", methods=['GET','PATCH', 'DELETE'])
+def handle_case(id):
+    if request.method == 'GET':
+        res = get_case_by_id(querySession, id)
+        return res
+
+    if request.method == 'PATCH':
+        data = request.json
+        res = update_case_by_id(querySession, id, data)
+        return res
+
+    if request.method == 'DELETE':
+        delete_case_by_id(querySession, id)
+        return '200'
 
 @app.route("/api-internal/cases", methods=['GET', 'POST'])
 def map_cases():

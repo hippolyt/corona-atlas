@@ -22,6 +22,32 @@ def add_case(session, slot_id, doctor_id, testcenter_id, referral_type, patient,
 
     return case.to_json()
 
+def get_case_by_id(session, id):
+    case = session.query(Case).filter_by(id=id).first()
+    
+    return case.to_json()
+
+def update_case_by_id(session, id, params):
+    case = session.query(Case).filter_by(id=id).first()
+    if params.get('comment', '') != '':
+        case.comment = params.get('comment')
+    if params.get('slotId', '') != '':
+        case.slot_id = int(params.get('slotId'))
+    if params.get('contacted', '') != '':
+        case.contacted = params.get('contacted')
+    if params.get('tested', '') != '':
+        case.patient.tested = bool(params.get('tested'))
+    session.commit()
+    return case.to_json()
+
+def delete_case_by_id(session, id):
+    case = session.query(Case).filter_by(id=id).first()
+    patient = session.query(Patient).filter_by(id=case.patient_id).first()
+    session.delete(patient.address)
+    session.delete(case.patient)
+    session.delete(case)
+    session.commit()
+
 def get_cases(session, limit, search, closed,slot_id):
     cases = []
     if slot_id != 0:
