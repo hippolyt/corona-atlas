@@ -94,7 +94,6 @@
 .tslot-content {
     width: 300px;
     height: 100%;
-    background-color: rgb(0,195,27);
     display: inline-block;
     vertical-align: bottom;
     border: solid 1px;
