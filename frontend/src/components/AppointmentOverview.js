@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Button, Col, Container, Row } from 'react-bootstrap'
+import { Form, Button, Card, Container, Row } from 'react-bootstrap'
 import { PatientInformationForm } from './PatientInformationForm'
 import { VerticallyCenteredModal } from './VerticallyCenteredModal'
 
@@ -45,8 +45,8 @@ function MiddleRow() {
 function BottomRow() {
     return (
         <Row className="mb-4 mt-3">
-            <ManualCommunication></ManualCommunication>
             <CommunicationHistory></CommunicationHistory>
+            <ManualCommunication></ManualCommunication>
         </Row>
     )
 }
@@ -162,8 +162,8 @@ function ManualCommunication() {
         alert("Bald soll hier etwas passieren")
     }
     return (
-        <div className="col">
-            <h1>Manuelle Kommunikationsoptionen</h1>
+        <div className="col mb-3">
+            <h1 className="mb-3">Patient jetzt kontaktieren</h1>
             <Button onClick={() => setModalShow(true)} type="submit" className="btn-lg btn-block mb-3">Email-Reminder @ patientzero@gmail.com</Button>
             <Button onClick={() => setModalShow(true)} type="submit" className="btn-lg btn-block mb-3">Telefon-Reminder @ 123-456-789</Button>
             <VerticallyCenteredModal
@@ -178,11 +178,29 @@ function ManualCommunication() {
     )
 }
 
-function CommunicationHistory() {
-    return (
-        <div className="col">
-            <h1>Kommunikationshistorie</h1>
+function CommunicationHistory(props) {
+    var dummyData = [
+        { "id": 1, "timestamp": "09.09.2020; 18:30:23", "comm_type": "Email" },
+        { "id": 2, "timestamp": "09.09.2020; 14:34:32", "comm_type": "Robo" },
+        { "id": 3, "timestamp": "09.09.2020; 12:54:43", "comm_type": "Email" }
+    ]
+    var items = []
 
+    for (const [index, value] of dummyData.entries()) {
+        items.push(<Card key={index} className="mb-3">
+            <Card.Header as="h5">{value.comm_type + "-Reminder"}</Card.Header>
+            <Card.Body>
+                <Card.Title>Gesendet um: {value.timestamp}</Card.Title>
+                <Card.Text>
+                    Dieser Patient ist benachrichtigt worden per: <b>{value.comm_type}</b>.
+                </Card.Text>
+            </Card.Body>
+        </Card>)
+    }
+    return (
+        <div className="col mb-3">
+            <h1 className="mb-3">Kommunikationshistorie</h1>
+            {items}
         </div>
     )
 }
