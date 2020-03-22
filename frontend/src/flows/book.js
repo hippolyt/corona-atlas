@@ -5,6 +5,7 @@ export function initialState() {
         isLoading: false,
         slotId: null,
         slotDate: null,
+        slotPatients: null,
         patient: null,
         stage: "DAY_SELECTION",
     }
@@ -58,6 +59,19 @@ export function useSlotId() {
         }))
 
     return [slotId, setSlotId]
+}
+
+export function useSlotPatients() {
+    const [state, setState] = useBookingState()
+    const { slotPatients } = state
+
+    const setSlotPatients = (slotPatients) =>
+        setState(old => ({
+            ...old,
+            slotPatients
+        }))
+
+    return [slotPatients, setSlotPatients]
 }
 
 export function usePatient() {
@@ -121,6 +135,9 @@ export function useStage() {
                     nextStage = "SLOT_SELECTION"
                     break
                 case "SLOT_SELECTION":
+                    nextStage = "TIME_WINDOW"
+                    break
+                case "TIME_WINDOW":
                     nextStage = "PATIENT_DATA"
                     break
                 case "PATIENT_DATA":
