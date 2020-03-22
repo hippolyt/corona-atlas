@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import './BookingFlow.css'
-import {Button, Col, Form as BForm, Row} from 'react-bootstrap'
+import { Button, Col, Form as BForm, Row } from 'react-bootstrap'
 import Calendar from 'react-calendar'
-import {Form, SelectInput, TextInput} from './form'
+import { Form, SelectInput, TextInput } from './form'
 import {
     useBookAppointment,
     useBookingState,
@@ -12,13 +12,13 @@ import {
     useSlotId,
     useStage
 } from '../flows/book'
-import {Option} from 'informed'
-import {useSlot, useSlotPatients, useTestCenterAddress} from '../flows/data'
-import {VerticallyCenteredModal} from "./VerticallyCenteredModal";
-import {FaCheck} from "react-icons/all";
+import { Option } from 'informed'
+import { useSlot, useSlotPatients, useTestCenterAddress } from '../flows/data'
+import { VerticallyCenteredModal } from "./VerticallyCenteredModal";
+import { FaCheck } from "react-icons/all";
 
 function BackButton() {
-    const {canGoBack, back} = useStage()
+    const { canGoBack, back } = useStage()
 
     if (!canGoBack) {
         return <></>
@@ -32,8 +32,8 @@ function BackButton() {
 }
 
 function NextButton(props) {
-    const {enabled} = props
-    const {next} = useStage()
+    const { enabled } = props
+    const { next } = useStage()
 
     return (
         <Button disabled={!enabled} variant="primary" onClick={() => next()}>
@@ -50,7 +50,7 @@ function ResetButton() {
 
 function PatientInformationForm() {
     const [patient, setPatient] = usePatient()
-    const {next} = useStage()
+    const { next } = useStage()
 
     const years = new Array(100)
     for (let i = 0; i < 100; i++) {
@@ -128,17 +128,17 @@ function PatientInformationForm() {
                 <Row>
                     <BForm.Group as={Col} controlId="name">
                         <BForm.Label>Name</BForm.Label>
-                        <TextInput field="name"/>
+                        <TextInput field="name" />
                     </BForm.Group>
                     <BForm.Group as={Col} controlId="givenName">
                         <BForm.Label>Vorname</BForm.Label>
-                        <TextInput field="givenName"/>
+                        <TextInput field="givenName" />
                     </BForm.Group>
                 </Row>
                 <Row>
                     <BForm.Group as={Col} controlId="email">
                         <BForm.Label>Email</BForm.Label>
-                        <TextInput field="email"/>
+                        <TextInput field="email" />
                     </BForm.Group>
                 </Row>
                 <BForm.Group>
@@ -167,15 +167,15 @@ function PatientInformationForm() {
                 <Row>
                     <BForm.Group as={Col} controlId="givenName">
                         <BForm.Label>Handy</BForm.Label>
-                        <TextInput field="mobileNumber"/>
+                        <TextInput field="mobileNumber" />
                     </BForm.Group>
                     <BForm.Group as={Col} controlId="name">
                         <BForm.Label>Festnetz</BForm.Label>
-                        <TextInput field="phoneNumber"/>
+                        <TextInput field="phoneNumber" />
                     </BForm.Group>
                 </Row>
                 <div className="text-right">
-                    <BackButton/>
+                    <BackButton />
                     <Button type="submit">Weiter</Button>
                     {/* <NextButton enabled={true} /> */}
                 </div>
@@ -185,7 +185,7 @@ function PatientInformationForm() {
 }
 
 function SlotSelector(props) {
-    const {slots} = props
+    const { slots } = props
 
     const dayIdx = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
     let aSlotIsSelected = false
@@ -217,14 +217,14 @@ function SlotSelector(props) {
                 borderLeftWidth: "5px",
                 paddingTop: "0px",
             } : {
-                borderColor: "black",
-                borderRightWidth: "1px",
-                borderTopWidth: "1px",
-                borderBottomWidth: "1px",
-                borderLeftWidth: i === 0 ? "1px" : "0",
-                paddingTop: "4px",
+                    borderColor: "black",
+                    borderRightWidth: "1px",
+                    borderTopWidth: "1px",
+                    borderBottomWidth: "1px",
+                    borderLeftWidth: i === 0 ? "1px" : "0",
+                    paddingTop: "4px",
 
-            }),
+                }),
 
         }
 
@@ -246,12 +246,12 @@ function SlotSelector(props) {
                 >
                     <h1>{d.value.getDate()}.</h1>
                     {dayIdx[d.value.getDay()]}
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                     <p>{d.booked}/{d.capacity}</p>
-                    <p>Termine<br/>vergeben</p>
+                    <p>Termine<br />vergeben</p>
                 </div>
             </div>
         )
@@ -272,7 +272,7 @@ function SlotSelector(props) {
 function DatePicker() {
     return (
         <div className="m-auto calendar-container">
-            <Calendar/>
+            <Calendar />
         </div>
     )
 }
@@ -322,7 +322,7 @@ function formatDateAsReadableDisplay(date, includeTime = false) {
 }
 
 function TimeSlot(props) {
-    const {time, capacity, booked, selected, onSelect} = props
+    const { time, capacity, booked, selected, onSelect } = props
 
     const label = formatDateAsHourFace(time)
 
@@ -346,12 +346,12 @@ function TimeSlot(props) {
             marginLeft: "0",
             padding: "0"
         } : {
-            borderColor: "black",
-            borderColor: "black",
-            borderWidth: "1px",
-            marginLeft: "60px",
-            padding: "4px 0 0 4px"
-        }),
+                borderColor: "black",
+                borderColor: "black",
+                borderWidth: "1px",
+                marginLeft: "60px",
+                padding: "4px 0 0 4px"
+            }),
     }
 
     const selectorStyle = {
@@ -366,7 +366,7 @@ function TimeSlot(props) {
             <div style={contentStyle} onClick={() => onSelect()} className="tslot-content">
                 <h1>{label}</h1>
                 <p className="tslot-stats">{booked}/{capacity}</p>
-                <p className="tslot-label">Termine<br/>vergeben</p>
+                <p className="tslot-label">Termine<br />vergeben</p>
             </div>
         </div>
     )
@@ -449,19 +449,19 @@ function TimeSelectionDialog() {
             <ul className="time-pick">
                 {timeSlots.map((d, i) => (
                     <TimeSlot key={d.slotId} selected={d.selected} onSelect={() => setSlotId(d.slotId)} time={d.time}
-                              capacity={d.capacity} booked={d.booked}/>
+                        capacity={d.capacity} booked={d.booked} />
                 ))}
             </ul>
             <div className="text-right">
-                <BackButton/>
-                <NextButton enabled={slotId !== null}/>
+                <BackButton />
+                <NextButton enabled={slotId !== null} />
             </div>
         </>
     )
 }
 
 function PatientRow(props) {
-    const {name, bookingId, isTested, onSelect, selected} = props
+    const { name, bookingId, isTested, onSelect, selected } = props
 
 
     const contentStyle = {
@@ -472,11 +472,11 @@ function PatientRow(props) {
             marginLeft: "0",
             padding: "0"
         } : {
-            borderColor: "black",
-            borderWidth: "1px",
-            marginLeft: "60px",
-            padding: "4px 0 0 4px"
-        }),
+                borderColor: "black",
+                borderWidth: "1px",
+                marginLeft: "60px",
+                padding: "4px 0 0 4px"
+            }),
     }
 
     const selectorStyle = {
@@ -504,7 +504,7 @@ function PatientRow(props) {
                     setModalShow(true)
                 }} className={tested ? "patient tested" : "patient untested"}>
                     <div className="patient-icon">
-                        {tested ? <FaCheck/> : <></>}
+                        {tested ? <FaCheck /> : <></>}
                     </div>
                 </div>
             </div>
@@ -521,13 +521,13 @@ function PatientRow(props) {
     )
 }
 
-function TimeWindowDialog() {
+export function TimeWindowDialog() {
     const [slotId] = useSlotId()
     const [slot] = useSlot(slotId)
     const [selectedPatient, setPatient] = usePatient()
     const [rawPatients] = useSlotPatients(slotId)
 
-    const patients = rawPatients.map(p => ({...p, selected: selectedPatient !== null ? p.id === selectedPatient.id : false}));
+    const patients = rawPatients.map(p => ({ ...p, selected: selectedPatient !== null ? p.id === selectedPatient.id : false }));
 
     return (
         <>
@@ -535,12 +535,12 @@ function TimeWindowDialog() {
             <h2 className="mb-4 text-center"><u>{formatDateAsReadableDisplay(slot.time, true)}</u></h2>
             <ul className="patient-list">
                 {patients.map((p, i) => (
-                    <PatientRow key={p.id} selected={p.selected} onSelect={() => setPatient(p)} name={p.name} bookingId={p.id} isTested={p.tested}/>
+                    <PatientRow key={p.id} selected={p.selected} onSelect={() => setPatient(p)} name={p.name} bookingId={p.id} isTested={p.tested} />
                 ))}
             </ul>
             <div className="text-right">
-                <BackButton/>
-                <NextButton enabled={selectedPatient !== null}/>
+                <BackButton />
+                <NextButton enabled={selectedPatient !== null} />
             </div>
         </>
     )
@@ -548,6 +548,9 @@ function TimeWindowDialog() {
 
 function DaySelectionDialog(props) {
     const [slotDate, setSlotDate] = useSlotDate()
+    // const { data, loading } = useDaystats()
+
+    // console.log(data)
 
     const shortSelection = [
         {
@@ -594,7 +597,7 @@ function DaySelectionDialog(props) {
     const cal = !showCal ? null : (
         <>
             <h6>oder clicking Sie auf ein Datum im Kalender</h6>
-            <DatePicker/>
+            <DatePicker />
         </>
     )
 
@@ -602,15 +605,15 @@ function DaySelectionDialog(props) {
         <>
             <h1>Termin</h1>
             <h6>Wählen Sie einen Tag aus</h6>
-            <SlotSelector slots={shortSelection}/>
+            <SlotSelector slots={shortSelection} />
 
             {/* <span onClick={() => { setShowCal(!showCal) }}>{showCal ? <>&#9660;</> : <>&#9654;</>}</span>weitere optionen
 
             {cal} */}
 
             <div className="text-right">
-                <BackButton/>
-                <NextButton enabled={slotDate !== null}/>
+                <BackButton />
+                <NextButton enabled={slotDate !== null} />
             </div>
         </>
     )
@@ -678,7 +681,7 @@ function BookingSummary() {
             </dl>
 
             <div className="text-right">
-                <ResetButton/>
+                <ResetButton />
                 <Button onClick={() => book()} variant="danger">Buchen</Button>
             </div>
         </>
@@ -743,32 +746,29 @@ export function LoadingScreen() {
 }
 
 export function BookingFlow() {
-    const {stage} = useStage()
+    const { stage } = useStage()
     const [isLoading] = useIsLoading()
 
 
     let view
     if (isLoading) {
-        view = <LoadingScreen/>
+        view = <LoadingScreen />
     } else {
         switch (stage) {
             case "DAY_SELECTION":
-                view = <DaySelectionDialog/>
+                view = <DaySelectionDialog />
                 break
             case "SLOT_SELECTION":
-                view = <TimeSelectionDialog/>
-                break
-            case "TIME_WINDOW":
-                view = <TimeWindowDialog/>
+                view = <TimeSelectionDialog />
                 break
             case "PATIENT_DATA":
-                view = <PatientInformationForm/>
+                view = <PatientInformationForm />
                 break
             case "SUMMARY":
-                view = <BookingSummary/>
+                view = <BookingSummary />
                 break
             case "COMPLETED":
-                view = <BookingConfirmationDialog/>
+                view = <BookingConfirmationDialog />
                 break
         }
     }

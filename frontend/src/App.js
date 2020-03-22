@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { Navbar, Nav, Col, Container, Row } from 'react-bootstrap'
-import { BookingFlow } from './components/BookingFlow'
+import { BookingFlow, TimeWindowDialog } from './components/BookingFlow'
 import { AppointmentOverview } from './components/AppointmentOverview'
 import { DoctorManager } from "./components/DoctorManager";
 import { useMe } from './flows/data'
@@ -27,6 +27,14 @@ function LoginLogoutButton() {
   }
 }
 
+function TimeWindowPage() {
+  return (
+    <div className="border p-2 rounded">
+      <TimeWindowDialog />
+    </div>
+  )
+}
+
 function App() {
   return (
     <Router>
@@ -50,6 +58,9 @@ function App() {
           </Route>
           <Route path="/testcenter">
             <AppointmentOverview />
+          </Route>
+          <Route path="/cases">
+            <TimeWindowPage />
           </Route>
           <Route path="/">
             <LoginDialog />

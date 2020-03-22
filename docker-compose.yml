@@ -30,6 +30,9 @@ services:
       - SESSION_SECRET_KEY=${SESSION_SECRET_KEY} # used to encrypt session cookies
       - DB_CREATION_CREDS=${DB_CREATION_CREDS}
       - DB_READ_CREDS=${DB_READ_CREDS}
+      - AWS_ID=${AWS_ID}
+      - AWS_KEY=${AWS_KEY}
+      - BASE_URL=${BASE_URL}
     depends_on:
       - corona-atlas-database
     restart: unless-stopped

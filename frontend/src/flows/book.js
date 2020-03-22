@@ -136,9 +136,6 @@ export function useStage() {
                     nextStage = "SLOT_SELECTION"
                     break
                 case "SLOT_SELECTION":
-                    nextStage = "TIME_WINDOW"
-                    break
-                case "TIME_WINDOW":
                     nextStage = "PATIENT_DATA"
                     break
                 case "PATIENT_DATA":
@@ -190,14 +187,14 @@ export function useBookAppointment() {
     return [book]
 }
 
-function useDaystats(start, end) {
-    const { status, data } = useQuery(["daystats", start.toString(), end.toString()], fetchDaystats(start, end))
+// export function useDaystats(start, end) {
+//     const { status, data } = useQuery(["daystats", start.toISOString(), end.toISOString()], fetchDaystats(start, end))
 
-    return { status, data }
-}
+//     return { status, data }
+// }
 
-function fetchDaystats(start, end) {
-    return () => {
-
-    }
-}
+// function fetchDaystats(start, end) {
+//     return () => {
+//         return fetch(`/api-internal/daystats?from=${start.toISOString()}&to=${end.toISOString()}`).then(r => r.json())
+//     }
+// }
