@@ -2,6 +2,7 @@
 FROM node:13.10.1-stretch as build-deps
 WORKDIR /usr/src/app
 COPY package.json ./
+COPY package-lock.json ./
 RUN npm i
 COPY . ./
 # Next build using create-react-app
