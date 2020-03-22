@@ -10,7 +10,7 @@ import 'react-calendar/dist/Calendar.css';
 import { StoreProvider } from './state/store'
 
 ReactDOM.render(
-  <StoreProvider initialValue={{ booking: { slotId: null, slotDate: null, patient: null, stage: "DAY_SELECTION" } }}>
+  <StoreProvider initialValue={{ booking: { slotId: null, slotDate: null, patient: null, stage: "PATIENT_DATA" } }}>
     <React.StrictMode>
       <App />
     </React.StrictMode>
