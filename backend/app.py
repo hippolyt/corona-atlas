@@ -117,7 +117,8 @@ def get_daystats():
 
 @app.route("/api-internal/doctors/<id>", methods=['PATCH'])
 def toggle_doctor(id):
-    access = bool(request.args.get('access'))
+    data = request.get_json()
+    access = data['access']
     res = toggle_doctor_by_id(id, querySession, access)
     return jsonify(res)
 
@@ -133,9 +134,10 @@ def map_doctors():
         return jsonify(res)
 
     if request.method == 'POST':
-        name = request.args.get('name', '')
-        email = request.args.get('email', '')
-        access = bool(request.args.get('access', 'True'))
+        data = request.get_json()
+        name = data['name']
+        email = data['email']
+        access = data['access']
         res = add_doctor(querySession, name, email, access)
         return jsonify(res)
 
