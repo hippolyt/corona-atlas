@@ -27,16 +27,6 @@ def welcome():
     session["hello"] = "world"
     return jsonify(msg=val)
 
-# @app.route("/api-internal/cases", methods=['GET', 'POST'])
-# def get_cases():
-#     details = request.args.get('details', '')
-#     closed = request.args.get('closed', '')
-#     sort = request.args.get('sort', '')
-#     limit = request.args.get('limit', '')
-#     search = request.args.get('search', '')
-#     # WIP
-
-
 @app.route("/api-internal/slots", methods=['GET'])
 def get_slots():
     start_date = request.args.get('from', '')
@@ -105,12 +95,12 @@ def map_cases():
         return res
     
     if request.method == 'GET':
-        limit = request.args.get('limit', int)
+        limit = int(request.args.get('limit', '0'))
         if limit is 0:
             limit = 1000
         search = request.args.get('search', '')
-        closed = request.args.get('closed', bool)
-        slot_id = request.args.get('slotId', int)
+        closed = bool(request.args.get('closed', default='False')=='True')
+        slot_id = int(request.args.get('slotId', default='0'))
         res = get_cases(querySession, limit, search, closed, slot_id)
         return jsonify(res)
 
