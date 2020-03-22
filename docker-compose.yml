@@ -25,13 +25,31 @@ services:
           - backend
     environment:
       - SESSION_SECRET_KEY=${SESSION_SECRET_KEY} # used to encrypt session cookies
+      - DB_CREATION_CREDS=${DB_CREATION_CREDS}
+      - DB_READ_CREDS=${DB_READ_CREDS}
+    depends_on:
+      - corona-atlas-database
+    restart: unless-stopped
+  corona-atlas-database:
+    image: postgres:12.2
+    container_name: corona-atlas-database
+    networks:
+      corona-net:
+        aliases:
+          - db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD} # used to encrypt session cookies
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - type: volume
         source: corona_volume
-        target: /db
+        target: /var/lib/postgresql/data
     restart: unless-stopped
 networks:
   corona-net:
 volumes:
   corona_volume:
-
