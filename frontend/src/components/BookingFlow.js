@@ -167,7 +167,7 @@ function SlotSelector(props) {
     const { slots } = props
 
     const dayIdx = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
-
+    let aSlotIsSelected = false
     const content = slots.map((d, i) => {
 
         const demand = d.booked / d.capacity
@@ -179,6 +179,10 @@ function SlotSelector(props) {
             bgColor = "rgb(255,242,170)"
         } else {
             bgColor = "rgb(255,170,170)"
+        }
+
+        if (d.selected) {
+            aSlotIsSelected = true
         }
 
         const contentStyle = {
@@ -230,8 +234,13 @@ function SlotSelector(props) {
         )
     })
 
+
+    const containerStyle = {
+        paddingTop: aSlotIsSelected ? "0" : "56px",
+    }
+
     return (
-        <div className="short-day-container">
+        <div style={containerStyle} className="short-day-container">
             {content}
         </div>
     )
@@ -429,8 +438,6 @@ function TimeSelectionDialog() {
 }
 
 function DaySelectionDialog(props) {
-    const { next } = useStage()
-
     const [slotDate, setSlotDate] = useSlotDate()
 
     const shortSelection = [

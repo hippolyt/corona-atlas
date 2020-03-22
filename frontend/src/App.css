@@ -18,6 +18,7 @@
     scroll-behavior: auto;
     margin: 0;
     background-color: lightgray;
+    cursor: pointer;
 }
 
 .short-day-pick-container {
@@ -97,6 +98,7 @@
     display: inline-block;
     vertical-align: bottom;
     border: solid 1px;
+    cursor: pointer;
 }
 
 .tslot-content * {
