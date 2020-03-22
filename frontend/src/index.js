@@ -8,6 +8,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-calendar/dist/Calendar.css';
 
 import { StoreProvider } from './state/store'
+import { initialState } from './flows/book';
+
+const p = {
+  name: "Maier",
+  givenName: "Lukas",
+  email: "lukas@maier.de",
+  birthDay: new Date("1998-02-11"),
+  mobileNumber: "00123456",
+  phoneNumber: "0677234533",
+}
 
 ReactDOM.render(
   <StoreProvider initialValue={{ booking: { slotId: null, slotDate: null, patient: null, stage: "PATIENT_DATA" }, admin: {doctorList: [], filteredDoctorList: []}}}>

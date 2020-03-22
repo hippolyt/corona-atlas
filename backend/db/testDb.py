@@ -32,4 +32,3 @@ session.add(slot3)
 session.commit()
 
 
-

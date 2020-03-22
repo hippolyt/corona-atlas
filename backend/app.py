@@ -4,9 +4,11 @@ from sqlalchemy.orm import sessionmaker
 from queries.slots import get_slots_by_time
 from queries.doctor import toggle_doctor_by_id, get_doctors, add_doctor
 from queries.daystats import get_slot_stats
-from queries.case import add_case, get_cases
+from queries.case import add_case, get_cases, get_comm_history, add_comm_history, get_case_and_patient, get_case_by_id, update_case_by_id, delete_case_by_id
 from db.setupDb import Patient, Address
+from notification.mail import send_mail
 import os
+import datetime
 
 app = Flask(__name__)
 
@@ -27,14 +29,40 @@ def welcome():
     session["hello"] = "world"
     return jsonify(msg=val)
 
-# @app.route("/api-internal/cases", methods=['GET', 'POST'])
-# def get_cases():
-#     details = request.args.get('details', '')
-#     closed = request.args.get('closed', '')
-#     sort = request.args.get('sort', '')
-#     limit = request.args.get('limit', '')
-#     search = request.args.get('search', '')
-#     # WIP
+@app.route("/api-internal/cases/<id>/notify", methods=['GET', 'POST'])
+def notify_case(id):
+    type = request.args.get('type', '')
+    case_id = id
+
+    if type not in ["mail", "sms", "robocall"]: 
+        return "unknown type"
+
+    if request.method == 'GET':
+        comm_hist = get_comm_history(querySession, case_id, type)
+        
+        return jsonify(msg=comm_hist)
+    elif request.method == 'POST':
+        case, patient = get_case_and_patient(querySession, case_id)
+
+        if type == "mail":
+            status, status_message = send_mail(patient.email, "test")
+        elif type == "sms":
+            status = "not implemented"
+            status_message = "not_implemented"
+        elif type == "robocall":
+            status = "not implemented"
+            status_message = "not_implemented"        
+
+        if status:
+            # if notification was successful add to comm history
+            timestamp = datetime.datetime.now()
+            add_comm_history(querySession, case_id, timestamp, type)
+
+        return_msg = {}
+        return_msg['status'] = status
+        return_msg['status_message'] = status_message
+
+        return jsonify(msg=return_msg)
 
 
 @app.route("/api-internal/slots", methods=['GET'])
@@ -77,6 +105,21 @@ def map_doctors():
         return jsonify(res)
 
 
+@app.route("/api-internal/cases/<id>", methods=['GET','PATCH', 'DELETE'])
+def handle_case(id):
+    if request.method == 'GET':
+        res = get_case_by_id(querySession, id)
+        return res
+
+    if request.method == 'PATCH':
+        data = request.json
+        res = update_case_by_id(querySession, id, data)
+        return res
+
+    if request.method == 'DELETE':
+        delete_case_by_id(querySession, id)
+        return '200'
+
 @app.route("/api-internal/cases", methods=['GET', 'POST'])
 def map_cases():
     if request.method == 'POST':
@@ -105,12 +148,12 @@ def map_cases():
         return res
     
     if request.method == 'GET':
-        limit = request.args.get('limit', int)
+        limit = int(request.args.get('limit', '0'))
         if limit is 0:
             limit = 1000
         search = request.args.get('search', '')
-        closed = request.args.get('closed', bool)
-        slot_id = request.args.get('slotId', int)
+        closed = bool(request.args.get('closed', default='False')=='True')
+        slot_id = int(request.args.get('slotId', default='0'))
         res = get_cases(querySession, limit, search, closed, slot_id)
         return jsonify(res)
 
