@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import './BookingFlow.css'
 import { Form as BForm, Button, Col, Container, Row } from 'react-bootstrap'
 import Calendar from 'react-calendar'
-import { Form, TextInput } from './form'
-import { useStage, useSlotDate, useBookingState, useSlotId, usePreviousStage } from '../flows/book'
+import { Form, TextInput, SelectInput } from './form'
+import { useStage, useSlotDate, useBookingState, useSlotId, usePreviousStage, usePatient } from '../flows/book'
+import { Option } from 'informed'
 
 function BackButton() {
     const { canGoBack, back } = useStage()
@@ -31,10 +32,13 @@ function NextButton(props) {
 }
 
 function PatientInformationForm() {
+    const [patient, setPatient] = usePatient()
+    const { next } = useStage()
+
     const years = new Array(100)
     for (let i = 0; i < 100; i++) {
         const y = 2020 - i
-        years[i] = <option key={y} value={y}>{y}</option>
+        years[i] = <Option key={y} value={y}>{y}</Option>
     }
 
     const months = [
@@ -50,18 +54,49 @@ function PatientInformationForm() {
         "Oktober",
         "November",
         "Dezember",
-    ].map(m => <option key={m} value={m}>{m}</option>)
+    ].map((m, i) => <option key={m} value={i}>{m}</option>)
 
     const days = new Array(31)
     for (let i = 0; i < 31; i++) {
         const d = i + 1
-        days[i] = <option key={d} value={d}>{d}</option>
+        days[i] = <option key={d} value={i + 1}>{d}</option>
+    }
+
+    const onSubmit = values => {
+        const {
+            name,
+            givenName,
+            email,
+            birthYear,
+            birthMonth,
+            birthDay,
+            mobileNumber,
+            phoneNumber
+        } = values
+
+        const dateOfBirth = new Date(
+            parseInt(birthYear),
+            parseInt(birthMonth),
+            parseInt(birthDay)
+        )
+
+        const patient = {
+            givenName,
+            name,
+            email,
+            birthDay: dateOfBirth,
+            mobileNumber,
+            phoneNumber,
+        }
+
+        setPatient(patient)
+        next()
     }
 
     return (
         <>
             <h1>Patientendaten </h1>
-            <BForm>
+            <Form onSubmit={onSubmit}>
                 <Row>
                     <BForm.Group as={Col} controlId="name">
                         <BForm.Label>Name</BForm.Label>
@@ -73,48 +108,49 @@ function PatientInformationForm() {
                     </BForm.Group>
                 </Row>
                 <Row>
-                    <BForm.Group as={Col} controlId="givenName">
+                    <BForm.Group as={Col} controlId="email">
                         <BForm.Label>Email</BForm.Label>
-                        <TextInput field="givenName" />
+                        <TextInput field="email" />
                     </BForm.Group>
                 </Row>
                 <BForm.Group>
                     <BForm.Label>Geburtstag</BForm.Label>
                     <Row>
                         <Col>
-                            <BForm.Control defaultValue="" as="select" placeholder="Year" field="birthDay">
+                            <SelectInput as="select" placeholder="Year" field="birthYear">
                                 <option value="" disabled>Jahr</option>
                                 {years}
-                            </BForm.Control>
+                            </SelectInput>
                         </Col>
                         <Col>
-                            <BForm.Control defaultValue="" as="select" field="birthMonth" >
+                            <SelectInput as="select" field="birthMonth" >
                                 <option value="" disabled>Monat</option>
                                 {months}
-                            </BForm.Control>
+                            </SelectInput>
                         </Col>
                         <Col>
-                            <BForm.Control defaultValue="" as="select" field="birthMonth" >
+                            <SelectInput as="select" field="birthDay" >
                                 <option value="" disabled>Tag</option>
                                 {days}
-                            </BForm.Control>
+                            </SelectInput>
                         </Col>
                     </Row>
                 </BForm.Group>
                 <Row>
                     <BForm.Group as={Col} controlId="givenName">
                         <BForm.Label>Handy</BForm.Label>
-                        <TextInput field="givenName" />
+                        <TextInput field="mobileNumber" />
                     </BForm.Group>
                     <BForm.Group as={Col} controlId="name">
                         <BForm.Label>Festnetz</BForm.Label>
-                        <TextInput field="name" />
+                        <TextInput field="phoneNumber" />
                     </BForm.Group>
                 </Row>
                 <div className="text-right">
-                    <NextButton enabled={true} />
+                    <Button type="submit" >Weiter</Button>
+                    {/* <NextButton enabled={true} /> */}
                 </div>
-            </BForm >
+            </Form>
         </>
     )
 }
@@ -225,7 +261,19 @@ function TimeSlot(props) {
 
     const label = formatDateAsHourFace(time)
 
+    const demand = booked / capacity
+
+    let bgColor
+    if (demand <= 0.5) {
+        bgColor = "rgb(0,195,27)"
+    } else if (demand <= 0.7) {
+        bgColor = "rgb(255,242,170)"
+    } else {
+        bgColor = "rgb(255,170,170)"
+    }
+
     const contentStyle = {
+        backgroundColor: bgColor,
         borderStyle: "solid",
         ...(selected ? {
             borderColor: "rgb(0,136,238)",
@@ -269,13 +317,13 @@ function TimeSelectionDialog() {
             time: new Date("2020-03-22T08:00"),
             slotId: 1,
             capacity: 10,
-            booked: 2,
+            booked: 7,
         },
         {
             time: new Date("2020-03-22T09:00"),
             slotId: 2,
             capacity: 10,
-            booked: 2,
+            booked: 8,
         },
         {
             time: new Date("2020-03-22T10:00"),

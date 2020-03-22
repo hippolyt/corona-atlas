@@ -30,6 +30,35 @@ export function TextInput(props) {
     )
 }
 
+export function SelectInput(props) {
+    const { fieldState, fieldApi, render, ref, userProps } = useField({ ...props })
+
+    const { value } = fieldState
+    const { setValue, setTouched } = fieldApi
+    const { onChange, onBlur, ...rest } = userProps
+
+    return render(
+        <FormControl
+            as="select"
+            {...rest}
+            ref={ref}
+            value={!value && value !== 0 ? '' : value}
+            onChange={e => {
+                setValue(e.target.value);
+                if (onChange) {
+                    onChange(e);
+                }
+            }}
+            onBlur={e => {
+                setTouched(true);
+                if (onBlur) {
+                    onBlur(e)
+                }
+            }}
+        />
+    )
+}
+
 export function Form(props) {
     const { children, ...rest } = props
 
