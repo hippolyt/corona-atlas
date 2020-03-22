@@ -21,7 +21,7 @@ function App() {
         </Navbar.Collapse>
       </Navbar>
 
-      <DoctorManager />
+      <AppointmentOverview />
     </>
   );
 }
