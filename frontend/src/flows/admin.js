@@ -1,6 +1,14 @@
 import {useStore} from "../state/store";
 import * as Fuse from "fuse.js";
 
+export function initialState() {
+    return {
+        doctorList: [],
+        filteredDoctorList: [],
+        searchTerm: ''
+    }
+}
+
 export function useAdminState() {
     const [state, setState] = useStore();
 
@@ -34,13 +42,13 @@ export function useDoctorList() {
     const [state, setState] = useAdminState();
     const {doctorList, filteredDoctorList} = state;
 
-    const searchDoctors = (doctorList, search_term) => search_term ? new Fuse(doctorList, searchOptions).search(search_term).map(it => it.item) : doctorList;
+    const searchDoctors = (doctorList, searchTerm) => searchTerm !== '' ? new Fuse(doctorList, searchOptions).search(searchTerm).map(it => it.item) : doctorList;
 
     const setDoctorList = (doctorList) =>
         setState(old => ({
             ...old,
             doctorList,
-            filteredDoctorList: searchDoctors(doctorList, state.search_term)
+            filteredDoctorList: searchDoctors(doctorList, state.searchTerm)
         }));
 
     const addDoctor = (doctor) => {
@@ -48,7 +56,7 @@ export function useDoctorList() {
         return setState(old => ({
             ...old,
             doctorList: listPlusDoctor,
-            filteredDoctorList: searchDoctors(listPlusDoctor, state.search_term)
+            filteredDoctorList: searchDoctors(listPlusDoctor, state.searchTerm)
         }));
     };
 
@@ -58,16 +66,16 @@ export function useDoctorList() {
         return setState(old => ({
             ...old,
             doctorList: listMinusDoctor,
-            filteredDoctorList: searchDoctors(listMinusDoctor, state.search_term)
+            filteredDoctorList: searchDoctors(listMinusDoctor, state.searchTerm)
         }));
     };
 
 
-    const setSearchTerm = (search_term) =>
+    const setSearchTerm = (searchTerm) =>
         setState(old => ({
             ...old,
-            search_term: search_term,
-            filteredDoctorList: searchDoctors(old.doctorList, search_term)
+            searchTerm: searchTerm,
+            filteredDoctorList: searchDoctors(old.doctorList, searchTerm)
         }));
 
 

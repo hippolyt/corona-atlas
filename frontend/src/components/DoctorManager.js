@@ -5,6 +5,7 @@ import {useDoctorList} from "../flows/admin";
 import Table from "react-bootstrap/Table";
 import {FaBan} from "react-icons/all";
 import Modal from "react-bootstrap/Modal";
+import Container from "react-bootstrap/Container";
 
 function AddDoctor() {
 
@@ -152,12 +153,15 @@ function DeleteAction(props) {
 
 export function DoctorManager() {
     return (
-        <div className="border p-2 rounded">
-            <h1>Arzt hinzufügen</h1>
-            <p>Neuen Arzt hinzufügen oder Zugriff von bereits hinzugefügten Ärzten entziehen.</p>
-            <AddDoctor/>
-            <FilterDoctor/>
-            <DoctorList/>
-        </div>
+        <Container>
+            <div className="border p-2 rounded">
+                <h1>Arzt hinzufügen</h1>
+                <p>Neuen Arzt hinzufügen oder Zugriff von bereits hinzugefügten Ärzten entziehen.</p>
+                <AddDoctor/>
+                <FilterDoctor/>
+                <DoctorList/>
+            </div>
+        </Container>
+
     )
 }
