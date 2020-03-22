@@ -14,4 +14,4 @@ def get_slot_stats(session, start, end):
         stats.append(stat)
 
     #true_capacity
-    
+    return stats

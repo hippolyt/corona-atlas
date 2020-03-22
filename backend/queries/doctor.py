@@ -1,9 +1,9 @@
 from db.setupDb import Doctor
 from sqlalchemy import or_
 
-def disable_doctor_by_id(id, session):
+def toggle_doctor_by_id(id, session, access):
     doctor = session.query(Doctor).filter_by(id=id).first()
-    doctor.has_access = False
+    doctor.has_access = access
     session.commit()
 
     doctor = {

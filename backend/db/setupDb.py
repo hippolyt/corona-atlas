@@ -25,6 +25,12 @@ class Patient(Base):
     tested = Column('is_tested', Boolean)
     high_risk = Column('high_risk', Boolean)
 
+    def to_json(self):
+        return {
+            "id": self.id, "name": self.name, "email": self.email, "phone": self.phone, "mobile": self.mobile,
+            "consent": self.consent, "tested": self.tested, "high_risk": self.high_risk, "address": self.address.to_json()
+        }
+
 
 class Address(Base):
     __tablename__ = 'address'
@@ -33,6 +39,10 @@ class Address(Base):
     city = Column('city', String(50))
     street = Column('street', String(60))
     no = Column('no', String(10))
+    
+    
+    def to_json(self):
+        return {"id":self.id, "zip_code":self.zip_code, "city": self.city, "street": self.street, "no": self.no}
 
 
 class Doctor(Base):
@@ -41,6 +51,9 @@ class Doctor(Base):
     name = Column('name', String(60))
     email = Column('email', String(30))
     has_access = Column('has_access', Boolean)
+
+    def to_json(self):
+        return {"id": self.id, "name": self.name, "email": self.email, "has_access": self.has_access}
     
 
 
@@ -53,6 +66,9 @@ class Testcenter(Base):
     address = relationship("Address")
     phone = Column('phone', String(30))
 
+    def to_json(self):
+        return {"id": self.id, "name": self.name, "email": self.email, "phone": self.phone}
+
 class Slot(Base):
     __tablename__ = 'slot'
     id = Column(Integer, Sequence('slot_id_seq'), primary_key=True)
@@ -62,6 +78,9 @@ class Slot(Base):
     testcenter_id = Column(Integer, ForeignKey('testcenter.id'))
     testcenter = relationship("Testcenter")
 
+    def to_json(self):
+        return {"id": self.id, "start": self.start, "end": self.end, "capacity": self.capacity}
+
 
 class SlotConfig(Base):
     __tablename__ = 'slotConfig'
@@ -70,6 +89,10 @@ class SlotConfig(Base):
     start_time = Column('start_time', DateTime)
     end_time = Column('end_time', DateTime)
     slot_size = Column('slotsize', Interval)
+
+    def to_json(self):
+        return {"id": self.id, "days_per_week": self.days_per_week, "start_time": self.start_time, 
+        "end_time": self.end_time, "slot_size": self.slot_size}
 
 class Case(Base):
     __tablename__ = 'case'
@@ -86,6 +109,11 @@ class Case(Base):
     referral_type = Column('referralType', String(30))
     comment = Column('comment', String(500))
 
+    def to_json(self):
+        return {"id": self.id, "contacted": self.contacted, "referral_type": self.referral_type,
+        "comment": self.comment, "patient": self.patient.to_json(), "doctor": self.doctor.to_json(),
+        "slot": self.slot.to_json()}
+
 class CommsHistory(Base):
     __tablename__ = 'commshistory'
     id = Column(Integer, Sequence('comms_id_seq'), primary_key=True)
@@ -93,5 +121,8 @@ class CommsHistory(Base):
     comm_type = Column('type', String(30))
     case_id = Column(Integer, ForeignKey('case.id'))
     case = relationship("Case")
+
+    def to_json(self):
+        return {"id": self.id, "timestamp": self.timestamp, "comm_type": self.comm_type}
 
 meta.create_all(bind=engine)
