@@ -15,7 +15,10 @@ export function useLogin() {
         })
         fetch("/auth/login", {
             method: 'POST',
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         }).then(res => {
             if (res.status != 200) {
                 res.json().then(e => {

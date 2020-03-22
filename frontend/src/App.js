@@ -6,13 +6,28 @@ import { AppointmentOverview } from './components/AppointmentOverview'
 import { DoctorManager } from "./components/DoctorManager";
 import { useMe } from './flows/data'
 import { LoginDialog } from './components/LoginDialog'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
 
-function App() {
+function LoginLogoutButton() {
   const me = useMe()
 
-  let rootComp = !me.loggedIn ? <LoginDialog /> : <BookingFlow />
+  const onLogout = () => {
+    console.log("logout")
+    window.location = '/auth/logout'
+  }
 
+  const onLogin = () => {
+    window.location = '/'
+  }
+
+  if (me.loggedIn) {
+    return <Nav.Link onClick={() => onLogout()}>Abmelden</Nav.Link>
+  } else {
+    return <Nav.Link onClick={() => onLogin()}>Anmelden</Nav.Link>
+  }
+}
+
+function App() {
   return (
     <Router>
       <Navbar bg="light" expand="md">
@@ -23,7 +38,7 @@ function App() {
             <Nav.Link></Nav.Link>
           </Nav>
           <Nav >
-            <Nav.Link>Anmelden</Nav.Link>
+            <LoginLogoutButton />
           </Nav>
         </Navbar.Collapse>
       </Navbar>
