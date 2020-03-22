@@ -22,7 +22,7 @@ function App() {
       </Navbar>
 
       <Container className="mt-4">
-        <BookingFlow />
+        <DoctorManager />
       </Container>
     </>
   );
