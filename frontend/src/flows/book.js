@@ -1,5 +1,15 @@
 import { useStore } from "../state/store";
 
+export function initialState() {
+    return {
+        isLoading: false,
+        slotId: null,
+        slotDate: null,
+        patient: null,
+        stage: "DAY_SELECTION",
+    }
+}
+
 export function useBookingState() {
     const [state, setState] = useStore()
 
@@ -15,7 +25,13 @@ export function useBookingState() {
         })
     }
 
-    return [booking, setBookingState]
+    const reset = () =>
+        setState(old => ({
+            ...old,
+            booking: initialState()
+        }))
+
+    return [booking, setBookingState, reset]
 }
 
 export function useSlotDate() {
@@ -102,20 +118,15 @@ export function useStage() {
             let nextStage = "DAY_SELECTION"
             switch (stage) {
                 case "DAY_SELECTION":
-                    if (!slotId) {
-                        nextStage = "SLOT_SELECTION"
-                        break
-                    }
+                    nextStage = "SLOT_SELECTION"
+                    break
                 case "SLOT_SELECTION":
-                    if (!patient) {
-                        nextStage = "PATIENT_DATA"
-                        break
-                    }
+                    nextStage = "PATIENT_DATA"
+                    break
                 case "PATIENT_DATA":
                     nextStage = "SUMMARY"
                     break
                 case "SUMMARY":
-
                     break
                 case "COMPLETED":
 
@@ -131,4 +142,32 @@ export function useStage() {
     const canGoBack = history && history.length > 0 ? true : false
 
     return { stage, setStage, back, canGoBack, next }
+}
+
+export function useIsLoading() {
+    const [state, setState] = useBookingState()
+    const { isLoading } = state
+
+    const setIsLoading = (isLoading) =>
+        setState(old => ({
+            ...old,
+            isLoading
+        }))
+
+    return [isLoading, setIsLoading]
+}
+
+export function useBookAppointment() {
+    const { setStage } = useStage()
+    const [_isLoading, setIsLoading] = useIsLoading()
+
+    const book = () => {
+        setIsLoading(true)
+        setTimeout(() => {
+            setIsLoading(false)
+            setStage("COMPLETED")
+        }, 1000)
+    }
+
+    return [book]
 }
