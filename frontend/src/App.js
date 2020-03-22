@@ -2,6 +2,7 @@ import React from 'react'
 import './App.css'
 import { Navbar, Nav, Col, Container, Row } from 'react-bootstrap'
 import { BookingFlow } from './components/BookingFlow'
+import { AppointmentOverview } from './components/AppointmentOverview'
 
 function App() {
   return (
@@ -19,13 +20,7 @@ function App() {
         </Navbar.Collapse>
       </Navbar>
 
-      <Container>
-        <Row className="mb-4">
-          <Col className="mt-4">
-            <BookingFlow />
-          </Col>
-        </Row>
-      </Container>
+      <AppointmentOverview />
     </>
   );
 }
