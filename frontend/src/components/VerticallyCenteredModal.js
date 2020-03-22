@@ -22,7 +22,7 @@ export function VerticallyCenteredModal(props) {
           </p>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={() => alert("Make me do something")}>{ props.confirmButtonText }</Button>
+                <Button onClick={() => { props.callback(); props.onHide(); } }>{ props.confirmButtonText }</Button>
                 <Button onClick={props.onHide}>Abbrechen</Button>
             </Modal.Footer>
         </Modal>

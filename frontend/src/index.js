@@ -8,7 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-calendar/dist/Calendar.css';
 
 import { StoreProvider } from './state/store'
-import { initialState } from './flows/book';
+import { initialState as initialBookState } from './flows/book';
+import { initialState as initialAdminState } from './flows/admin';
 
 const p = {
   name: "Maier",
@@ -20,7 +21,7 @@ const p = {
 }
 
 ReactDOM.render(
-  <StoreProvider initialValue={{ booking: initialState() }}>
+  <StoreProvider initialValue={{ booking: initialBookState(), admin: initialAdminState()}}>
     <React.StrictMode>
       <App />
     </React.StrictMode>
