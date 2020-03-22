@@ -8,7 +8,7 @@ services:
       - "443:443" # webapp over tls
     networks:
       - corona-net
-    command: "nginx -g 'daemon off;'"
+    command: /bin/sh -c "envsubst '$$DOMAIN $$CERTIFICATE_PATH' < /nginx.conf.template > /etc/nginx/conf.d/corona-atlas.conf && cat /etc/nginx/conf.d/corona-atlas.conf && exec nginx -g 'daemon off;'"
     depends_on:
       - corona-atlas-backend
     volumes:
@@ -16,6 +16,9 @@ services:
         source: /etc/letsencrypt
         target: /etc/letsencrypt
     restart: unless-stopped
+    environment:
+      - DOMAIN=${DOMAIN} # used to encrypt session cookies
+      - CERTIFICATE_PATH=${CERTIFICATE_PATH}
   corona-atlas-backend:
     build: ./backend
     container_name: corona-atlas-backend
