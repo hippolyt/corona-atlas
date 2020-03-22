@@ -2,9 +2,23 @@ import React from 'react'
 import { Form, TextInput } from './form'
 import { Form as BForm, Button, Card, Col, Row } from 'react-bootstrap'
 import { useLogin } from '../flows/auth'
+import { useHistory } from 'react-router-dom'
+import { useMe } from '../flows/data'
 
 export function LoginDialog() {
     const { isLoading, isDone, initiateLogin, error } = useLogin()
+    const me = useMe()
+    const history = useHistory()
+
+    if (me.loggedIn) {
+        switch (me.role) {
+            case "doctor":
+                history.push("/booking")
+                break
+            default:
+                history.push("/testcenter")
+        }
+    }
 
     const onSubmit = values => {
         initiateLogin(values.email)

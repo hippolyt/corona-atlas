@@ -1,4 +1,5 @@
 import { useStore } from "../state/store";
+import { useQuery } from "react-query";
 
 export function initialState() {
     return {
@@ -187,4 +188,16 @@ export function useBookAppointment() {
     }
 
     return [book]
+}
+
+function useDaystats(start, end) {
+    const { status, data } = useQuery(["daystats", start.toString(), end.toString()], fetchDaystats(start, end))
+
+    return { status, data }
+}
+
+function fetchDaystats(start, end) {
+    return () => {
+
+    }
 }
