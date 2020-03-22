@@ -2,7 +2,6 @@ import os
 import boto3
 from botocore.exceptions import ClientError
 
-
 def send_mail(recipient,
               mail_content,
               sender="test <test@coronatestinfo.de>", 
