@@ -32,7 +32,7 @@ function TopRow() {
 function MiddleRow() {
     return (
         <Row className="mb-4 mt-3">
-            <div className="col">
+            <div className="col mb-3">
                 <div className="border rounded">
                     <PatientInformationForm></PatientInformationForm>
                 </div>
@@ -56,8 +56,8 @@ function PatientIdentificationComponent(props) {
     return (
         <div className="jumbotron jumbotron-fluid bg-light p-2">
             <div className="container">
-                <h1 className="display-3">Patientenerkennungsphrase</h1>
-                <h2 className="display-4 font-weight-bold text-info"> {Id} </h2>
+                <h1 className="display-4">Patienten-Id</h1>
+                <h2 className="display-5 font-weight-bold text-info"> {Id} </h2>
             </div>
         </div>
     )
@@ -67,7 +67,7 @@ function AppointmentInfoBox(props) {
     const [modalShow, setModalShow] = React.useState(false);
 
     return (
-        <div className="col">
+        <div className="col mb-3">
             <div className="card">
                 <div className="card-body">
                     <h2 className="card-title">Covid-19-Test {
@@ -200,7 +200,7 @@ function CommunicationHistory(props) {
     }
     return (
         <div className="col mb-3">
-            <h1 className="mb-3">Kommunikationshistorie</h1>
+            <h1 className="mb-3">Kommunikations-Historie</h1>
             {items}
         </div>
     )
