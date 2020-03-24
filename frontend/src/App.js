@@ -4,9 +4,11 @@ import { Navbar, Nav, Col, Container, Row } from 'react-bootstrap'
 import { BookingFlow, TimeWindowDialog } from './components/BookingFlow'
 import { AppointmentOverview } from './components/AppointmentOverview'
 import { DoctorManager } from "./components/DoctorManager";
+import { Dashboard } from "./components/Dashboard"
 import { useMe } from './flows/data'
 import { LoginDialog } from './components/LoginDialog'
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
+import { Footer } from './components/Footer'
 
 function LoginLogoutButton() {
   const me = useMe()
@@ -38,7 +40,7 @@ function TimeWindowPage() {
 function App() {
   return (
     <Router>
-      <Navbar bg="light" expand="md">
+      <Navbar bg="light" expand="md" style={{ minHeight: "5vh" }}>
         <Navbar.Brand href="#home">CoTip</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -51,7 +53,7 @@ function App() {
         </Navbar.Collapse>
       </Navbar>
 
-      <Container className="mt-4">
+      <Container fluid className="p-0" style={{ minHeight: "80vh" }}>
         <Switch>
           <Route path="/booking">
             <BookingFlow />
@@ -62,11 +64,18 @@ function App() {
           <Route path="/cases">
             <TimeWindowPage />
           </Route>
+          <Route path="/managedoctors">
+            <DoctorManager />
+          </Route>
+          <Route path="/dashboard">
+            <Dashboard />
+          </Route>
           <Route path="/">
             <LoginDialog />
           </Route>
         </Switch>
       </Container>
+      <Footer></Footer>
     </Router>
   );
 }

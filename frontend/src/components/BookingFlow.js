@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './BookingFlow.css'
-import { Button, Col, Form as BForm, Row } from 'react-bootstrap'
+import { Button, Col, Form as BForm, Row, Container } from 'react-bootstrap'
 import Calendar from 'react-calendar'
 import { Form, SelectInput, TextInput } from './form'
 import {
@@ -229,43 +229,44 @@ function SlotSelector(props) {
         }
 
         const headStyle = {
-            display: d.selected ? "block" : "none"
+            visibility: d.selected ? "visible" : "hidden"
         }
 
         return (
-            <div key={d.value} className="short-day-pick-container">
-                <div style={headStyle} className="short-day-pick-selected">
-                    <h1>Ausgewählt</h1>
+            <Col lg className="mt-3">
+                <div style={{ width: "100%", minWidth: "150px" }}>
+                    <div key={d.value} className="short-day-pick-container">
+                        <div style={headStyle} className="short-day-pick-selected">
+                            <h1>Ausgewählt</h1>
+                        </div>
+                        <div
+                            onClick={() => {
+                                d.onClick()
+                            }}
+                            className={"short-day-pick"}
+                            style={contentStyle}
+                        >
+                            <h1>{d.value.getDate()}.</h1>
+                            {dayIdx[d.value.getDay()]}
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <p>{d.booked}/{d.capacity}</p>
+                            <p>Termine<br />vergeben</p>
+                        </div>
+                    </div>
                 </div>
-                <div
-                    onClick={() => {
-                        d.onClick()
-                    }}
-                    className={"short-day-pick"}
-                    style={contentStyle}
-                >
-                    <h1>{d.value.getDate()}.</h1>
-                    {dayIdx[d.value.getDay()]}
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <p>{d.booked}/{d.capacity}</p>
-                    <p>Termine<br />vergeben</p>
-                </div>
-            </div>
+            </Col>
         )
     })
 
 
-    const containerStyle = {
-        paddingTop: aSlotIsSelected ? "0" : "56px",
-    }
 
     return (
-        <div style={containerStyle} className="short-day-container">
+        <Row className="no-gutters mb-3 justify-content-around" style={{ maxWidth: "750px", margin: "0 auto", alignItems: "flex-end" }}>
             {content}
-        </div>
+        </Row>
     )
 }
 
@@ -530,7 +531,7 @@ export function TimeWindowDialog() {
     const patients = rawPatients.map(p => ({ ...p, selected: selectedPatient !== null ? p.id === selectedPatient.id : false }));
 
     return (
-        <>
+        <Container className="mt-5 mb-5">
             <h1 className="mb-4 text-center">Gebuchte Termine in Zeitfenster</h1>
             <h2 className="mb-4 text-center"><u>{formatDateAsReadableDisplay(slot.time, true)}</u></h2>
             <ul className="patient-list">
@@ -542,7 +543,7 @@ export function TimeWindowDialog() {
                 <BackButton />
                 <NextButton enabled={selectedPatient !== null} />
             </div>
-        </>
+        </Container>
     )
 }
 
@@ -774,9 +775,11 @@ export function BookingFlow() {
     }
 
     return (
-        <div className="border p-2 rounded">
-            {view}
-            {/* <BookingConfirmationDialog /> */}
-        </div>
+        <Container className="pt-5 pb-5">
+            <div className="border p-2 rounded">
+                {view}
+                {/* <BookingConfirmationDialog /> */}
+            </div>
+        </Container>
     )
 }

@@ -9,7 +9,7 @@
 
 .short-day-pick {
     height: 260px;
-    width: 150px;
+    width: 100%;
     /* border-right: solid 1px;
     border-top: solid 1px;
     border-bottom: solid 1px; */
@@ -23,6 +23,7 @@
 
 .short-day-pick-container {
     display: inline-block;
+    width: 100%;
     vertical-align: bottom;
 }
 
@@ -36,6 +37,7 @@
 
 
 .short-day-pick-selected {
+    width: 100%;
     background-color: rgb(0, 136, 238);
     margin: 0;
     height: 56px;
