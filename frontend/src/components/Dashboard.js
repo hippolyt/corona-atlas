@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Button, ListGroup, Container, Row, Image } from 'react-bootstrap'
-import Grafana from './grafana-dashboard.jpg'
 
 export function Dashboard() {
     return (
@@ -81,8 +80,7 @@ function Appointment(props) {
 
 function BottomRow() {
     return (
-        <Container>
-            <Image src={Grafana} rounded fluid />
+        <Container className="mb-5">
         </Container>
     )
 }
