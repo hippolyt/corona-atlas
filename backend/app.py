@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, session, request, abort, redirect
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
+from flask_sqlalchemy import SQLAlchemy
 from queries.slots import get_slots_by_time
 from queries.doctor import toggle_doctor_by_id, get_doctors, add_doctor
 from queries.daystats import get_slot_stats
@@ -23,14 +24,13 @@ import datetime
 app = Flask(__name__)
 
 app.secret_key = os.environ["SESSION_SECRET_KEY"]
-app.config.from_object({"SESSION_COOKIE_NAME": "sess", "SESSION_COOKIE_HTTPONLY": True})
+app.config.from_object({"SESSION_COOKIE_NAME": "sess", 
+                        "SESSION_COOKIE_HTTPONLY": True})
 
-connection = os.environ["DB_READ_CREDS"]
-engine = create_engine(connection)
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DB_READ_CREDS"]
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 
-Session = sessionmaker()
-Session.configure(bind=engine)
-querySession = Session()
+db = SQLAlchemy(app)
 
 domain = os.environ["BASE_URL"]
 
@@ -41,7 +41,7 @@ def manage_user():
 
     if loggedIn is True:
         user_email = session["email"]
-        display_name, role = get_user_by_email(querySession, email=user_email)
+        display_name, role = get_user_by_email(db.session, email=user_email)
         return {"loggedIn": True, "displayName": display_name, "role": role}
     else:
         return {"loggedIn": False}
@@ -52,7 +52,7 @@ def manage_login():
     if request.method == "POST":
         data = request.get_json()
         email = data["email"]
-        res = create_new_credentials(querySession, email)
+        res = create_new_credentials(db.session, email)
         if res:
             return "200"
         else:
@@ -61,7 +61,7 @@ def manage_login():
     if request.method == "GET":
         token = request.args.get("token")
         email = request.args.get("email")
-        res = verify_user(querySession, token, email)
+        res = verify_user(db.session, token, email)
         if res:
             session["loggedIn"] = True
             session["email"] = email
@@ -86,11 +86,11 @@ def notify_case(id):
         return "unknown type"
 
     if request.method == "GET":
-        comm_hist = get_comm_history(querySession, case_id, type)
+        comm_hist = get_comm_history(db.session, case_id, type)
 
         return jsonify(msg=comm_hist)
     elif request.method == "POST":
-        case, patient = get_case_and_patient(querySession, case_id)
+        case, patient = get_case_and_patient(db.session, case_id)
 
         if type == "mail":
             status, status_message = send_mail(patient.email, "test")
@@ -104,7 +104,7 @@ def notify_case(id):
         if status:
             # if notification was successful add to comm history
             timestamp = datetime.datetime.now()
-            add_comm_history(querySession, case_id, timestamp, type)
+            add_comm_history(db.session, case_id, timestamp, type)
 
         return_msg = {}
         return_msg["status"] = status
@@ -117,7 +117,7 @@ def notify_case(id):
 def get_slots():
     start_date = request.args.get("from", "")
     end_date = request.args.get("to", "")
-    res = get_slots_by_time(start_date, end_date, querySession)
+    res = get_slots_by_time(start_date, end_date, db.session)
     return jsonify(res)
 
 
@@ -125,15 +125,14 @@ def get_slots():
 def get_daystats():
     start_date = request.args.get("from", "")
     end_date = request.args.get("to", "")
-    res = get_slot_stats(querySession, start_date, end_date)
+    res = get_slot_stats(db.session, start_date, end_date)
     return jsonify(res)
 
 
-@app.route("/api-internal/doctors/<id>", methods=["PATCH"])
+@app.route("/api-internal/doctors/<id>", methods=["DELETE"])
 def toggle_doctor(id):
-    data = request.get_json()
-    access = data['access']
-    res = toggle_doctor_by_id(id, querySession, access)
+    access = False
+    res = toggle_doctor_by_id(id, db.session, access)
     return jsonify(res)
 
 
@@ -144,7 +143,7 @@ def map_doctors():
         if limit is "":
             limit = 1000
         search = request.args.get("search", "")
-        res = get_doctors(querySession, limit, search)
+        res = get_doctors(db.session, limit, search)
         return jsonify(res)
 
     if request.method == 'POST':
@@ -152,23 +151,23 @@ def map_doctors():
         name = data['name']
         email = data['email']
         access = data['access']
-        res = add_doctor(querySession, name, email, access)
+        res = add_doctor(db.session, name, email, access)
         return jsonify(res)
 
 
 @app.route("/api-internal/cases/<id>", methods=["GET", "PATCH", "DELETE"])
 def handle_case(id):
     if request.method == "GET":
-        res = get_case_by_id(querySession, id)
+        res = get_case_by_id(db.session, id)
         return res
 
     if request.method == "PATCH":
         data = request.json
-        res = update_case_by_id(querySession, id, data)
+        res = update_case_by_id(db.session, id, data)
         return res
 
     if request.method == "DELETE":
-        delete_case_by_id(querySession, id)
+        delete_case_by_id(db.session, id)
         return "200"
 
 
@@ -209,7 +208,7 @@ def map_cases():
         )
 
         res = add_case(
-            querySession, slot_id, doctor_id, testcenter_id, referral_type, p, add
+            db.session, slot_id, doctor_id, testcenter_id, referral_type, p, add
         )
         return res
 
@@ -220,5 +219,5 @@ def map_cases():
         search = request.args.get("search", "")
         closed = bool(request.args.get("closed", default="False") == "True")
         slot_id = int(request.args.get("slotId", default="0"))
-        res = get_cases(querySession, limit, search, closed, slot_id)
+        res = get_cases(db.session, limit, search, closed, slot_id)
         return jsonify(res)
