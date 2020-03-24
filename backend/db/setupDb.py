@@ -88,11 +88,12 @@ class SlotConfig(Base):
     days_per_week = Column('days_per_week', Integer)
     start_time = Column('start_time', DateTime)
     end_time = Column('end_time', DateTime)
-    slot_size = Column('slotsize', Interval)
+    slot_size = Column('slotsize', Integer)
+    slot_capacity = Column('slotcapacity', Integer)
 
     def to_json(self):
         return {"id": self.id, "days_per_week": self.days_per_week, "start_time": self.start_time, 
-        "end_time": self.end_time, "slot_size": self.slot_size}
+        "end_time": self.end_time, "slot_size": self.slot_size, "slot_capacity": self.slot_capacity}
 
 class Case(Base):
     __tablename__ = 'case'
