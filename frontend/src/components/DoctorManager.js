@@ -14,6 +14,7 @@ export function DoctorManager() {
                 <h1>Arzt hinzufügen</h1>
                 <p>Neuen Arzt hinzufügen oder Zugriff von bereits hinzugefügten Ärzten entziehen.</p>
                 <AddDoctor />
+                <div className="dropdown-divider mt-3 mb-3 d-block d-md-none"></div>
                 <FilterDoctor />
                 <DoctorList />
             </div>
@@ -44,13 +45,13 @@ function AddDoctor() {
     return (
         <Form onSubmit={onSubmit}>
             <Row>
-                <BForm.Group as={Col} controlId="email">
+                <BForm.Group controlId="email" className="col-md">
                     <TextInput field="email" placeholder="Email der Praxis oder des Arztes" />
                 </BForm.Group>
-                <BForm.Group as={Col} controlId="office">
+                <BForm.Group className="col-md" controlId="office">
                     <TextInput field="office" placeholder="Name der Praxis oder des Arztes" />
                 </BForm.Group>
-                <BForm.Group as={Col}>
+                <BForm.Group className="col-md">
                     <Button type="submit" className="btn-block">Zugriff erteilen</Button>
                 </BForm.Group>
 
@@ -76,10 +77,10 @@ function FilterDoctor() {
     return (
         <Form onSubmit={onSubmit}>
             <Row>
-                <BForm.Group as={Col} controlId="search_term">
+                <BForm.Group className="col-md" controlId="search_term">
                     <TextInput field="search_term" placeholder="Nach Email oder Name suchen" />
                 </BForm.Group>
-                <BForm.Group as={Col}>
+                <BForm.Group className="col-md">
                     <Button type="submit" className="btn-block">Suchen</Button>
                 </BForm.Group>
             </Row>
