@@ -39,7 +39,7 @@ export function SelectInput(props) {
 
     return render(
         <FormControl
-            as="select"
+            as='select'
             {...rest}
             ref={ref}
             value={!value && value !== 0 ? '' : value}

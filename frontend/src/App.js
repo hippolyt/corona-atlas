@@ -14,7 +14,7 @@ function LoginLogoutButton() {
   const me = useMe()
 
   const onLogout = () => {
-    console.log("logout")
+    console.log('logout')
     window.location = '/auth/logout'
   }
 
@@ -31,7 +31,7 @@ function LoginLogoutButton() {
 
 function TimeWindowPage() {
   return (
-    <div className="border p-2 rounded">
+    <div className='border p-2 rounded'>
       <TimeWindowDialog />
     </div>
   )
@@ -55,13 +55,13 @@ function App() {
 
       <Container fluid className="p-0" style={{ minHeight: "80vh" }}>
         <Switch>
-          <Route path="/booking">
+          <Route path='/booking'>
             <BookingFlow />
           </Route>
-          <Route path="/testcenter">
+          <Route path='/testcenter'>
             <AppointmentOverview />
           </Route>
-          <Route path="/cases">
+          <Route path='/cases'>
             <TimeWindowPage />
           </Route>
           <Route path="/managedoctors">
