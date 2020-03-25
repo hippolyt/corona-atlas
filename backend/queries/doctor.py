@@ -1,5 +1,5 @@
 from db.setupDb import Doctor
-from sqlalchemy import or_
+from sqlalchemy import or_, and_
 from queries.user import add_user
 
 def toggle_doctor_by_id(id, session, access):
@@ -18,10 +18,10 @@ def toggle_doctor_by_id(id, session, access):
 def get_doctors(session, limit, search):
     doctors = []
     if search is not '':
-        res = session.query(Doctor).filter(or_(Doctor.name.like(search), (Doctor.email.like(search)))).limit(limit).all()
+        res = session.query(Doctor).filter(and_(or_(Doctor.name.like(search), Doctor.email.like(search))), Doctor.has_access==True).limit(limit).all()
 
     else:
-        res = session.query(Doctor).limit(limit).all()
+        res = session.query(Doctor).filter(Doctor.has_access==True).limit(limit).all()
 
     for row in res:
         doctor = {

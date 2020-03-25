@@ -12,11 +12,11 @@ export function LoginDialog() {
 
     if (me.loggedIn) {
         switch (me.role) {
-            case "doctor":
-                history.push("/booking")
+            case 'doctor':
+                history.push('/booking')
                 break
             default:
-                history.push("/testcenter")
+                history.push('/testcenter')
         }
     }
 
@@ -26,7 +26,7 @@ export function LoginDialog() {
 
     return (
         <Container >
-            <Row style={{height: "80vh"}}>
+            <Row style={{ height: "80vh" }}>
                 <Col className="m-auto border p-4 m-2 rounded" md="4">
                     {
                         isDone ? <>

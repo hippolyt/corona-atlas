@@ -14,8 +14,8 @@ import {
 } from '../flows/book'
 import { Option } from 'informed'
 import { useSlot, useSlotPatients, useTestCenterAddress } from '../flows/data'
-import { VerticallyCenteredModal } from "./VerticallyCenteredModal";
-import { FaCheck } from "react-icons/all";
+import { VerticallyCenteredModal } from './VerticallyCenteredModal';
+import { FaCheck } from 'react-icons/all';
 
 function BackButton() {
     const { canGoBack, back } = useStage()
@@ -25,7 +25,7 @@ function BackButton() {
     }
 
     return (
-        <Button onClick={() => back()} className="mr-2" variant="warning">
+        <Button onClick={() => back()} className='mr-2' variant='warning'>
             Zurück
         </Button>
     )
@@ -36,7 +36,7 @@ function NextButton(props) {
     const { next } = useStage()
 
     return (
-        <Button disabled={!enabled} variant="primary" onClick={() => next()}>
+        <Button disabled={!enabled} variant='primary' onClick={() => next()}>
             Weiter
         </Button>
     )
@@ -45,7 +45,7 @@ function NextButton(props) {
 function ResetButton() {
     const [_state, _setState, reset] = useBookingState()
 
-    return <Button onClick={() => reset()} className="mr-2" variant="secondary">Abbrechen</Button>
+    return <Button onClick={() => reset()} className='mr-2' variant='secondary'>Abbrechen</Button>
 }
 
 function PatientInformationForm() {
@@ -59,18 +59,18 @@ function PatientInformationForm() {
     }
 
     const months = [
-        "Januar",
-        "Februar",
-        "März",
-        "April",
-        "Mai",
-        "Juni",
-        "July",
-        "August",
-        "September",
-        "Oktober",
-        "November",
-        "Dezember",
+        'Januar',
+        'Februar',
+        'März',
+        'April',
+        'Mai',
+        'Juni',
+        'July',
+        'August',
+        'September',
+        'Oktober',
+        'November',
+        'Dezember',
     ].map((m, i) => <option key={m} value={i}>{m}</option>)
 
     const days = new Array(31)
@@ -111,14 +111,14 @@ function PatientInformationForm() {
     }
 
     const p = {
-        name: "Maier",
-        givenName: "Lukas",
-        email: "lukas@maier.de",
-        birthDay: "1",
-        birthMonth: "8",
-        birthYear: "1962",
-        mobileNumber: "+49 123 45687",
-        phoneNumber: "+49 936 09465",
+        name: 'Maier',
+        givenName: 'Lukas',
+        email: 'lukas@maier.de',
+        birthDay: '1',
+        birthMonth: '8',
+        birthYear: '1962',
+        mobileNumber: '+49 123 45687',
+        phoneNumber: '+49 936 09465',
     }
 
     return (
@@ -128,17 +128,17 @@ function PatientInformationForm() {
                 <Row>
                     <BForm.Group className="col-sm" controlId="name">
                         <BForm.Label>Name</BForm.Label>
-                        <TextInput field="name" />
+                        <TextInput field='name' />
                     </BForm.Group>
                     <BForm.Group className="col-sm" controlId="givenName">
                         <BForm.Label>Vorname</BForm.Label>
-                        <TextInput field="givenName" />
+                        <TextInput field='givenName' />
                     </BForm.Group>
                 </Row>
                 <Row>
-                    <BForm.Group as={Col} controlId="email">
+                    <BForm.Group as={Col} controlId='email'>
                         <BForm.Label>Email</BForm.Label>
-                        <TextInput field="email" />
+                        <TextInput field='email' />
                     </BForm.Group>
                 </Row>
                 <BForm.Group>
@@ -167,16 +167,16 @@ function PatientInformationForm() {
                 <Row>
                     <BForm.Group className="col-sm" controlId="givenName">
                         <BForm.Label>Handy</BForm.Label>
-                        <TextInput field="mobileNumber" />
+                        <TextInput field='mobileNumber' />
                     </BForm.Group>
                     <BForm.Group className="col-sm" controlId="name">
                         <BForm.Label>Festnetz</BForm.Label>
-                        <TextInput field="phoneNumber" />
+                        <TextInput field='phoneNumber' />
                     </BForm.Group>
                 </Row>
-                <div className="text-right">
+                <div className='text-right'>
                     <BackButton />
-                    <Button type="submit">Weiter</Button>
+                    <Button type='submit'>Weiter</Button>
                     {/* <NextButton enabled={true} /> */}
                 </div>
             </Form>
@@ -187,7 +187,7 @@ function PatientInformationForm() {
 function SlotSelector(props) {
     const { slots } = props
 
-    const dayIdx = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+    const dayIdx = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
     let aSlotIsSelected = false
     const content = slots.map((d, i) => {
 
@@ -195,11 +195,11 @@ function SlotSelector(props) {
 
         let bgColor
         if (demand <= 0.5) {
-            bgColor = "rgb(0,195,27)"
+            bgColor = 'rgb(0,195,27)'
         } else if (demand <= 0.8) {
-            bgColor = "rgb(255,242,170)"
+            bgColor = 'rgb(255,242,170)'
         } else {
-            bgColor = "rgb(255,170,170)"
+            bgColor = 'rgb(255,170,170)'
         }
 
         if (d.selected) {
@@ -208,21 +208,21 @@ function SlotSelector(props) {
 
         const contentStyle = {
             backgroundColor: bgColor,
-            borderStyle: "solid",
+            borderStyle: 'solid',
             ...(d.selected ? {
-                borderColor: "rgb(0,136,238)",
-                borderRightWidth: "5px",
-                borderTopWidth: "5px",
-                borderBottomWidth: "5px",
-                borderLeftWidth: "5px",
-                paddingTop: "0px",
+                borderColor: 'rgb(0,136,238)',
+                borderRightWidth: '5px',
+                borderTopWidth: '5px',
+                borderBottomWidth: '5px',
+                borderLeftWidth: '5px',
+                paddingTop: '0px',
             } : {
-                    borderColor: "black",
-                    borderRightWidth: "1px",
-                    borderTopWidth: "1px",
-                    borderBottomWidth: "1px",
-                    borderLeftWidth: i === 0 ? "1px" : "0",
-                    paddingTop: "4px",
+                    borderColor: 'black',
+                    borderRightWidth: '1px',
+                    borderTopWidth: '1px',
+                    borderBottomWidth: '1px',
+                    borderLeftWidth: i === 0 ? '1px' : '0',
+                    paddingTop: '4px',
 
                 }),
 
@@ -261,10 +261,8 @@ function SlotSelector(props) {
         )
     })
 
-
-
     return (
-        <Row className="no-gutters mb-3 justify-content-around" style={{ maxWidth: "750px", margin: "0 auto", alignItems: "flex-end" }}>
+        <Row className="no-gutters mb-3 justify-content-around" style={{ maxWidth: "750px", margin: "0 auto", alignItems: "flex-end", paddingTop: aSlotIsSelected ? '0' : '56px' }}>
             {content}
         </Row>
     )
@@ -272,46 +270,46 @@ function SlotSelector(props) {
 
 function DatePicker() {
     return (
-        <div className="m-auto calendar-container">
+        <div className='m-auto calendar-container'>
             <Calendar />
         </div>
     )
 }
 
 function formatDateAsHourFace(date) {
-    let res = ""
+    let res = ''
 
     const hours = date.getHours()
     const min = date.getMinutes()
 
     if (hours < 10) {
-        res = res + "0"
+        res = res + '0'
     }
-    res = res + hours + ":"
+    res = res + hours + ':'
 
     if (min < 10) {
-        res = res + "0"
+        res = res + '0'
     }
     res = res + min
 
-    return res + " h"
+    return res + ' h'
 }
 
 function formatDateAsReadableDisplay(date, includeTime = false) {
-    const dayIdx = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+    const dayIdx = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
     const monthIdx = [
-        "Januar",
-        "Februar",
-        "März",
-        "April",
-        "Mai",
-        "Juni",
-        "July",
-        "August",
-        "September",
-        "Oktober",
-        "November",
-        "Dezember",
+        'Januar',
+        'Februar',
+        'März',
+        'April',
+        'Mai',
+        'Juni',
+        'July',
+        'August',
+        'September',
+        'Oktober',
+        'November',
+        'Dezember',
     ]
 
     const dateString = `${dayIdx[date.getDay()]} ${date.getDate()}. ${monthIdx[date.getMonth()]}`;
@@ -331,44 +329,44 @@ function TimeSlot(props) {
 
     let bgColor
     if (demand <= 0.5) {
-        bgColor = "rgb(0,195,27)"
+        bgColor = 'rgb(0,195,27)'
     } else if (demand <= 0.7) {
-        bgColor = "rgb(255,242,170)"
+        bgColor = 'rgb(255,242,170)'
     } else {
-        bgColor = "rgb(255,170,170)"
+        bgColor = 'rgb(255,170,170)'
     }
 
     const contentStyle = {
         backgroundColor: bgColor,
-        borderStyle: "solid",
+        borderStyle: 'solid',
         ...(selected ? {
-            borderColor: "rgb(0,136,238)",
-            borderWidth: "5px",
-            marginLeft: "0",
-            padding: "0"
+            borderColor: 'rgb(0,136,238)',
+            borderWidth: '5px',
+            marginLeft: '0',
+            padding: '0'
         } : {
-                borderColor: "black",
-                borderColor: "black",
-                borderWidth: "1px",
-                marginLeft: "60px",
-                padding: "4px 0 0 4px"
+                borderColor: 'black',
+                borderColor: 'black',
+                borderWidth: '1px',
+                marginLeft: '60px',
+                padding: '4px 0 0 4px'
             }),
     }
 
     const selectorStyle = {
-        display: selected ? "inline-block" : "none"
+        display: selected ? 'inline-block' : 'none'
     }
 
     return (
-        <div className="tslot-container">
-            <div style={selectorStyle} className="tslot-selector">
+        <div className='tslot-container'>
+            <div style={selectorStyle} className='tslot-selector'>
                 <h1>&#10003;</h1>
             </div>
-            <div style={contentStyle} onClick={() => onSelect()} className="tslot-content">
+            <div style={contentStyle} onClick={() => onSelect()} className='tslot-content'>
                 <h1>{label}</h1>
                 <p className="tslot-stats pr-2 font-weight-bold">{booked}/{capacity}</p>
                 <div className="inline-block">
-                <p className="tslot-label d-none d-sm-block pr-4">Termine<br />vergeben</p>
+                    <p className="tslot-label d-none d-sm-block pr-4">Termine<br />vergeben</p>
                 </div>
             </div>
         </div>
@@ -382,61 +380,61 @@ function TimeSelectionDialog() {
 
     const timeSlots = [
         {
-            time: new Date("2020-03-22T08:00"),
+            time: new Date('2020-03-22T08:00'),
             slotId: 1,
             capacity: 5,
             booked: 5,
         },
         {
-            time: new Date("2020-03-22T09:00"),
+            time: new Date('2020-03-22T09:00'),
             slotId: 2,
             capacity: 5,
             booked: 3,
         },
         {
-            time: new Date("2020-03-22T10:00"),
+            time: new Date('2020-03-22T10:00'),
             slotId: 3,
             capacity: 5,
             booked: 3,
         },
         {
-            time: new Date("2020-03-22T11:00"),
+            time: new Date('2020-03-22T11:00'),
             slotId: 4,
             capacity: 5,
             booked: 3,
         },
         {
-            time: new Date("2020-03-22T12:00"),
+            time: new Date('2020-03-22T12:00'),
             slotId: 5,
             capacity: 5,
             booked: 3,
         },
         {
-            time: new Date("2020-03-22T13:00"),
+            time: new Date('2020-03-22T13:00'),
             slotId: 6,
             capacity: 5,
             booked: 2,
         },
         {
-            time: new Date("2020-03-22T14:00"),
+            time: new Date('2020-03-22T14:00'),
             slotId: 7,
             capacity: 5,
             booked: 1,
         },
         {
-            time: new Date("2020-03-22T15:00"),
+            time: new Date('2020-03-22T15:00'),
             slotId: 8,
             capacity: 5,
             booked: 0,
         },
         {
-            time: new Date("2020-03-22T16:00"),
+            time: new Date('2020-03-22T16:00'),
             slotId: 9,
             capacity: 5,
             booked: 0,
         },
         {
-            time: new Date("2020-03-22T17:00"),
+            time: new Date('2020-03-22T17:00'),
             slotId: 10,
             capacity: 5,
             booked: 0,
@@ -455,7 +453,7 @@ function TimeSelectionDialog() {
                         capacity={d.capacity} booked={d.booked} />
                 ))}
             </ul>
-            <div className="text-right">
+            <div className='text-right'>
                 <BackButton />
                 <NextButton enabled={slotId !== null} />
             </div>
@@ -468,22 +466,22 @@ function PatientRow(props) {
 
 
     const contentStyle = {
-        borderStyle: "solid",
+        borderStyle: 'solid',
         ...(selected ? {
-            borderColor: "rgb(0,136,238)",
-            borderWidth: "5px",
-            marginLeft: "0",
-            padding: "0"
+            borderColor: 'rgb(0,136,238)',
+            borderWidth: '5px',
+            marginLeft: '0',
+            padding: '0'
         } : {
-                borderColor: "black",
-                borderWidth: "1px",
-                marginLeft: "60px",
-                padding: "4px 0 0 4px"
+                borderColor: 'black',
+                borderWidth: '1px',
+                marginLeft: '60px',
+                padding: '4px 0 0 4px'
             }),
     }
 
     const selectorStyle = {
-        display: selected ? "inline-block" : "none"
+        display: selected ? 'inline-block' : 'none'
     }
 
 
@@ -494,28 +492,28 @@ function PatientRow(props) {
     }
 
     return (
-        <div className="patient-container">
-            <div style={selectorStyle} className="patient-selector">
+        <div className='patient-container'>
+            <div style={selectorStyle} className='patient-selector'>
                 <h1>&#10003;</h1>
             </div>
-            <div style={contentStyle} className="patient-content" onClick={onSelect}>
-                <div className="patient-info">
-                    <h2 className="patient-name">{name}</h2>
-                    <h4 className="patient-id">{bookingId}</h4>
+            <div style={contentStyle} className='patient-content' onClick={onSelect}>
+                <div className='patient-info'>
+                    <h2 className='patient-name'>{name}</h2>
+                    <h4 className='patient-id'>{bookingId}</h4>
                 </div>
                 <div onClick={() => {
                     setModalShow(true)
-                }} className={tested ? "patient tested" : "patient untested"}>
-                    <div className="patient-icon">
+                }} className={tested ? 'patient tested' : 'patient untested'}>
+                    <div className='patient-icon'>
                         {tested ? <FaCheck /> : <></>}
                     </div>
                 </div>
             </div>
 
             <VerticallyCenteredModal
-                confirmButtonText="Ja"
-                text={"Sind Sie sicher, dass Sie diesen Patienten als " + (tested ? "nicht" : "") + " getestet markieren möchten?"}
-                title={"Patient als " + (tested ? "nicht" : "") + " getestet markieren"}
+                confirmButtonText='Ja'
+                text={'Sind Sie sicher, dass Sie diesen Patienten als ' + (tested ? 'nicht' : '') + ' getestet markieren möchten?'}
+                title={'Patient als ' + (tested ? 'nicht' : '') + ' getestet markieren'}
                 callback={modalCallback}
                 show={modalShow}
                 onHide={() => setModalShow(false)}
@@ -541,7 +539,7 @@ export function TimeWindowDialog() {
                     <PatientRow key={p.id} selected={p.selected} onSelect={() => setPatient(p)} name={p.name} bookingId={p.id} isTested={p.tested} />
                 ))}
             </ul>
-            <div className="text-right">
+            <div className='text-right'>
                 <BackButton />
                 <NextButton enabled={selectedPatient !== null} />
             </div>
@@ -557,31 +555,31 @@ function DaySelectionDialog(props) {
 
     const shortSelection = [
         {
-            name: "So",
+            name: 'So',
             value: new Date('2020-03-22'),
             capacity: 50,
             booked: 45
         },
         {
-            name: "Mo",
+            name: 'Mo',
             value: new Date('2020-03-23'),
             capacity: 50,
             booked: 40
         },
         {
-            name: "Di",
+            name: 'Di',
             value: new Date('2020-03-24'),
             capacity: 50,
             booked: 20
         },
         {
-            name: "Mi",
+            name: 'Mi',
             value: new Date('2020-03-25'),
             capacity: 50,
             booked: 0
         },
         {
-            name: "Mi",
+            name: 'Mi',
             value: new Date('2020-03-26'),
             capacity: 50,
             booked: 0
@@ -614,7 +612,7 @@ function DaySelectionDialog(props) {
 
             {cal} */}
 
-            <div className="text-right">
+            <div className='text-right'>
                 <BackButton />
                 <NextButton enabled={slotDate !== null} />
             </div>
@@ -629,20 +627,20 @@ function BookingSummary() {
 
     const [book] = useBookAppointment()
 
-    const dayIdx = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"]
+    const dayIdx = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag']
     const monthIdx = [
-        "Januar",
-        "Februar",
-        "März",
-        "April",
-        "Mai",
-        "Juni",
-        "July",
-        "August",
-        "September",
-        "Oktober",
-        "November",
-        "Dezember",
+        'Januar',
+        'Februar',
+        'März',
+        'April',
+        'Mai',
+        'Juni',
+        'July',
+        'August',
+        'September',
+        'Oktober',
+        'November',
+        'Dezember',
     ]
 
     const t = slot.time
@@ -655,37 +653,37 @@ function BookingSummary() {
             <div className="mb-2 mt-4">
                 <strong className="h4">Termin</strong> {/*<a href=""><small>ändern</small></a> */}
             </div>
-            <dl className="row">
-                <dt className="col-sm-3">Datum</dt>
-                <dd className="col-sm-9">{date}</dd>
+            <dl className='row'>
+                <dt className='col-sm-3'>Datum</dt>
+                <dd className='col-sm-9'>{date}</dd>
 
-                <dt className="col-sm-3">Uhrzeit</dt>
-                <dd className="col-sm-9">{clockTime}</dd>
+                <dt className='col-sm-3'>Uhrzeit</dt>
+                <dd className='col-sm-9'>{clockTime}</dd>
             </dl>
 
-            <div className="mb-2 mt-4">
-                <strong className="h4">Patientendaten</strong>
+            <div className='mb-2 mt-4'>
+                <strong className='h4'>Patientendaten</strong>
             </div>
-            <dl className="row">
-                <dt className="col-sm-3">Name</dt>
-                <dd className="col-sm-9">{patient.name}</dd>
+            <dl className='row'>
+                <dt className='col-sm-3'>Name</dt>
+                <dd className='col-sm-9'>{patient.name}</dd>
 
-                <dt className="col-sm-3">Vorname</dt>
-                <dd className="col-sm-9">{patient.givenName}</dd>
+                <dt className='col-sm-3'>Vorname</dt>
+                <dd className='col-sm-9'>{patient.givenName}</dd>
 
-                <dt className="col-sm-3">Email</dt>
-                <dd className="col-sm-9">{patient.email}</dd>
+                <dt className='col-sm-3'>Email</dt>
+                <dd className='col-sm-9'>{patient.email}</dd>
 
-                <dt className="col-sm-3">Handy</dt>
-                <dd className="col-sm-9">{patient.mobileNumber}</dd>
+                <dt className='col-sm-3'>Handy</dt>
+                <dd className='col-sm-9'>{patient.mobileNumber}</dd>
 
-                <dt className="col-sm-3">Festnetz</dt>
-                <dd className="col-sm-9">{patient.phoneNumber}</dd>
+                <dt className='col-sm-3'>Festnetz</dt>
+                <dd className='col-sm-9'>{patient.phoneNumber}</dd>
             </dl>
 
-            <div className="text-right">
+            <div className='text-right'>
                 <ResetButton />
-                <Button onClick={() => book()} variant="danger">Buchen</Button>
+                <Button onClick={() => book()} variant='danger'>Buchen</Button>
             </div>
         </>
     )
@@ -702,19 +700,19 @@ function BookingConfirmationDialog() {
     return (
         <center>
 
-            <h1 className="mb-4">Buchung erfolgreich abgeschlossen</h1>
+            <h1 className='mb-4'>Buchung erfolgreich abgeschlossen</h1>
 
-            <p className="font-weight-bold h4">{patient.givenName} {patient.name} </p>
+            <p className='font-weight-bold h4'>{patient.givenName} {patient.name} </p>
             <p> wird am</p>
-            <p className="font-weight-bold h4">{formatDateAsReadableDisplay(slot.time)}</p>
+            <p className='font-weight-bold h4'>{formatDateAsReadableDisplay(slot.time)}</p>
             <p>um</p>
-            <p className="font-weight-bold h4">{formatDateAsHourFace(slot.time)}</p>
+            <p className='font-weight-bold h4'>{formatDateAsHourFace(slot.time)}</p>
             <p>im Test-Center</p>
-            <p className="font-weight-bold h4">{addr}</p>
+            <p className='font-weight-bold h4'>{addr}</p>
             <p>auf SarsCovid-19 getested</p>
 
-            <div className="mb-5 mt-5">
-                <Button onClick={() => reset()} className="mr-2" variant="primary">Nächsten Patienten Buchen</Button>
+            <div className='mb-5 mt-5'>
+                <Button onClick={() => reset()} className='mr-2' variant='primary'>Nächsten Patienten Buchen</Button>
             </div>
         </center>
     )
@@ -729,10 +727,10 @@ function BookingFailureDialog() {
 
                 <h1>Das hat nicht funktioniert</h1>
                 <p>Die IT wurde verständigt</p>
-                <p className="mt-5 mb-4">Versuchen Sie es bitte erneut:</p>
+                <p className='mt-5 mb-4'>Versuchen Sie es bitte erneut:</p>
 
-                <div className="mb-5">
-                    <Button onClick={() => reset()} className="mr-2" variant="primary">Ich gebe nicht auf</Button>
+                <div className='mb-5'>
+                    <Button onClick={() => reset()} className='mr-2' variant='primary'>Ich gebe nicht auf</Button>
                 </div>
             </center>
         </>
@@ -741,9 +739,9 @@ function BookingFailureDialog() {
 
 export function LoadingScreen() {
     return (
-        <center className="spinner-container">
-            <div className="spinner"></div>
-            <p className="mt-4">Wir arbeiten...</p>
+        <center className='spinner-container'>
+            <div className='spinner'></div>
+            <p className='mt-4'>Wir arbeiten...</p>
         </center>
     )
 }
@@ -758,19 +756,19 @@ export function BookingFlow() {
         view = <LoadingScreen />
     } else {
         switch (stage) {
-            case "DAY_SELECTION":
+            case 'DAY_SELECTION':
                 view = <DaySelectionDialog />
                 break
-            case "SLOT_SELECTION":
+            case 'SLOT_SELECTION':
                 view = <TimeSelectionDialog />
                 break
-            case "PATIENT_DATA":
+            case 'PATIENT_DATA':
                 view = <PatientInformationForm />
                 break
-            case "SUMMARY":
+            case 'SUMMARY':
                 view = <BookingSummary />
                 break
-            case "COMPLETED":
+            case 'COMPLETED':
                 view = <BookingConfirmationDialog />
                 break
         }

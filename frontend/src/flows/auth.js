@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 export function useLogin() {
     const [state, setState] = useState({
@@ -13,7 +13,7 @@ export function useLogin() {
             isLoading: true,
             error: null
         })
-        fetch("/auth/login", {
+        fetch('/auth/login', {
             method: 'POST',
             body: JSON.stringify({ email }),
             headers: {

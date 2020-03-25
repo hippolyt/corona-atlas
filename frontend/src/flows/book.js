@@ -1,5 +1,5 @@
-import { useStore } from "../state/store";
-import { useQuery } from "react-query";
+import { useStore } from '../state/store';
+import { useQuery } from 'react-query';
 
 export function initialState() {
     return {
@@ -8,7 +8,7 @@ export function initialState() {
         slotDate: null,
         slotPatients: null,
         patient: null,
-        stage: "DAY_SELECTION",
+        stage: 'DAY_SELECTION',
     }
 }
 
@@ -130,20 +130,20 @@ export function useStage() {
         setState(old => {
             const { stage, slotId, patient } = old
 
-            let nextStage = "DAY_SELECTION"
+            let nextStage = 'DAY_SELECTION'
             switch (stage) {
-                case "DAY_SELECTION":
-                    nextStage = "SLOT_SELECTION"
+                case 'DAY_SELECTION':
+                    nextStage = 'SLOT_SELECTION'
                     break
-                case "SLOT_SELECTION":
-                    nextStage = "PATIENT_DATA"
+                case 'SLOT_SELECTION':
+                    nextStage = 'PATIENT_DATA'
                     break
-                case "PATIENT_DATA":
-                    nextStage = "SUMMARY"
+                case 'PATIENT_DATA':
+                    nextStage = 'SUMMARY'
                     break
-                case "SUMMARY":
+                case 'SUMMARY':
                     break
-                case "COMPLETED":
+                case 'COMPLETED':
 
 
                     break
@@ -180,7 +180,7 @@ export function useBookAppointment() {
         setIsLoading(true)
         setTimeout(() => {
             setIsLoading(false)
-            setStage("COMPLETED")
+            setStage('COMPLETED')
         }, 1000)
     }
 
@@ -188,7 +188,7 @@ export function useBookAppointment() {
 }
 
 // export function useDaystats(start, end) {
-//     const { status, data } = useQuery(["daystats", start.toISOString(), end.toISOString()], fetchDaystats(start, end))
+//     const { status, data } = useQuery(['daystats', start.toISOString(), end.toISOString()], fetchDaystats(start, end))
 
 //     return { status, data }
 // }

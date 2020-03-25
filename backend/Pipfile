@@ -12,6 +12,7 @@ gunicorn = "*"
 sqlalchemy = "*"
 psycopg2 = "*"
 boto3 = "*"
+flask-sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"

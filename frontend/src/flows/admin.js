@@ -1,10 +1,11 @@
-import {useStore} from "../state/store";
-import * as Fuse from "fuse.js";
+import * as Fuse from 'fuse.js'
+import { useDoctors } from './data'
+import { useState, useMemo } from 'react'
+import { useStore } from '../state/store'
+
 
 export function initialState() {
     return {
-        doctorList: [],
-        filteredDoctorList: [],
         searchTerm: ''
     }
 }
@@ -12,13 +13,13 @@ export function initialState() {
 export function useAdminState() {
     const [state, setState] = useStore();
 
-    const {admin} = state;
+    const { admin } = state;
 
-    const setAdminState = (admin) => {
+    const setAdminState = (fn) => {
         setState(old => {
             return {
                 ...old,
-                admin: admin(old.admin)
+                admin: fn(old.admin)
             }
         })
     };
@@ -33,51 +34,46 @@ const searchOptions = {
     distance: 100,
     minMatchCharLength: 1,
     keys: [
-        "email",
-        "office"
+        'email',
+        'name'
     ]
-};
+}
+
+function searchDoctors(doctorList, searchTerm) {
+
+    if (searchTerm === '') {
+        return doctorList
+    }
+
+    console.log('searching')
+    return new Fuse(doctorList, searchOptions)
+        .search(searchTerm)
+        .map(it => it.item)
+}
 
 export function useDoctorList() {
-    const [state, setState] = useAdminState();
-    const {doctorList, filteredDoctorList} = state;
+    const [state, setState] = useAdminState()
+    const { searchTerm } = state
+    const { doctors, createDoctor, delDoctor, loading, error } = useDoctors()
 
-    const searchDoctors = (doctorList, searchTerm) => searchTerm !== '' ? new Fuse(doctorList, searchOptions).search(searchTerm).map(it => it.item) : doctorList;
+    const addDoctor = (doctor) => { createDoctor(doctor) }
+    const removeDoctor = (doctor) => { delDoctor(doctor.id) }
 
-    const setDoctorList = (doctorList) =>
-        setState(old => ({
-            ...old,
-            doctorList,
-            filteredDoctorList: searchDoctors(doctorList, state.searchTerm)
-        }));
-
-    const addDoctor = (doctor) => {
-        const listPlusDoctor = [...doctorList, doctor];
-        return setState(old => ({
-            ...old,
-            doctorList: listPlusDoctor,
-            filteredDoctorList: searchDoctors(listPlusDoctor, state.searchTerm)
-        }));
-    };
-
-
-    const removeDoctor = (doctor) => {
-        const listMinusDoctor = doctorList.filter(it => it !== doctor);
-        return setState(old => ({
-            ...old,
-            doctorList: listMinusDoctor,
-            filteredDoctorList: searchDoctors(listMinusDoctor, state.searchTerm)
-        }));
-    };
-
-
-    const setSearchTerm = (searchTerm) =>
-        setState(old => ({
-            ...old,
-            searchTerm: searchTerm,
-            filteredDoctorList: searchDoctors(old.doctorList, searchTerm)
-        }));
-
-
-    return [doctorList, filteredDoctorList, setDoctorList, addDoctor, removeDoctor, setSearchTerm];
+    console.log(searchTerm, doctors)
+    const filteredDoctorList = searchDoctors(doctors, searchTerm)
+    console.log(filteredDoctorList)
+    return {
+        loading,
+        error,
+        doctorList: doctors,
+        filteredDoctorList,
+        addDoctor,
+        removeDoctor,
+        setSearchTerm: (searchTerm) => {
+            setState(old => ({
+                ...old,
+                searchTerm
+            }))
+        },
+    }
 }

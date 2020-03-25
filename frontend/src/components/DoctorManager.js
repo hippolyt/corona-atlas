@@ -1,21 +1,22 @@
-import React, { useState } from "react";
-import { Button, Col, Form as BForm, Row } from "react-bootstrap";
-import { Form, TextInput } from "./form";
-import { useDoctorList } from "../flows/admin";
-import Table from "react-bootstrap/Table";
-import { FaBan } from "react-icons/all";
-import Modal from "react-bootstrap/Modal";
-import Container from "react-bootstrap/Container";
+import React, { useState } from 'react';
+import { Button, Col, Form as BForm, Row } from 'react-bootstrap';
+import { Form, TextInput } from './form';
+import { useDoctorList } from '../flows/admin';
+import Table from 'react-bootstrap/Table';
+import { FaBan } from 'react-icons/all';
+import Modal from 'react-bootstrap/Modal';
+import Container from 'react-bootstrap/Container';
 
 export function DoctorManager() {
     return (
         <Container>
-            <div className="border p-4 rounded">
+            <div className='border p-4 rounded'>
                 <h1>Arzt hinzufügen</h1>
                 <p>Neuen Arzt hinzufügen oder Zugriff von bereits hinzugefügten Ärzten entziehen.</p>
                 <AddDoctor />
                 <div className="dropdown-divider mt-3 mb-3 d-block d-md-none"></div>
                 <FilterDoctor />
+                <Spinner />
                 <DoctorList />
             </div>
         </Container>
@@ -23,20 +24,25 @@ export function DoctorManager() {
     )
 }
 
+function Spinner() {
+    const { loading } = useDoctorList()
+
+    return loading ? <p>Lädt...</p> : (<></>)
+}
 
 function AddDoctor() {
 
-    const [, , , addDoctor,] = useDoctorList();
+    const { addDoctor } = useDoctorList();
 
     const onSubmit = values => {
         const {
             email,
-            office,
+            name,
         } = values;
 
         const doctor = {
             email,
-            office,
+            name,
         };
 
         addDoctor(doctor);
@@ -48,8 +54,8 @@ function AddDoctor() {
                 <BForm.Group controlId="email" className="col-md">
                     <TextInput field="email" placeholder="Email der Praxis oder des Arztes" />
                 </BForm.Group>
-                <BForm.Group className="col-md" controlId="office">
-                    <TextInput field="office" placeholder="Name der Praxis oder des Arztes" />
+                <BForm.Group className="col-md" controlId="name">
+                    <TextInput field="name" placeholder="Name der Praxis oder des Arztes" />
                 </BForm.Group>
                 <BForm.Group className="col-md">
                     <Button type="submit" className="btn-block">Zugriff erteilen</Button>
@@ -62,44 +68,36 @@ function AddDoctor() {
 
 function FilterDoctor() {
 
-    const [, , , , , setSearchTerm] = useDoctorList();
+    const { setSearchTerm } = useDoctorList();
 
-    const onSubmit = values => {
-
-        const {
-            search_term
-        } = values;
-
+    const onChangeSearch = search_term => {
+        console.log(search_term)
         setSearchTerm(search_term);
-
     };
 
     return (
-        <Form onSubmit={onSubmit}>
+        <BForm>
             <Row>
                 <BForm.Group className="col-md" controlId="search_term">
-                    <TextInput field="search_term" placeholder="Nach Email oder Name suchen" />
-                </BForm.Group>
-                <BForm.Group className="col-md">
-                    <Button type="submit" className="btn-block">Suchen</Button>
+                    <BForm.Control onChange={(e) => { onChangeSearch(e.target.value) }} field="search_term" placeholder="Nach Email oder Name suchen" />
                 </BForm.Group>
             </Row>
-        </Form>
+        </BForm>
     )
 }
 
 function DoctorList() {
 
-    const [, filteredDoctorList, , , removeDoctor] = useDoctorList();
+    const { filteredDoctorList, removeDoctor, loading } = useDoctorList();
 
     const renderTableData = () => {
         console.log(filteredDoctorList)
         return filteredDoctorList.map((doctor) => {
-            const { email, office } = doctor;
+            const { email, name } = doctor;
             return (
                 <tr key={email}>
                     <td>{email}</td>
-                    <td>{office}</td>
+                    <td>{name}</td>
                     <td><DeleteAction doctor={doctor} removeDoctor={removeDoctor} /></td>
                 </tr>
             )
@@ -108,7 +106,7 @@ function DoctorList() {
 
     if (filteredDoctorList && filteredDoctorList.length) {
         return (
-            <Table striped bordered hover size="sm">
+            <Table striped bordered hover size='sm'>
                 <thead>
                     <tr>
                         <th>Email</th>
@@ -121,13 +119,14 @@ function DoctorList() {
                 </tbody>
             </Table>
         )
-    } else {
+    } else if (!loading) {
         return (
-            <h1 className="display-5 mt-5 mb-3">Noch keine Ärzte eingetragen.</h1>
+            <h1 className='display-5 mt-5 mb-3'>Noch keine Ärzte eingetragen.</h1>
         )
 
+    } else {
+        return <></>
     }
-
 }
 
 function DeleteAction(props) {
@@ -145,7 +144,7 @@ function DeleteAction(props) {
 
     return (
         <>
-            <Button variant="danger" onClick={handleShow}>
+            <Button variant='danger' onClick={handleShow}>
                 <FaBan />
             </Button>
             <Modal show={show} onHide={handleClose}>
@@ -155,10 +154,10 @@ function DeleteAction(props) {
                 <Modal.Body>Sind Sie sicher, dass Sie <b>{doctor.email} ({doctor.office})</b> den Zugriff entziehen
                     wollen?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
+                    <Button variant='secondary' onClick={handleClose}>
                         Abbrechen
                     </Button>
-                    <Button variant="primary" onClick={deleteDoctor}>
+                    <Button variant='primary' onClick={deleteDoctor}>
                         Ja, Zugriff entziehen
                     </Button>
                 </Modal.Footer>

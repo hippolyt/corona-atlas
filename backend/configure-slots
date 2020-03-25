@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+
+import argparse
+import datetime
+import os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from db.setupDb import SlotConfig
+
+def main():
+    # setup database connection
+    connection = os.environ["DB_READ_CREDS"]
+    engine = create_engine(connection)
+
+    Session = sessionmaker()
+    Session.configure(bind=engine)
+    session = Session()
+
+    #define command-line-interface
+    parser = argparse.ArgumentParser(description="Define slot configuration")
+    parser.add_argument("--days", type=int, help="number of working days per week, ex: 5 means Monday to Friday")
+    parser.add_argument("--start", type=str, help="start of working day as hour, values: '00' to '23'")
+    parser.add_argument("--end", type=str, help="end of working day as hour")
+    parser.add_argument("--size", type=int, help="duration of slot in minutes")
+    parser.add_argument("--capacity", type=int, help="number of cases in one slot")
+
+    args = parser.parse_args()
+    # assign parsed arguments to variables
+    days = args.days
+    start = datetime.datetime.strptime(args.start, '%H')
+    end = datetime.datetime.strptime(args.end, '%H')
+    size = args.size
+    capacity = args.capacity
+
+    # create slot configuration
+    slot_config = SlotConfig(days_per_week=days, start_time=start, end_time=end, slot_size=size, slot_capacity=capacity)
+    session.add(slot_config)
+    session.commit()
+    id = slot_config.id
+    print("Id for slot generation: " + str(id))
+
+    session.close()
+
+    engine.dispose()
+
+if __name__ == "__main__":
+    main()

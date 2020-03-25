@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+
+import argparse
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+import os, datetime
+from db.setupDb import SlotConfig, Slot
+
+def main():
+
+     # setup database connection
+    connection = os.environ["DB_READ_CREDS"]
+    engine = create_engine(connection)
+
+    Session = sessionmaker()
+    Session.configure(bind=engine)
+    session = Session()
+
+    parser = argparse.ArgumentParser(description="Generate slots with given configuration")
+    parser.add_argument("--config-id", type=int, help="set id to id from slot config")
+    parser.add_argument("--start", type=str, help="define first date of slots")
+    parser.add_argument("--end", type=str, help="define last date of slots")
+    parser.add_argument("--testcenter-id", type=int, default=0, help="set id to testcenter id, default none")
+
+    args = parser.parse_args()
+
+    config_id = args.config_id
+    start_date = datetime.datetime.fromisoformat(args.start)
+    end_date = datetime.datetime.fromisoformat(args.end)
+    testcenter_id = args.testcenter_id
+
+    configuration = session.query(SlotConfig).filter_by(id=config_id).first()
+    slot_size = configuration.slot_size
+    start_time = configuration.start_time
+    end_time = configuration.end_time
+    days_per_week = configuration.days_per_week
+    capacity = configuration.slot_capacity
+
+    delta = datetime.timedelta(days=1)
+    today = start_date - delta
+    slot_delta = datetime.timedelta(minutes=slot_size)
+    while today < end_date:
+        today = today + delta
+
+        if today.weekday() - days_per_week >= 0:
+            continue
+
+        slot_time = today + datetime.timedelta(hours=start_time.hour, minutes=start_time.minute)
+        day_end = today + datetime.timedelta(hours=end_time.hour, minutes=end_time.minute)
+        while slot_time < day_end:
+            slot = Slot(start=slot_time, end=slot_time+slot_delta, capacity=capacity, testcenter_id=testcenter_id)
+            session.add(slot)
+    
+
+            slot_time = slot_time + slot_delta
+
+    session.commit()
+    session.close()
+
+
+
+if __name__ == "__main__":
+    main()
