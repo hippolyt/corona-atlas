@@ -126,11 +126,11 @@ function PatientInformationForm() {
             <h1>Patientendaten </h1>
             <Form initialValues={p} onSubmit={onSubmit}>
                 <Row>
-                    <BForm.Group as={Col} controlId="name">
+                    <BForm.Group className="col-sm" controlId="name">
                         <BForm.Label>Name</BForm.Label>
                         <TextInput field="name" />
                     </BForm.Group>
-                    <BForm.Group as={Col} controlId="givenName">
+                    <BForm.Group className="col-sm" controlId="givenName">
                         <BForm.Label>Vorname</BForm.Label>
                         <TextInput field="givenName" />
                     </BForm.Group>
@@ -144,19 +144,19 @@ function PatientInformationForm() {
                 <BForm.Group>
                     <BForm.Label>Geburtstag</BForm.Label>
                     <Row>
-                        <Col>
+                        <Col sm>
                             <SelectInput as="select" placeholder="Year" field="birthYear">
                                 <option value="" disabled>Jahr</option>
                                 {years}
                             </SelectInput>
                         </Col>
-                        <Col>
+                        <Col sm>
                             <SelectInput as="select" field="birthMonth">
                                 <option value="" disabled>Monat</option>
                                 {months}
                             </SelectInput>
                         </Col>
-                        <Col>
+                        <Col sm>
                             <SelectInput as="select" field="birthDay">
                                 <option value="" disabled>Tag</option>
                                 {days}
@@ -165,11 +165,11 @@ function PatientInformationForm() {
                     </Row>
                 </BForm.Group>
                 <Row>
-                    <BForm.Group as={Col} controlId="givenName">
+                    <BForm.Group className="col-sm" controlId="givenName">
                         <BForm.Label>Handy</BForm.Label>
                         <TextInput field="mobileNumber" />
                     </BForm.Group>
-                    <BForm.Group as={Col} controlId="name">
+                    <BForm.Group className="col-sm" controlId="name">
                         <BForm.Label>Festnetz</BForm.Label>
                         <TextInput field="phoneNumber" />
                     </BForm.Group>
@@ -233,7 +233,7 @@ function SlotSelector(props) {
         }
 
         return (
-            <Col lg className="mt-3">
+            <Col lg className="mt-3" key={i}>
                 <div style={{ width: "100%", minWidth: "150px" }}>
                     <div key={d.value} className="short-day-pick-container">
                         <div style={headStyle} className="short-day-pick-selected">
@@ -366,8 +366,10 @@ function TimeSlot(props) {
             </div>
             <div style={contentStyle} onClick={() => onSelect()} className="tslot-content">
                 <h1>{label}</h1>
-                <p className="tslot-stats">{booked}/{capacity}</p>
-                <p className="tslot-label">Termine<br />vergeben</p>
+                <p className="tslot-stats pr-2 font-weight-bold">{booked}/{capacity}</p>
+                <div className="inline-block">
+                <p className="tslot-label d-none d-sm-block pr-4">Termine<br />vergeben</p>
+                </div>
             </div>
         </div>
     )
@@ -447,7 +449,7 @@ function TimeSelectionDialog() {
     return (
         <>
             <h1 className="mb-4">Zeitslot <u>{formatDateAsReadableDisplay(slotDate)}</u></h1>
-            <ul className="time-pick">
+            <ul className="time-pick p-0">
                 {timeSlots.map((d, i) => (
                     <TimeSlot key={d.slotId} selected={d.selected} onSelect={() => setSlotId(d.slotId)} time={d.time}
                         capacity={d.capacity} booked={d.booked} />
@@ -649,7 +651,7 @@ function BookingSummary() {
 
     return (
         <>
-            <h1>Zusammenfassung</h1>
+            <h1 className="text-break">Zusammenfassung</h1>
             <div className="mb-2 mt-4">
                 <strong className="h4">Termin</strong> {/*<a href=""><small>ändern</small></a> */}
             </div>
@@ -776,7 +778,7 @@ export function BookingFlow() {
 
     return (
         <Container className="pt-5 pb-5">
-            <div className="border p-2 rounded">
+            <div className="border p-4 rounded">
                 {view}
                 {/* <BookingConfirmationDialog /> */}
             </div>
