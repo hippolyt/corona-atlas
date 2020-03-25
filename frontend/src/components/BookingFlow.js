@@ -262,7 +262,7 @@ function SlotSelector(props) {
     })
 
     return (
-        <Row className="no-gutters mb-3 justify-content-around" style={{ maxWidth: "750px", margin: "0 auto", alignItems: "flex-end", paddingTop: aSlotIsSelected ? '0' : '56px' }}>
+        <Row className="no-gutters mb-3 justify-content-around" style={{ maxWidth: "750px", margin: "0 auto", alignItems: "flex-end", paddingTop: "56px" }}>
             {content}
         </Row>
     )
