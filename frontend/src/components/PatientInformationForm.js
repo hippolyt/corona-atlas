@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Form as BForm, Button, Col, Container, Row, Check } from 'react-bootstrap'
+import React from 'react'
+import { Form as BForm, Button, Col, Row } from 'react-bootstrap'
 import { Form, TextInput } from './form'
 
 export function PatientInformationForm() {

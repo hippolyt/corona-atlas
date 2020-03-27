@@ -11,15 +11,6 @@ import { StoreProvider } from './state/store'
 import { initialState as initialBookState } from './flows/book';
 import { initialState as initialAdminState } from './flows/admin';
 
-const p = {
-  name: 'Maier',
-  givenName: 'Lukas',
-  email: 'lukas@maier.de',
-  birthDay: new Date('1998-02-11'),
-  mobileNumber: '00123456',
-  phoneNumber: '0677234533',
-}
-
 ReactDOM.render(
   <StoreProvider initialValue={{ booking: initialBookState(), admin: initialAdminState() }}>
     <React.StrictMode>

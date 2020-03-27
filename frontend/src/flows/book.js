@@ -1,13 +1,23 @@
 import { useStore } from '../state/store';
-import { useQuery } from 'react-query';
+import { useCreateCase } from './data'
 
 export function initialState() {
     return {
         isLoading: false,
-        slotId: null,
+        slot: null,
         slotDate: null,
         slotPatients: null,
-        patient: null,
+        patient: {
+            name: "Zierbock",
+            givenName: "Tom",
+            email: "tom@zierbock.com",
+            street: "P",
+            streetNumber: "12",
+            city: "N",
+            zipCode: "93846",
+            phoneNumber: "82364735",
+            mobileNumber: "82364735",
+        },
         stage: 'DAY_SELECTION',
     }
 }
@@ -49,17 +59,18 @@ export function useSlotDate() {
     return [slotDate, setSlotDate]
 }
 
-export function useSlotId() {
+export function useSelectedSlot() {
     const [state, setState] = useBookingState()
-    const { slotId } = state
+    const { slot } = state
 
-    const setSlotId = (slotId) =>
+    const setSelectedSlot = (slot) => {
         setState(old => ({
             ...old,
-            slotId
+            slot
         }))
+    }
 
-    return [slotId, setSlotId]
+    return [slot, setSelectedSlot]
 }
 
 export function useSlotPatients() {
@@ -128,13 +139,11 @@ export function useStage() {
 
     const next = () =>
         setState(old => {
-            const { stage, slotId, patient } = old
+            const { stage } = old
 
             let nextStage = 'DAY_SELECTION'
             switch (stage) {
-                case 'DAY_SELECTION':
-                    nextStage = 'SLOT_SELECTION'
-                    break
+
                 case 'SLOT_SELECTION':
                     nextStage = 'PATIENT_DATA'
                     break
@@ -144,8 +153,10 @@ export function useStage() {
                 case 'SUMMARY':
                     break
                 case 'COMPLETED':
-
-
+                    break
+                case 'DAY_SELECTION':
+                default:
+                    nextStage = 'SLOT_SELECTION'
                     break
             }
 
@@ -174,27 +185,38 @@ export function useIsLoading() {
 
 export function useBookAppointment() {
     const { setStage } = useStage()
-    const [_isLoading, setIsLoading] = useIsLoading()
+    const [, setIsLoading] = useIsLoading()
+    const [state] = useBookingState()
+    const { createCase, status, error } = useCreateCase()
 
     const book = () => {
         setIsLoading(true)
-        setTimeout(() => {
+
+        console.log(state)
+        const c = {
+            slotId: state.slot.slotId,
+            referralType: 'post',
+            patient: {
+                name: state.patient.givenName + " " + state.patient.name,
+                email: state.patient.email,
+                phone: state.patient.phoneNumber,
+                mobile: state.patient.mobileNumber,
+                consent: true,
+                highRisk: false,
+                address: {
+                    street: state.patient?.street,
+                    no: state.patient?.streetNumber,
+                    city: state.patient?.city,
+                    zipCode: state.patient?.zipCode,
+                }
+            }
+        }
+
+        createCase(c).then(() => {
             setIsLoading(false)
             setStage('COMPLETED')
-        }, 1000)
+        })
     }
 
     return [book]
 }
-
-// export function useDaystats(start, end) {
-//     const { status, data } = useQuery(['daystats', start.toISOString(), end.toISOString()], fetchDaystats(start, end))
-
-//     return { status, data }
-// }
-
-// function fetchDaystats(start, end) {
-//     return () => {
-//         return fetch(`/api-internal/daystats?from=${start.toISOString()}&to=${end.toISOString()}`).then(r => r.json())
-//     }
-// }

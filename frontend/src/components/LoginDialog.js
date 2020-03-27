@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, TextInput } from './form'
-import { Form as BForm, Button, Card, Col, Row, Container } from 'react-bootstrap'
+import { Form as BForm, Button, Col, Row, Container } from 'react-bootstrap'
 import { useLogin } from '../flows/auth'
 import { useHistory } from 'react-router-dom'
 import { useMe } from '../flows/data'

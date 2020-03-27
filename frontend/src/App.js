@@ -1,13 +1,14 @@
 import React from 'react'
 import './App.css'
-import { Navbar, Nav, Col, Container, Row } from 'react-bootstrap'
-import { BookingFlow, TimeWindowDialog } from './components/BookingFlow'
+import { Navbar, Nav, Container } from 'react-bootstrap'
+import { BookingFlow } from './components/booking/BookingFlow'
+import { TimeWindowDialog } from './components/TimeWindowDialog'
 import { AppointmentOverview } from './components/AppointmentOverview'
 import { DoctorManager } from "./components/DoctorManager";
 import { Dashboard } from "./components/Dashboard"
 import { useMe } from './flows/data'
 import { LoginDialog } from './components/LoginDialog'
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Footer } from './components/Footer'
 
 function LoginLogoutButton() {

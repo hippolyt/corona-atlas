@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Button, ListGroup, Container, Row, Image } from 'react-bootstrap'
+import React from 'react'
+import { Button, ListGroup, Container, Row } from 'react-bootstrap'
 
 export function Dashboard() {
     return (

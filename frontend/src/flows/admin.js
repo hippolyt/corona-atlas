@@ -1,6 +1,5 @@
 import * as Fuse from 'fuse.js'
 import { useDoctors } from './data'
-import { useState, useMemo } from 'react'
 import { useStore } from '../state/store'
 
 
@@ -40,12 +39,10 @@ const searchOptions = {
 }
 
 function searchDoctors(doctorList, searchTerm) {
-
     if (searchTerm === '') {
         return doctorList
     }
 
-    console.log('searching')
     return new Fuse(doctorList, searchOptions)
         .search(searchTerm)
         .map(it => it.item)
@@ -59,9 +56,7 @@ export function useDoctorList() {
     const addDoctor = (doctor) => { createDoctor(doctor) }
     const removeDoctor = (doctor) => { delDoctor(doctor.id) }
 
-    console.log(searchTerm, doctors)
     const filteredDoctorList = searchDoctors(doctors, searchTerm)
-    console.log(filteredDoctorList)
     return {
         loading,
         error,

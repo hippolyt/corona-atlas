@@ -21,7 +21,7 @@ export function Footer() {
                             <a href="dashboard" className="text-success">Teststation-Dashboard</a></p>
                     </div>
                     <div className="col-sm align-self-center mt-4 mb-4 text-center">
-                        <a href="https://wirvsvirushackathon.org/"><img src={WirVsVirus} className="img-fluid" style={{maxWidth: "300px"}} /></a>
+                        <a href="https://wirvsvirushackathon.org/"><img alt="WirVsVirus Hackathon Logo" src={WirVsVirus} className="img-fluid" style={{ maxWidth: "300px" }} /></a>
                     </div>
                 </div>
             </div>

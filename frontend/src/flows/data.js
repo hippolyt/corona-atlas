@@ -1,13 +1,38 @@
+import { useState } from 'react'
 import { useQuery, useMutation, queryCache } from 'react-query'
-import { fetchMe, postDoctor, delDoctor, fetchDoctors } from '../client'
-import { useState, useMemo } from 'react'
 
-export function useSlot(id) {
-    return [{ time: new Date('2020-03-22T12:00') }]
-}
+import {
+    fetchMe,
+    postDoctor,
+    delDoctor,
+    fetchDoctors,
+    fetchDaystats,
+    fetchSlots,
+    postCase
+} from '../client'
+
+const GET_DOCTORS = 'get_doctors'
+const GET_DAYSTATS = 'get_daystats'
+const GET_SLOTS = 'get_slots'
 
 export function useTestCenterAddress() {
     return 'Am Wegfeld 21, 90423 Nürnberg'
+}
+
+export function useDaystats(start, end) {
+    const { status, data, error } = useQuery([GET_DAYSTATS, start.toISOString(), end.toISOString()], fetchDaystats(start, end))
+
+    const loading = status === 'loading'
+
+    return { loading, data, error }
+}
+
+export function useSlotsForDay(date) {
+    const { status, data, error } = useQuery([GET_SLOTS, date.toISOString()], fetchSlots(date))
+
+    const loading = status === 'loading'
+
+    return { loading, data, error }
 }
 
 export function useSlotPatients(id) {
@@ -46,7 +71,7 @@ export function useMe() {
     return data
 }
 
-const GET_DOCTORS = 'get_doctors'
+
 
 function refetchDoctors() {
     queryCache.refetchQueries(GET_DOCTORS)
@@ -78,5 +103,17 @@ export function useDoctors() {
         },
         delDoctor: deleteDoctor,
         setSearchQuery
+    }
+}
+
+export function useCreateCase() {
+    const [createCase, { error, status }] = useMutation(postCase, {
+        onSuccess: () => {
+            queryCache.refetchQueries(GET_DAYSTATS)
+            queryCache.refetchQueries(GET_SLOTS)
+        }
+    })
+    return {
+        createCase, error, status
     }
 }

@@ -20,7 +20,7 @@ export function useLogin() {
                 'Content-Type': 'application/json'
             }
         }).then(res => {
-            if (res.status != 200) {
+            if (res.status !== 200) {
                 res.json().then(e => {
                     setState({
                         isLoading: false,

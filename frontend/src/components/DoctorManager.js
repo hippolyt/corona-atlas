@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Col, Form as BForm, Row } from 'react-bootstrap';
+import { Button, Form as BForm, Row } from 'react-bootstrap';
 import { Form, TextInput } from './form';
 import { useDoctorList } from '../flows/admin';
 import Table from 'react-bootstrap/Table';
@@ -10,7 +10,7 @@ import Container from 'react-bootstrap/Container';
 export function DoctorManager() {
     return (
         <Container>
-            <div className='border p-4 rounded'>
+            <div className='border mt-4 p-4 rounded'>
                 <h1>Arzt hinzufügen</h1>
                 <p>Neuen Arzt hinzufügen oder Zugriff von bereits hinzugefügten Ärzten entziehen.</p>
                 <AddDoctor />
@@ -20,7 +20,6 @@ export function DoctorManager() {
                 <DoctorList />
             </div>
         </Container>
-
     )
 }
 
@@ -71,7 +70,6 @@ function FilterDoctor() {
     const { setSearchTerm } = useDoctorList();
 
     const onChangeSearch = search_term => {
-        console.log(search_term)
         setSearchTerm(search_term);
     };
 
@@ -91,7 +89,6 @@ function DoctorList() {
     const { filteredDoctorList, removeDoctor, loading } = useDoctorList();
 
     const renderTableData = () => {
-        console.log(filteredDoctorList)
         return filteredDoctorList.map((doctor) => {
             const { email, name } = doctor;
             return (
