@@ -13,6 +13,7 @@ sqlalchemy = "*"
 psycopg2 = "*"
 boto3 = "*"
 flask-sqlalchemy = "*"
+validate-email = "*"
 
 [requires]
 python_version = "3.7"

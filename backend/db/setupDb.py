@@ -26,10 +26,14 @@ class Patient(Base):
     high_risk = Column('high_risk', Boolean)
 
     def to_json(self):
-        return {
+        p = {
             "id": self.id, "name": self.name, "email": self.email, "phone": self.phone, "mobile": self.mobile,
-            "consent": self.consent, "tested": self.tested, "high_risk": self.high_risk, "address": self.address.to_json()
+            "consent": self.consent, "tested": self.tested, "high_risk": self.high_risk
         }
+        if self.address is not None:
+            p['address'] = self.address.to_json()
+
+        return p
 
 
 class Address(Base):
@@ -49,7 +53,7 @@ class Doctor(Base):
     __tablename__ = 'doctor'
     id = Column(Integer, Sequence('doctor_id_seq'), primary_key=True)
     name = Column('name', String(60))
-    email = Column('email', String(100))
+    email = Column('email', String(100), unique=True)
     has_access = Column('has_access', Boolean)
 
     def to_json(self):
@@ -111,9 +115,23 @@ class Case(Base):
     comment = Column('comment', String(500))
 
     def to_json(self):
-        return {"id": self.id, "contacted": self.contacted, "referral_type": self.referral_type,
-        "comment": self.comment, "patient": self.patient.to_json(), "doctor": self.doctor.to_json(),
-        "slot": self.slot.to_json()}
+        d = {
+            "id": self.id, 
+            "contacted": self.contacted, 
+            "referral_type": self.referral_type,
+            "comment": self.comment
+        }
+
+        if self.doctor is not None:
+            d['doctor'] = self.doctor.to_json()
+
+        if self.patient is not None:
+            d['patient'] = self.patient.to_json()
+
+        if self.slot is not None:
+            d['slot'] = self.slot.to_json()
+
+        return d
 
 class CommsHistory(Base):
     __tablename__ = 'commshistory'
@@ -143,5 +161,12 @@ class User(Base):
     def to_json(self):
         return {"id": self.id, "display_name": self.display_name, "email": self.email, "role":self.role, "logon_pwd_hash": self.logon_pwd_hash, "logon_pwd_salt": self.logon_pwd_salt, "logon_pwd_valid_thru": self.logon_pwd_valid_thru}
 
+class Config(Base):
+    __tablename__='config'
+    key = Column('key', String(50), primary_key=True)
+    value = Column('value', String(100))
+
+    def to_json(self):
+        return {"key": self.key, "value": self.value}
 
 meta.create_all(bind=engine)

@@ -1,27 +1,39 @@
-from db.setupDb import Case, Doctor, Patient, CommsHistory
+from db.setupDb import Case, Doctor, Patient, CommsHistory, Config
 from sqlalchemy import and_, or_
 
 
-def add_case(session, slot_id, doctor_id, testcenter_id, referral_type, patient, address):
-    session.add(address)
-    session.commit()
-    address_id = address.id
-    print(address.id)
+def add_case(session, slot_id, doctor_id, referral_type, patient, address):
 
-    patient.address_id = address_id
-    session.add(patient)
-    session.commit()
+    try:
+        testcenter = session.query(Config).filter_by(key="TESTCENTER_ID").first()
+        testcenter_id = int(testcenter.value)
 
-    patient_id = patient.id
+        session.add(address)
+        session.flush()
+        address_id = address.id
+        #print(address.id)
 
-    case = Case(patient_id=patient_id, doctor_id=doctor_id, testcenter_id=testcenter_id, slot_id=slot_id, referral_type=referral_type, contacted=False)
-    session.add(case)
-    session.commit()
+        patient.address_id = address_id
+        session.add(patient)
+        session.flush()
 
-    case.doctor = session.query(Doctor).filter_by(id=doctor_id).first()
+        patient_id = patient.id
 
-    return case.to_json()
+        case = Case(patient_id=patient_id, doctor_id=doctor_id, testcenter_id=testcenter_id, slot_id=slot_id, referral_type=referral_type, contacted=False)
+        session.add(case)
+        session.flush()
 
+        if doctor_id is not None:
+            case.doctor = session.query(Doctor).filter_by(id=doctor_id).first()
+
+        session.commit()
+        return case.to_json()
+
+    except Exception as e:
+        session.rollback()
+        raise e
+    
+    
 def get_case_by_id(session, id):
     case = session.query(Case).filter_by(id=id).first()
     
@@ -100,7 +112,7 @@ def get_comm_history(session, case_id, type):
     for row in res:
         h = {
             'id': row.id,
-            'timestamp': row.timestamp,
+            'timestamp': row.timestamp.isoformat(),
             'comm_type': row.comm_type,
             'case_id': row.case_id
         }
@@ -116,7 +128,7 @@ def add_comm_history(session, case_id, timestamp, comm_type):
 
     history = {
         "id": history.id,
-        "timestamp": history.timestamp,
+        "timestamp": history.timestamp.isoformat(),
         "comm_type": history.comm_type,
         "case_id": history.case_id
     }

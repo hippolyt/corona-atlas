@@ -18,6 +18,7 @@ from queries.case import (
 from queries.user import get_user_by_email, create_new_credentials, verify_user
 from db.setupDb import Patient, Address
 from notification.mail import send_mail
+from validate_email import validate_email
 import os
 import datetime
 
@@ -41,8 +42,8 @@ def manage_user():
 
     if loggedIn is True:
         user_email = session["email"]
-        display_name, role = get_user_by_email(db.session, email=user_email)
-        return {"loggedIn": True, "displayName": display_name, "role": role}
+        user = get_user_by_email(db.session, email=user_email)
+        return {"loggedIn": True, "displayName": user.display_name, "role": user.role}
     else:
         return {"loggedIn": False}
 
@@ -52,6 +53,8 @@ def manage_login():
     if request.method == "POST":
         data = request.get_json()
         email = data["email"]
+        if not validate_email(email):
+            abort(409)
         res = create_new_credentials(db.session, email)
         if res:
             return "200"
@@ -61,10 +64,14 @@ def manage_login():
     if request.method == "GET":
         token = request.args.get("token")
         email = request.args.get("email")
+        if not validate_email(email):
+            abort(409)
         res = verify_user(db.session, token, email)
         if res:
             session["loggedIn"] = True
             session["email"] = email
+            user = get_user_by_email(db.session, email)
+            session["doctor_id"] = user.doctor_id
             return redirect("" + domain + "/")
         else:
             abort(401)
@@ -150,6 +157,8 @@ def map_doctors():
         data = request.get_json()
         name = data['name']
         email = data['email']
+        if not validate_email(email):
+            abort(409)
         access = data['access']
         res = add_doctor(db.session, name, email, access)
         return jsonify(res)
@@ -176,17 +185,18 @@ def map_cases():
     if request.method == "POST":
         data = request.get_json()
 
-        slot_id = data["slot_id"]
-        doctor_id = data["doctor_id"]
-        testcenter_id = data["testcenter_id"]
-        referral_type = data["referral_type"]
+        slot_id = data.get("slotId", None)
+        doctor_id = session.get("doctor_id", None)
+        referral_type = data.get("referralType", "")
 
-        p_name = data["patient"]["name"]
-        p_email = data["patient"]["email"]
-        p_phone = data["patient"]["phone"]
-        p_mobile = data["patient"]["mobile"]
-        p_consent = data["patient"]["consent"]
-        p_high_risk = data["patient"]["high_risk"]
+        p_name = data.get("patient").get("name")
+        p_email = data.get("patient").get("email", None)
+        if not validate_email(p_email):
+            abort(409, "Email not valid")
+        p_phone = data.get("patient").get("phone", "")
+        p_mobile = data.get("patient").get("mobile", "")
+        p_consent = data.get("patient").get("consent", False)
+        p_high_risk = data.get("patient").get("highRisk", False)
         p = Patient(
             name=p_name,
             email=p_email,
@@ -196,10 +206,10 @@ def map_cases():
             high_risk=p_high_risk,
         )
 
-        address_zip_code = data["patient"]["address"]["zip_code"]
-        address_city = data["patient"]["address"]["city"]
-        address_street = data["patient"]["address"]["street"]
-        address_no = data["patient"]["address"]["no"]
+        address_zip_code = data.get("patient").get("address").get("zipCode", "")
+        address_city = data.get("patient").get("address").get("city", "")
+        address_street = data.get("patient").get("address").get("street", "")
+        address_no = data.get("patient").get("address").get("no", "")
         add = Address(
             zip_code=address_zip_code,
             city=address_city,
@@ -208,16 +218,21 @@ def map_cases():
         )
 
         res = add_case(
-            db.session, slot_id, doctor_id, testcenter_id, referral_type, p, add
+            db.session, slot_id, doctor_id, referral_type, p, add
         )
         return res
 
     if request.method == "GET":
+
         limit = int(request.args.get("limit", "0"))
+        
         if limit is 0:
             limit = 1000
+
         search = request.args.get("search", "")
         closed = bool(request.args.get("closed", default="False") == "True")
         slot_id = int(request.args.get("slotId", default="0"))
+
         res = get_cases(db.session, limit, search, closed, slot_id)
+
         return jsonify(res)
