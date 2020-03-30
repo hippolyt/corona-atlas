@@ -8,8 +8,10 @@ import { DoctorManager } from "./components/DoctorManager";
 import { Dashboard } from "./components/Dashboard"
 import { useMe } from './flows/data'
 import { LoginDialog } from './components/LoginDialog'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import { Footer } from './components/Footer'
+import { DemoRootPage } from './components/demo/DemoRootPage'
+import { DemoPage } from './components/demo/DemoPage'
 
 function LoginLogoutButton() {
   const me = useMe()
@@ -41,13 +43,18 @@ function TimeWindowPage() {
 function App() {
   return (
     <Router>
-      <Navbar bg="light" expand="md" style={{ minHeight: "5vh" }}>
-        <Navbar.Brand href="#home">CoTip</Navbar.Brand>
+      <Navbar className="navbar navbar-dark bg-dark" style={{ minHeight: "5vh" }}>
+        <Link to="/"><Navbar.Brand >CoTip</Navbar.Brand></Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link></Nav.Link>
           </Nav>
+          
+        <Link to="/demo"><Navbar.Brand >Zur Demo</Navbar.Brand>
+
+        </Link>
+
           <Nav >
             <LoginLogoutButton />
           </Nav>
@@ -71,9 +78,25 @@ function App() {
           <Route path="/dashboard">
             <Dashboard />
           </Route>
+          <Route path="/demo-arzt">
+            <DemoPage type="arzt" />
+          </Route>
+          <Route path="/demo-gesundheitsamt">
+            <DemoPage type="gesundheitsamt" />
+          </Route>
+          <Route path="/demo-teststation">
+            <DemoPage type="teststation" />
+          </Route>
+          <Route path="/demo-patient">
+            <DemoPage type="patient" />
+          </Route>
+          <Route path="/demo">
+            <DemoRootPage />
+          </Route>
           <Route path="/">
             <LoginDialog />
           </Route>
+
         </Switch>
       </Container>
       <Footer></Footer>
