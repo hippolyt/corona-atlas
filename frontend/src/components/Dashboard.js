@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, ListGroup, Container, Row } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 export function Dashboard() {
     return (
@@ -36,7 +37,7 @@ function TopRow() {
                     <Button type='submit' className='btn-lg btn-block mt-2'>Suchen</Button>
                 </div>
                 <p className='text-center'>oder</p>
-                <Button type='submit' className='btn-lg btn-block mt-2'>Terminkalender einsehen</Button>
+                <Link to ="cases"><Button type='submit' className='btn-lg btn-block mt-2'>Terminkalender einsehen</Button></Link>
                 <Button type='submit' className='btn-lg btn-block mt-2'>Arztzugriffe verwalten</Button>
             </div>
             <UpcomingAppointments />
@@ -46,16 +47,23 @@ function TopRow() {
 
 function UpcomingAppointments() {
     var dummyData = [
-        { id: 1, timeStamp: '09.09.2020; 18:30:23', name: { firstName: 'Mark', lastName: 'Twain' }, emergency: true },
-        { id: 2, timeStamp: '09.09.2020; 14:34:32', name: { firstName: 'Nils', lastName: 'Wesling' }, emergency: false },
-        { id: 3, timeStamp: '09.09.2020; 12:54:43', name: { firstName: 'Artur', lastName: 'Roger' }, emergency: true },
-        { id: 4, timeStamp: '09.09.2020; 11:45:33', name: { firstName: 'Romano', lastName: 'Terrepretchet' }, emergency: false },
-        { id: 5, timeStamp: '09.09.2020; 18:23:12', name: { firstName: 'The', lastName: 'Witcher' }, emergency: false }
+        { id: 1, timeStamp: '09.09.2020; 11:00', name: { firstName: 'Mark', lastName: 'Twain' }, emergency: true },
+        { id: 2, timeStamp: '09.09.2020; 11:00', name: { firstName: 'Nils', lastName: 'Wesling' }, emergency: false },
+        { id: 3, timeStamp: '09.09.2020; 11:00', name: { firstName: 'Artur', lastName: 'Roger' }, emergency: true },
+        { id: 4, timeStamp: '09.09.2020; 11:30', name: { firstName: 'Romano', lastName: 'Terrepretchet' }, emergency: false },
+        { id: 5, timeStamp: '09.09.2020; 11:30', name: { firstName: 'The', lastName: 'Witcher' }, emergency: false }
     ]
     var items = []
 
     for (const [index, value] of dummyData.entries()) {
-        items.push(<Appointment timeStamp={value.timeStamp} name={value.name} emergency={value.emergency} key={index}></Appointment>)
+        var showDivider = false;
+        if (index < dummyData.length - 1) {
+            if (value.timeStamp !== dummyData[index+1].timeStamp) {
+                showDivider = true;
+            }
+        }
+        var elem = <div><Link to="appointmentoverview" key={index}><Appointment timeStamp={value.timeStamp} name={value.name} emergency={value.emergency}></Appointment></Link><div className={`dropdown-divider mt-4 mb-4 ${showDivider ? "" : "d-none"}`}></div></div>
+        items.push(elem)
     }
     return (
         <div className='col mb-3'>

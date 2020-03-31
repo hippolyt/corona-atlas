@@ -66,7 +66,7 @@ function App() {
           <Route path='/booking'>
             <BookingFlow />
           </Route>
-          <Route path='/testcenter'>
+          <Route path='/appointmentoverview'>
             <AppointmentOverview />
           </Route>
           <Route path='/cases'>
@@ -96,7 +96,6 @@ function App() {
           <Route path="/">
             <LoginDialog />
           </Route>
-
         </Switch>
       </Container>
       <Footer></Footer>
