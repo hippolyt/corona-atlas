@@ -1,6 +1,7 @@
 import React from 'react'
-import { Button, Col, Container, Row } from 'react-bootstrap'
+import { Button, Col, Container, Row, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import FinalPresentation from './final_presentation.pdf'
 
 
 export function DemoRootPage() {
@@ -60,25 +61,24 @@ function DemoButtonGroup() {
                     </Link>
                 </Col>
                 <Col sm className="mb-3">
-                    <Link to="demo-gesundheitsamt">
-                        <Button style={{ minHeight: "62px" }} className="w-100">cotip für <b>Gesundheitsämter</b></Button>
-                    </Link>
-                </Col>
-
-                <Col sm className="mb-3">
-                    <Link to="demo-patient">
-                        <Button style={{ minHeight: "62px" }} className="w-100">cotip für <b>Patienten</b></Button>
-                    </Link>
-                </Col>
-                <Col sm className="mb-3">
                     <Link to="demo-arzt">
                         <Button style={{ minHeight: "62px" }} className="w-100">cotip für <b>Ärzte / Praxen</b></Button>
                     </Link>
                 </Col>
                 <Col sm className="mb-3">
-                    <Link to="/">
-                        <Button style={{ minHeight: "62px" }} className="w-100">cotip Whitepaper</Button>
+                    <Link to="demo-patient">
+                        <Button style={{ minHeight: "62px" }} className="w-100 btn-secondary">cotip für <b>Patienten</b></Button>
                     </Link>
+                </Col>
+                <Col sm className="mb-3">
+                    <Link to="demo-gesundheitsamt">
+                        <Button style={{ minHeight: "62px" }} className="w-100 btn-secondary">cotip für <b>Gesundheitsämter</b></Button>
+                    </Link>
+                </Col>
+                <Col sm className="mb-3">
+                    <a href={FinalPresentation}>
+                        <Button style={{ minHeight: "62px" }} className="w-100 btn-secondary">cotip Whitepaper</Button>
+                    </a>
                 </Col>
             </Row>
         </>
