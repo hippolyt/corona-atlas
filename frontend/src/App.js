@@ -6,6 +6,7 @@ import { TimeWindowDialog } from './components/TimeWindowDialog'
 import { AppointmentOverview } from './components/AppointmentOverview'
 import { DoctorManager } from "./components/DoctorManager";
 import { Dashboard } from "./components/Dashboard"
+import { SimpleDashboard } from "./components/demo/SimpleDashboard"
 import { useMe } from './flows/data'
 import { LoginDialog } from './components/LoginDialog'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
@@ -77,6 +78,9 @@ function App() {
           </Route>
           <Route path="/dashboard">
             <Dashboard />
+          </Route>
+          <Route path="/simpledashboard">
+            <SimpleDashboard></SimpleDashboard>
           </Route>
           <Route path="/demo-arzt">
             <DemoPage type="arzt" />

@@ -5,14 +5,14 @@ import { Link } from 'react-router-dom'
 
 export function DemoPage(props) {
     const groupName = { arzt: "Ärzte", patient: "Patienten", gesundheitsamt: "Gesundheitsämter", teststation: "Teststationen" };
-    const links = { arzt: "booking", patient: "/", gesundheitsamt: "/", teststation: "dashboard" };
+    const links = { arzt: "booking", patient: "/", gesundheitsamt: "/", teststation: "simpledashboard" };
     return (
         <>
             <JumboHeader who={groupName[props.type]} />
             <Container>
+                <DemoButton link={links[props.type]} who={groupName[props.type]} />
                 <Paragraph />
                 <Video></Video>
-                <DemoButton link={links[props.type]} who={groupName[props.type]} />
             </Container>
         </>
     )
@@ -67,7 +67,7 @@ function Video() {
 function DemoButton(props) {
     return (
         <>
-            <Row className="mb-4">
+            <Row className={`${(props.link === "/") ? "d-none" : ""} mb-4`}>
                 <Col>
                     <Link to={props.link}>
                         <Button style={{ minHeight: "62px" }} className="w-100 font-weight-bold">Zur Demo für {props.who}</Button>

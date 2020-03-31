@@ -9,9 +9,9 @@ export function DemoRootPage() {
         <>
             <JumboHeader />
             <Container>
+                <DemoButtonGroup></DemoButtonGroup>
                 <Paragraph />
                 <div className='dropdown-divider mt-5 mb-5'></div>
-                <DemoButtonGroup></DemoButtonGroup>
             </Container>
         </>
     )
@@ -55,7 +55,7 @@ function DemoButtonGroup() {
     return (
         <>
             <Row>
-                <Col sm className="mb-3">
+                <Col sm className="mb-5">
                     <Link to="demo-teststation">
                         <Button style={{ minHeight: "62px" }} className="w-100">cotip für <b>Teststationen</b></Button>
                     </Link>
