@@ -43,8 +43,6 @@ services:
       corona-net:
         aliases:
           - db
-    ports:
-      - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD} # used to encrypt session cookies
       - POSTGRES_USER=${POSTGRES_USER}
