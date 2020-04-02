@@ -76,7 +76,7 @@ function DemoButtonGroup() {
                     </Link>
                 </Col>
                 <Col sm className="mb-3">
-                    <a href={FinalPresentation}>
+                    <a href="https://drive.google.com/file/d/1qn5P_zjQdjoetIT7o1_RwRu4Iziu5b_7/view?usp=sharing">
                         <Button style={{ minHeight: "62px" }} className="w-100 btn-secondary">cotip Whitepaper</Button>
                     </a>
                 </Col>
