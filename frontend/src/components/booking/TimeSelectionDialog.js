@@ -65,7 +65,7 @@ export function TimeSelectionDialog() {
     const { data: timeSlots } = useSlotsForDay(slotDate)
 
     if (timeSlots) {
-        timeSlots.sort((a, b) => moment(a.start).isAfter(b.start))
+        timeSlots.sort((a, b) => moment(a.start).isAfter(b.start) ? 1 : -1)
     }
 
     return (
