@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 
 import { useSelectedSlot, useSlotDate } from '../../flows/book'
 import { useSlotsForDay } from '../../flows/data'
@@ -64,7 +65,7 @@ export function TimeSelectionDialog() {
     const { data: timeSlots } = useSlotsForDay(slotDate)
 
     if (timeSlots) {
-        timeSlots.sort((a, b) => a.start > b.start)
+        timeSlots.sort((a, b) => moment(a.start).isAfter(b.start))
     }
 
     return (
