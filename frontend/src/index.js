@@ -13,9 +13,9 @@ import { initialState as initialAdminState } from './flows/admin';
 
 ReactDOM.render(
   <StoreProvider initialValue={{ booking: initialBookState(), admin: initialAdminState() }}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    {/* <React.StrictMode> */}
+    <App />
+    {/* </React.StrictMode> */}
   </StoreProvider >,
   document.getElementById('root')
 );
