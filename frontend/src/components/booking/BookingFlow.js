@@ -2,11 +2,11 @@ import React from 'react'
 import './BookingFlow.css'
 import { Container } from 'react-bootstrap'
 
-import { useIsLoading, useStage } from '../../flows/book'
+import { useIsLoading, useStage, useBookAppointment } from '../../flows/book'
 import { DaySelectionDialog } from './DaySelectionDialog'
 import { TimeSelectionDialog } from './TimeSelectionDialog'
 import { PatientInformationForm } from './PatientInformationForm'
-import { BookingConfirmationDialog } from './BookingConfirmation'
+import { BookingConfirmationDialog, BookingFailureDialog } from './BookingConfirmation'
 import { BookingSummary } from './BookingSummary'
 
 
@@ -23,10 +23,13 @@ export function BookingFlow() {
     const { stage } = useStage()
     const [isLoading] = useIsLoading()
 
+    const [, { error }] = useBookAppointment()
 
     let view
     if (isLoading) {
         view = <LoadingScreen />
+    } else if (error) {
+        view = <BookingFailureDialog />
     } else {
         switch (stage) {
             case 'SLOT_SELECTION':

@@ -45,9 +45,9 @@ export function PatientInformationForm() {
                     </BForm.Group>
                 </Row>
                 <Row>
-                    <BForm.Group as={Col} controlId='givenName'>
+                    <BForm.Group as={Col} controlId='email'>
                         <BForm.Label>Email</BForm.Label>
-                        <TextInput field='givenName' />
+                        <TextInput field='email' />
                     </BForm.Group>
                 </Row>
                 <BForm.Group>
@@ -74,13 +74,13 @@ export function PatientInformationForm() {
                     </Row>
                 </BForm.Group>
                 <Row>
-                    <BForm.Group as={Col} controlId='givenName'>
+                    <BForm.Group as={Col} controlId='mobileNumber'>
                         <BForm.Label>Handy</BForm.Label>
-                        <TextInput field='givenName' />
+                        <TextInput field='mobileNumber' />
                     </BForm.Group>
-                    <BForm.Group as={Col} controlId='name'>
+                    <BForm.Group as={Col} controlId='phoneNumber'>
                         <BForm.Label>Festnetz</BForm.Label>
-                        <TextInput field='name' />
+                        <TextInput field='phoneNumber' />
                     </BForm.Group>
                 </Row>
                 <BForm.Check

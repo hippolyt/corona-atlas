@@ -192,7 +192,6 @@ export function useBookAppointment() {
     const book = () => {
         setIsLoading(true)
 
-        console.log(state)
         const c = {
             slotId: state.slot.slotId,
             referralType: 'post',
@@ -218,5 +217,5 @@ export function useBookAppointment() {
         })
     }
 
-    return [book]
+    return [book, { status, error }]
 }
