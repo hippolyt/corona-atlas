@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { Form, Button, Card, Container, Row } from 'react-bootstrap'
 import { PatientInformationForm } from './PatientInformationForm'
 import { VerticallyCenteredModal } from './VerticallyCenteredModal'
+import { useDemo } from '../flows/data'
 
-export function AppointmentOverview() {
-
+export function AppointmentOverview(props) {
+    const patientenName = props.patientenName ? props.patientenName : "Max Wannemaker";
     return (
         <>
-            <PatientIdentificationComponent></PatientIdentificationComponent>
+            <PatientIdentificationComponent patientenName={patientenName}></PatientIdentificationComponent>
             <Container>
                 <TopRow />
                 <div className='dropdown-divider mt-5 mb-5'></div>
@@ -52,11 +53,11 @@ function BottomRow() {
 }
 
 function PatientIdentificationComponent(props) {
-    let Id = props.id ? props.id : 'Welt-Karten-Verein'
+    let Id = props.id ? props.id : props.patientenName;
     return (
         <div className="jumbotron jumbotron-fluid bg-light p-2">
             <div className="container">
-                <h1 className="display-4">Patienten-Id</h1>
+                <h1 className="display-4">Patient</h1>
                 <h2 className="display-5 font-weight-bold text-info"> {Id} </h2>
             </div>
         </div>
@@ -65,14 +66,13 @@ function PatientIdentificationComponent(props) {
 
 function AppointmentInfoBox(props) {
     const [modalShow, setModalShow] = React.useState(false);
+    const [demo, _] = useDemo();
 
     return (
         <div className="col mb-3">
             <div className="card">
                 <div className="card-body">
-                    <h2 className="card-title">Covid-19-Test {
-                        <span className={"badge " + (props.appointment.emergency ? "badge-danger" : "badge-warning")}>{props.appointment.emergency ? "Notfallpatient" : "Patient"}</span>
-                    }</h2>
+                    <h2 className="card-title">Covid-19-Test </h2>
                     <table className='table table-hover mt-4'>
                         <tbody>
                             <tr>
@@ -85,7 +85,7 @@ function AppointmentInfoBox(props) {
                             </tr>
                         </tbody>
                     </table>
-                    <button onClick={() => setModalShow(true)} type='button-primary' className='btn btn-primary btn-block btn-lg'>Patient umbuchen</button>
+                    {demo ? <button onClick={() => setModalShow(true)} type='button-primary' className='btn btn-primary btn-block btn-lg'>Patient umbuchen</button> : <></>}
                 </div>
             </div>
             <VerticallyCenteredModal

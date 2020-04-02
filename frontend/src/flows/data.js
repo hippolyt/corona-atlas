@@ -117,3 +117,8 @@ export function useCreateCase() {
         createCase, error, status
     }
 }
+
+export function useDemo() {
+    const [getDemo, setDemo] = useState(false);
+    return [getDemo, setDemo];
+}
