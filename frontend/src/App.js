@@ -44,7 +44,7 @@ function TimeWindowPage() {
 function App() {
   return (
     <Router>
-      <Navbar className="navbar navbar-dark bg-dark" style={{ minHeight: "5vh" }}>
+      <Navbar className="navbar navbar-dark bg-dark" style={{ height: "5vh" }}>
         <Link to="/"><Navbar.Brand >CoTip</Navbar.Brand></Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -62,7 +62,7 @@ function App() {
         </Navbar.Collapse>
       </Navbar>
 
-      <Container fluid className="p-0" style={{ minHeight: "80vh" }}>
+      <Container fluid className="p-0" style={{ minHeight: "75vh" }}>
         <Switch>
           <Route path='/booking'>
             <BookingFlow />

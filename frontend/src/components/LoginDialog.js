@@ -26,7 +26,7 @@ export function LoginDialog() {
 
     return (
         <Container >
-            <Row style={{ height: "80vh" }}>
+            <Row style={{ height: "75vh" }}>
                 <Col className="m-auto border p-4 m-2 rounded" md="4">
                     {
                         isDone ? <>
