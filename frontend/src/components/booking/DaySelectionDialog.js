@@ -100,7 +100,7 @@ export function DaySelectionDialog() {
 
     const now = new Date()
     const from = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours())
-    const to = new Date(from.getFullYear(), from.getMonth(), from.getDate() + 20)
+    const to = new Date(from.getFullYear(), from.getMonth(), from.getDate() + 5)
 
     const { data } = useDaystats(from, to)
 
