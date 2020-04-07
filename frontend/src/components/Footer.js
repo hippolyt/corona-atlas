@@ -3,9 +3,9 @@ import WirVsVirus from './wirvsvirus.png'
 
 export function Footer() {
     return (
-        <footer className="text-muted bg-secondary" >
-            <div className="container" style={{ minHeight: "15vh" }}>
-                <div className="row" style={{ minHeight: "15vh" }}>
+        <footer className="text-muted bg-secondary" style={{ height: "20vh" }}>
+            <div className="container">
+                <div className="row">
                     <div className="col-sm align-self-center mt-4 mb-4 text-center">
                         <p className="text-white text-center m-0 font-weight-bold">Corona Testing Information and Planning Plattform</p>
                         

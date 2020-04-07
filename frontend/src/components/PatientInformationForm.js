@@ -30,10 +30,21 @@ export function PatientInformationForm() {
         days[i] = <option key={d} value={d}>{d}</option>
     }
 
+    const patient = {
+        name: "Wannemarker",
+        givenName: "Max",
+        email: "max.wannemarker@gmail.com",
+        birthDay: "20",
+        birthYear: "1973",
+        birthMonth: "2",
+        mobileNumber: "+49 176 2139746",
+        phoneNumber: "+49 176 8736542"
+    }
+
     return (
         <>
             <h1 className='p-4'>Patientendaten </h1>
-            <Form className='p-4'>
+            <Form initialValues={patient} className='p-4'>
                 <Row>
                     <BForm.Group as={Col} controlId='name'>
                         <BForm.Label>Name</BForm.Label>
@@ -54,19 +65,19 @@ export function PatientInformationForm() {
                     <BForm.Label>Geburtstag</BForm.Label>
                     <Row>
                         <Col>
-                            <BForm.Control defaultValue='' as='select' placeholder='Year' field='birthDay'>
+                            <BForm.Control as='select' placeholder='Year' field='birthYear'>
                                 <option value='' disabled>Jahr</option>
                                 {years}
                             </BForm.Control>
                         </Col>
                         <Col>
-                            <BForm.Control defaultValue='' as='select' field='birthMonth' >
+                            <BForm.Control as='select' field='birthMonth' >
                                 <option value='' disabled>Monat</option>
                                 {months}
                             </BForm.Control>
                         </Col>
                         <Col>
-                            <BForm.Control defaultValue='' as='select' field='birthMonth' >
+                            <BForm.Control as='select' field='birthDay' >
                                 <option value='' disabled>Tag</option>
                                 {days}
                             </BForm.Control>
@@ -87,11 +98,13 @@ export function PatientInformationForm() {
                     type='switch'
                     id='mailConsent'
                     label='Einverständnis Emailkontakt'
+                    defaultChecked
                 />
                 <BForm.Check
                     type='switch'
                     id='telephoneConsent'
                     label='Einverständnis Telefonkontakt'
+                    defaultChecked
                 />
                 <div className='text-right btn-lg'>
                     <Button variant='primary' type='submit'>

@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 
 import { useSelectedSlot, useSlotDate } from '../../flows/book'
 import { useSlotsForDay } from '../../flows/data'
@@ -15,7 +16,7 @@ function TimeSlot(props) {
     let bgColor
     if (demand <= 0.5) {
         bgColor = 'rgb(0,195,27)'
-    } else if (demand <= 0.7) {
+    } else if (demand <= 0.9) {
         bgColor = 'rgb(255,242,170)'
     } else {
         bgColor = 'rgb(255,170,170)'
@@ -62,6 +63,10 @@ export function TimeSelectionDialog() {
 
     const [slotDate] = useSlotDate()
     const { data: timeSlots } = useSlotsForDay(slotDate)
+
+    if (timeSlots) {
+        timeSlots.sort((a, b) => moment(a.start).isAfter(b.start) ? 1 : -1)
+    }
 
     return (
         <>

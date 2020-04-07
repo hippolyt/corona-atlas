@@ -18,20 +18,30 @@ export function DemoPage(props) {
     )
 }
 
+const teststation_text = <div><p>Teststationen können in erster Linie Termine einsehen und Patienten über Ihren Terminstatus informieren. Gängige Funktionen sind dementsprechend: </p>
+    <ul className="list-group list-group-flush">
+        <li className="list-group-item list-group-item-action">Übersicht über den Terminkalender.</li>
+        <li className="list-group-item list-group-item-action">Patienten als “getestet” markieren.</li>
+        <li className="list-group-item list-group-item-action">Patienten automatisiert per Telefon, Email oder Mail kontaktieren.</li>
+        <li className="list-group-item list-group-item-action">Die Patientenakte verwalten.</li>
+    </ul>
+    <br/>
+    <p>Im Folgenden Video werden diese Funktionen näher erläutert. Durch einen Klick auf den Knopf "Zur Demo für Teststationen" können Sie die App selbst ausprobieren.</p>
+</div>
 
+const patient_text = <div><p>Patienten werden von CoTIP vollautomatisch über ihren Terminstatus unterrichtet. Sobald ein Arzt einen Termin für einen Patienten bucht, werden die Kontaktdaten des Patienten erfasst (soweit dies vom Patienten gestattet ist). Verschiebt die Teststation den Termin oder möchte den Patienten anderweitig benachrichtigen, erfolgt dies komplett digital. </p><p>Das folgende Video stellt den Kontakt zwischen Teststation und Patient dar:</p></div>
 
-const lorizzle = <p>Da bomb ipsizzle dolizzle cool amizzle, uhuh ... yih! adipiscing elit. Ghetto sapizzle velizzle, ghetto volutpizzle, suscipizzle quis, gravida vizzle, owned. Pellentesque own yo' tortizzle. Sizzle erizzle. For sure izzle dolor dapibus turpizzle tempizzle stuff. Mauris sizzle nibh izzle turpizzle. Shizznit izzle tortizzle. Rizzle owned rhoncizzle get down get down. In hac habitasse platea dictumst. Fo shizzle my nizzle dapibizzle. Curabitur tellizzle ghetto, pretium eu, mattizzle ac, eleifend vitae, da bomb. Mofo go to hizzle. Integizzle semper crackalackin sizzle away.</p>
-const lorizzleList = <ul className="list-group list-group-flush">
-    <li className="list-group-item list-group-item-action">Vestibulizzle ante rizzle boofron izzle brizzle orci luctizzle et go to hizzle shit nizzle.</li>
-    <li className="list-group-item list-group-item-action">Nam scelerisque. Sure magna erizzle, dignissim vitae, porttitizzle black, imperdizzle egestizzle, tellivizzle.</li>
-    <li className="list-group-item list-group-item-action">Integer ac owned shiznit arcu fo shizzle my nizzle aliquizzle.</li>
-</ul>
+const gesundheitsamt_text = <div><p>Für Gesundheitsämter besteht einerseits die Möglichkeit, Daten von Teststationen zu importieren und somit Covid-19-Tests direkt in Ihre Datenerfassungsprozesse einzubinden. Weiterhin besteht die Möglichkeit, das Testergebnis in der Webapp festzuhalten, und tausende Patienten mit Informationen und individuellen Testergebnissen per Telefon (elektronischer Anruf), Email oder SMS zu versorgen.</p><p>Die Teststation hat hierbei alleinigen Zugriff auf sämtliche Daten (insbesondere Testergebnisse).</p></div>
+
+const arzt_text = <div><p>Ärzte müssen zuerst von der Teststation für Buchungen freigeschaltet werden. Sobald dies erfolgt ist, können Ärzte Ihren Patienten digital Termine zu einem Covid-19 Test buchen. Sämtliche weitere Terminabsprache erfolgt danach digital zwischen Ärzten und Teststationen und der Arzt wird somit von weiteren Verwaltungsaufgaben entbunden.</p>
+<p>Im Folgenden Video wird der Buchungsprozess für Ärzte näher dargestellt. Durch einen Klick auf den Knopf "Zur Demo für Ärzte" können Sie die App selbst ausprobieren.</p></div>
+
 
 const htmlText = {
-    aerzte: { paragraph: lorizzle, benefits: lorizzleList },
-    patienten: { paragraph: lorizzle, benefits: lorizzleList },
-    gesundheitsaemter: { paragraph: lorizzle, benefits: lorizzleList },
-    teststationen: { paragraph: lorizzle, benefits: lorizzleList },
+    arzt: arzt_text,
+    patient: patient_text,
+    gesundheitsamt: gesundheitsamt_text,
+    teststation: teststation_text
 }
 
 function JumboHeader(props) {
@@ -45,11 +55,11 @@ function JumboHeader(props) {
     )
 }
 
-function Paragraph() {
+function Paragraph(props) {
     return (
         <div>
-            {lorizzle}
-            {lorizzleList}
+            {console.log(props.who)}
+            {htmlText[props.who]}
         </div>
     )
 }
