@@ -49,7 +49,7 @@ function JumboHeader(props) {
     return (
         <div className='jumbotron jumbotron-fluid bg-light p-2'>
             <div className='container'>
-                <h1 className='display-4'>cotip für {props.who}</h1>
+                <h1 className='display-4'>CoTIP für {props.who}</h1>
                 <h2 className='display-5 text-info'> <b>Die</b> Webapp für den Datenaustausch rund um Corona-Tests.  </h2>
             </div>
         </div>
