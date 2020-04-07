@@ -30,7 +30,7 @@ const teststation_text = <div><p>Teststationen können in erster Linie Termine e
     <p>Im Folgenden Video werden diese Funktionen näher erläutert. Durch einen Klick auf den Knopf "Zur Demo für Teststationen" können Sie die App selbst ausprobieren.</p>
 </div>
 
-const patient_text = <div><p>Patienten werden von CoTIP vollautomatisch über ihren Terminstatus unterrichtet. Sobald ein Arzt einen Termin für einen Patienten bucht, werden die Kontaktdaten des Patienten erfasst (soweit dies vom Patienten gestattet ist). Verschiebt die Teststation den Termin oder möchte den Patienten anderweitig benachrichtigen, erfolgt dies komplett digital. </p><p>Das folgende Video stellt den Kontakt zwischen Teststation und Patient dar:</p></div>
+const patient_text = <div><p>Patienten werden von CoTip vollautomatisch über ihren Terminstatus unterrichtet. Sobald ein Arzt einen Termin für einen Patienten bucht, werden die Kontaktdaten des Patienten erfasst (soweit dies vom Patienten gestattet ist). Verschiebt die Teststation den Termin oder möchte den Patienten anderweitig benachrichtigen, erfolgt dies komplett digital. </p><p>Das folgende Video stellt den Kontakt zwischen Teststation und Patient dar:</p></div>
 
 const gesundheitsamt_text = <div><p>Für Gesundheitsämter besteht einerseits die Möglichkeit, Daten von Teststationen zu importieren und somit Covid-19-Tests direkt in Ihre Datenerfassungsprozesse einzubinden. Weiterhin besteht die Möglichkeit, das Testergebnis in der Webapp festzuhalten, und tausende Patienten mit Informationen und individuellen Testergebnissen per Telefon (elektronischer Anruf), Email oder SMS zu versorgen.</p><p>Die Teststation hat hierbei alleinigen Zugriff auf sämtliche Daten (insbesondere Testergebnisse).</p></div>
 
@@ -49,7 +49,7 @@ function JumboHeader(props) {
     return (
         <div className='jumbotron jumbotron-fluid bg-light p-2'>
             <div className='container'>
-                <h1 className='display-4'>CoTIP für {props.who}</h1>
+                <h1 className='display-4'>CoTip für {props.who}</h1>
                 <h2 className='display-5 text-info'> <b>Die</b> Webapp für den Datenaustausch rund um Corona-Tests.  </h2>
             </div>
         </div>
