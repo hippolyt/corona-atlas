@@ -12,7 +12,7 @@ export function DemoPage(props) {
             <Container>
                 <DemoButton link={links[props.type]} who={groupName[props.type]} />
                 <Paragraph />
-                <Video></Video>
+                <Video link="https://www.youtube.com/embed/k8StyFmwb6o"></Video>
             </Container>
         </>
     )
@@ -54,10 +54,10 @@ function Paragraph() {
     )
 }
 
-function Video() {
+function Video(props) {
     return (
         <div className="embed-responsive embed-responsive-16by9 mt-4 mb-4">
-            <iframe className="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0" allowFullScreen></iframe>
+            <iframe className="embed-responsive-item" src={props.link} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     )
 }
