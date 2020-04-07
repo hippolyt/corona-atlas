@@ -6,13 +6,14 @@ import { Link } from 'react-router-dom'
 export function DemoPage(props) {
     const groupName = { arzt: "Ärzte", patient: "Patienten", gesundheitsamt: "Gesundheitsämter", teststation: "Teststationen" };
     const links = { arzt: "booking", patient: "/", gesundheitsamt: "/", teststation: "simpledashboard" };
+    const ytlinks = { arzt: "https://www.youtube.com/embed/oPEsq0fhr24", patient: "https://www.youtube.com/embed/uGVQv8QmrRc", gesundheitsamt: "", teststation: "https://www.youtube.com/embed/k8StyFmwb6o" };
     return (
         <>
             <JumboHeader who={groupName[props.type]} />
             <Container>
                 <DemoButton link={links[props.type]} who={groupName[props.type]} />
-                <Paragraph />
-                <Video link="https://www.youtube.com/embed/k8StyFmwb6o"></Video>
+                <Paragraph who={props.type} />
+                <Video link={ytlinks[props.type]}></Video>
             </Container>
         </>
     )
@@ -25,7 +26,7 @@ const teststation_text = <div><p>Teststationen können in erster Linie Termine e
         <li className="list-group-item list-group-item-action">Patienten automatisiert per Telefon, Email oder Mail kontaktieren.</li>
         <li className="list-group-item list-group-item-action">Die Patientenakte verwalten.</li>
     </ul>
-    <br/>
+    <br />
     <p>Im Folgenden Video werden diese Funktionen näher erläutert. Durch einen Klick auf den Knopf "Zur Demo für Teststationen" können Sie die App selbst ausprobieren.</p>
 </div>
 
@@ -34,7 +35,7 @@ const patient_text = <div><p>Patienten werden von CoTIP vollautomatisch über ih
 const gesundheitsamt_text = <div><p>Für Gesundheitsämter besteht einerseits die Möglichkeit, Daten von Teststationen zu importieren und somit Covid-19-Tests direkt in Ihre Datenerfassungsprozesse einzubinden. Weiterhin besteht die Möglichkeit, das Testergebnis in der Webapp festzuhalten, und tausende Patienten mit Informationen und individuellen Testergebnissen per Telefon (elektronischer Anruf), Email oder SMS zu versorgen.</p><p>Die Teststation hat hierbei alleinigen Zugriff auf sämtliche Daten (insbesondere Testergebnisse).</p></div>
 
 const arzt_text = <div><p>Ärzte müssen zuerst von der Teststation für Buchungen freigeschaltet werden. Sobald dies erfolgt ist, können Ärzte Ihren Patienten digital Termine zu einem Covid-19 Test buchen. Sämtliche weitere Terminabsprache erfolgt danach digital zwischen Ärzten und Teststationen und der Arzt wird somit von weiteren Verwaltungsaufgaben entbunden.</p>
-<p>Im Folgenden Video wird der Buchungsprozess für Ärzte näher dargestellt. Durch einen Klick auf den Knopf "Zur Demo für Ärzte" können Sie die App selbst ausprobieren.</p></div>
+    <p>Im Folgenden Video wird der Buchungsprozess für Ärzte näher dargestellt. Durch einen Klick auf den Knopf "Zur Demo für Ärzte" können Sie die App selbst ausprobieren.</p></div>
 
 
 const htmlText = {
@@ -58,18 +59,21 @@ function JumboHeader(props) {
 function Paragraph(props) {
     return (
         <div>
-            {console.log(props.who)}
             {htmlText[props.who]}
         </div>
     )
 }
 
 function Video(props) {
-    return (
-        <div className="embed-responsive embed-responsive-16by9 mt-4 mb-4">
-            <iframe className="embed-responsive-item" src={props.link} frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-    )
+    if (props.link) {
+        return (
+            <div className="embed-responsive embed-responsive-16by9 mt-4 mb-4">
+                <iframe className="embed-responsive-item" src={props.link} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+            </div>
+        )
+    } else {
+        return(<></>);
+    }
 }
 
 
